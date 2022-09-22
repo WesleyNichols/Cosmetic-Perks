@@ -1,0 +1,6 @@
+name: CosmeticPerks
+version: '${project.version}'
+main: cosmetic.perks.cosmeticperks.CosmeticPerks
+api-version: 1.19
+authors: [ WesleyNichols, TheSheepGoesBa ]
+description: Perks for donators
