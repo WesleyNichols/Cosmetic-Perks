@@ -21,9 +21,9 @@ public class GUI {
     private static Inventory inv;
 
     public void create(){
-        Inventory inv = Bukkit.createInventory(null, 9, Component.text("Particles").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD));
+        Inventory inv = Bukkit.createInventory(null, 9, Component.text("Particles").color(NamedTextColor.BLACK).decorate(TextDecoration.BOLD));
 
-        ItemStack item = new ItemStack(Material.BEEHIVE);
+        ItemStack item = new ItemStack(Material.BEE_NEST);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(ChatColor.YELLOW + "Bee Trail"));
         meta.lore(Arrays.asList(Component.text("The Best Trail in the Hive!")));
