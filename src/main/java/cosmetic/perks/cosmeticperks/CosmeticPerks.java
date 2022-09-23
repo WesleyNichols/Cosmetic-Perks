@@ -1,5 +1,6 @@
 package cosmetic.perks.cosmeticperks;
 
+import cosmetic.perks.cosmeticperks.Listeners.GUIClick;
 import cosmetic.perks.cosmeticperks.commands.Cosmetic;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,6 +22,6 @@ public final class CosmeticPerks extends JavaPlugin {
     }
 
     public void registerEvents() {
-
+        getServer().getPluginManager().registerEvents(new GUIClick(this), this);
     }
 }
