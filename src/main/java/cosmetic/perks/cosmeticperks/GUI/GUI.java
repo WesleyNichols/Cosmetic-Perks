@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,11 +21,11 @@ public class GUI {
     private static Inventory inv;
 
     public void create(){
-        Inventory inv = Bukkit.createInventory(null, 5, Component.text("Particles").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD));
+        Inventory inv = Bukkit.createInventory(null, 9, Component.text("Particles").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD));
 
         ItemStack item = new ItemStack(Material.BEEHIVE);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text("Bee Trail").color(NamedTextColor.YELLOW));
+        meta.displayName(Component.text(ChatColor.YELLOW + "Bee Trail"));
         meta.lore(Arrays.asList(Component.text("The Best Trail in the Hive!")));
         item.setItemMeta(meta);
         inv.setItem(0, item);

@@ -1,5 +1,7 @@
 package cosmetic.perks.cosmeticperks.tasks;
 
+import cosmetic.perks.cosmeticperks.CosmeticPerks;
+import cosmetic.perks.cosmeticperks.commands.Cosmetic;
 import cosmetic.perks.cosmeticperks.enums.ArrowTrails;
 import cosmetic.perks.cosmeticperks.managers.TrailItemManager;
 import org.bukkit.Bukkit;
@@ -12,6 +14,10 @@ import java.util.UUID;
 
 public class ArrowTrailTask extends BukkitRunnable {
     public void run() {
+        if (!CosmeticPerks.getInstance().isEnabled()) {
+            this.cancel();
+        }
+
         HashMap<UUID, ArrowTrails> arrowTrailList = TrailItemManager.getArrowTrailList();
         for (UUID arrowId : arrowTrailList.keySet()) {
             Entity arrowEntity = Bukkit.getEntity(arrowId);
