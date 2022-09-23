@@ -23,10 +23,28 @@ public class GUI {
     public void create(){
         Inventory inv = Bukkit.createInventory(null, 9, Component.text("Particles").color(NamedTextColor.BLACK).decorate(TextDecoration.BOLD));
 
-        ItemStack item = new ItemStack(Material.BEE_NEST);
+        ItemStack item = new ItemStack(Material.ARROW);
         ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text(ChatColor.AQUA + "Arrow Trails"));
+        item.setItemMeta(meta);
+        inv.setItem(0, item);
+
+        item = new ItemStack(Material.BEE_NEST);
+        meta = item.getItemMeta();
         meta.displayName(Component.text(ChatColor.YELLOW + "Bee Trail"));
         meta.lore(Arrays.asList(Component.text("The Best Trail in the Hive!")));
+        item.setItemMeta(meta);
+        inv.setItem(1, item);
+
+        setInv(inv);
+    }
+
+    public void createArrowGUI(){
+        Inventory inv = Bukkit.createInventory(null, 9, Component.text("Arrow Trails").color(NamedTextColor.BLACK).decorate(TextDecoration.BOLD));
+
+        ItemStack item = new ItemStack(Material.FIREWORK_ROCKET);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text(ChatColor.RED + "Firework Sparks"));
         item.setItemMeta(meta);
         inv.setItem(0, item);
 

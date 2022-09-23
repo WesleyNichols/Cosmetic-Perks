@@ -16,7 +16,8 @@ public class GUIClick implements Listener {
 
     @EventHandler
     public void onGUIClick(InventoryClickEvent event) {
-        if(!event.getView().title().equals(Component.text("Particles").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD))){return;}
+        if(!(event.getView().title().equals(Component.text("Particles").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD))
+                || event.getView().title().equals(Component.text("Arrow Trails").color(NamedTextColor.BLACK).decorate(TextDecoration.BOLD)))){return;}
 
         ItemStack clicked = event.getCurrentItem();
         if(clicked == null){return;}
@@ -26,6 +27,11 @@ public class GUIClick implements Listener {
             Player player = (Player)entity;
             event.setCancelled(true);
             if(clicked.getType() == Material.BEE_NEST){
+                player.closeInventory();
+                player.sendMessage(Component.text("Working").color(NamedTextColor.GREEN));
+            }
+
+            if(clicked.getType() == Material.ARROW){
                 player.closeInventory();
                 player.sendMessage(Component.text("Working").color(NamedTextColor.GREEN));
             }
