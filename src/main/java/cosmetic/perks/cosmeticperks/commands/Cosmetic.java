@@ -17,8 +17,6 @@ public class Cosmetic implements CommandExecutor {
             Player player = (Player) sender;
             if(label.equalsIgnoreCase(getMainCommand) && player.hasPermission("group.donator")){
                 GUI gui = new GUI();
-                Inventory inv = gui.getInv();
-                gui.create();
                 gui.openInv(player);
                 return true;
             }

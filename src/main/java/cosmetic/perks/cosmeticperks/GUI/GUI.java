@@ -19,18 +19,6 @@ public class GUI {
 
     private static Inventory inv;
 
-    public Inventory getInv(){
-        return inv;
-    }
-
-    private void setInv(Inventory i){
-        inv = i;
-    }
-
-    public void openInv(Player player){
-        player.openInventory(inv);
-    }
-
     public void create(){
         Inventory inv = Bukkit.createInventory(null, 5, Component.text("Particles").color(NamedTextColor.DARK_GREEN).decorate(TextDecoration.BOLD));
 
@@ -43,4 +31,17 @@ public class GUI {
 
         setInv(inv);
     }
+
+    public Inventory getInv(){
+        return inv;
+    }
+
+    private void setInv(Inventory i){
+        inv = i;
+    }
+
+    public void openInv(Player player){
+        player.openInventory(inv);
+    }
+
 }
