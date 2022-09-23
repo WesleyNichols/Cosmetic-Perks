@@ -1,11 +1,10 @@
-package cosmetic.perks.cosmeticperks.Listeners;
+package cosmetic.perks.cosmeticperks.listeners;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,8 +13,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GUIClick implements Listener {
-    public GUIClick(CosmeticPerks e) {
-    }
 
     @EventHandler
     public void onGUIClick(InventoryClickEvent event) {
