@@ -9,3 +9,7 @@ commands:
     description: Access the cosmetic menu
     usage: /cosmetic
     permission: cosmeticperks.cosmetic
+  sheep:
+    description: Test GUI
+    usage: /sheep
+    permission: cosmeticperks.sheep

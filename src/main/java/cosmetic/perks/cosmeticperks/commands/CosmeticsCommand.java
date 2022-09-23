@@ -14,7 +14,7 @@ public class CosmeticsCommand implements CommandExecutor {
     public static String getMainCommand = "cosmetic";
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player) {
+        if (label.equalsIgnoreCase(getMainCommand) && sender instanceof Player) {
             Player player = (Player) sender;
             TrailManager.addSavedArrowTrail(player.getUniqueId(), ArrowTrails.FIREWORKS);
             player.sendMessage(Component.text("Enabling ArrowTrails.FIREWORKS"));
