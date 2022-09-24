@@ -51,6 +51,9 @@ public class CosmeticsCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equals("vanish")) {
+                //  This doesn't work, the documentation claims you just use AdvancedVanishAPI.isPlayerVanished
+                //  but that doesn't work and instead suggests AdvancedVanishAPI.INSTANCE.isPlayerVanished, which
+                //  always fails no matter what. Hopefully I can find a fix soon
 //                try {
 //                    if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) {
 //                        player.sendMessage(Component.text(player.getName() + " is vanished!"));
