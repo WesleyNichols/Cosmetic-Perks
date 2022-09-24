@@ -3,11 +3,8 @@ package cosmetic.perks.cosmeticperks.commands;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
-import me.quantiom.advancedvanish.sync.impl.SqlServerSyncStore;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,13 +20,13 @@ public class CosmeticsCommand implements CommandExecutor {
     public static String getMainCommand = "cosmetic";
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (label.equalsIgnoreCase(getMainCommand) && sender instanceof Player) {
+        if (label.equalsIgnoreCase("cosmetic") && sender instanceof Player) {
             Player player = (Player) sender;
 
             if (args[0].equals("projectile")) {
                 if (args[1] != null) {
                     if (Arrays.stream(ProjectileTrails.values()).anyMatch(e -> e.toString().equalsIgnoreCase(args[1]))) {
-                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "arrow-trail"), PersistentDataType.STRING, args[1].toUpperCase());
+                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, args[1].toUpperCase());
                         player.sendMessage(Component.text("Enabling Projectile Trail: " + args[1].toUpperCase()));
                     } else {
                         player.sendMessage(Component.text(args[1].toUpperCase() + " is not a valid projectile trail!"));
@@ -50,22 +47,6 @@ public class CosmeticsCommand implements CommandExecutor {
                     player.sendMessage(Component.text("Not enough arguments provided!"));
                 }
                 return true;
-            } else if (args[0].equals("vanish")) {
-                //  This doesn't work, the documentation claims you just use AdvancedVanishAPI.isPlayerVanished
-                //  but that doesn't work and instead suggests AdvancedVanishAPI.INSTANCE.isPlayerVanished, which
-                //  always fails no matter what. Hopefully I can find a fix soon
-//                try {
-//                    if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) {
-//                        player.sendMessage(Component.text(player.getName() + " is vanished!"));
-//                    } else {
-//                        player.sendMessage(Component.text(player.getName() + " is not vanished!"));
-//                    }
-//                    player.sendMessage(Component.text(AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) + " " + AdvancedVanishAPI.INSTANCE.getVanishedPlayers()));
-//                    return true;
-//                } catch (Exception e) {
-//                    sender.sendMessage(ChatColor.RED + "Failed to run!");
-//                    return true;
-//                }
             }
         }
         return false;

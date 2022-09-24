@@ -1,8 +1,8 @@
 name: CosmeticPerks
 version: '${project.version}'
+softdepend: [AdvancedVanish]
 main: cosmetic.perks.cosmeticperks.CosmeticPerks
 api-version: 1.19
-depend: [AdvancedVanish]
 authors: [ WesleyNichols, TheSheepGoesBa ]
 description: Perks for donors
 commands:

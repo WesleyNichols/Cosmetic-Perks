@@ -19,8 +19,8 @@ public class OnPlayerJoin implements Listener {
             player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
         }
 
-        if (player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "arrow-trail"), PersistentDataType.STRING)) {
-            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "arrow-trail"), PersistentDataType.STRING, "NONE");
+        if (player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING)) {
+            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
         }
     }
 
