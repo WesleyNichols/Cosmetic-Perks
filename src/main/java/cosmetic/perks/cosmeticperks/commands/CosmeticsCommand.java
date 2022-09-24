@@ -3,7 +3,6 @@ package cosmetic.perks.cosmeticperks.commands;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;

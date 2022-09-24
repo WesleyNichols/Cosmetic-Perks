@@ -1,7 +1,6 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import org.bukkit.NamespacedKey;

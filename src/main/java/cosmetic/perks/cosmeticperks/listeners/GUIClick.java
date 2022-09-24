@@ -1,6 +1,5 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
-import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
