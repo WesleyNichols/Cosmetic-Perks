@@ -3,13 +3,12 @@ package cosmetic.perks.cosmeticperks;
 import cosmetic.perks.cosmeticperks.commands.Cosmetic;
 import cosmetic.perks.cosmeticperks.commands.CosmeticsCommand;
 import cosmetic.perks.cosmeticperks.listeners.GUIClick;
-import cosmetic.perks.cosmeticperks.listeners.OnArrowTrailShot;
-import cosmetic.perks.cosmeticperks.tasks.ArrowTrailTask;
+import cosmetic.perks.cosmeticperks.listeners.OnProjectileShot;
+import cosmetic.perks.cosmeticperks.listeners.OnPlayerMove;
+import cosmetic.perks.cosmeticperks.tasks.ProjectileTrailTask;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public final class CosmeticPerks extends JavaPlugin {
 
@@ -19,13 +18,14 @@ public final class CosmeticPerks extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.registerEvent(new OnArrowTrailShot());
         this.registerEvent(new GUIClick());
+        this.registerEvent(new OnProjectileShot());
+        this.registerEvent(new OnPlayerMove());
 
         this.registerCommand(CosmeticsCommand.getMainCommand, new CosmeticsCommand());
         this.registerCommand(Cosmetic.getMainCommand, new Cosmetic());
 
-        new ArrowTrailTask().runTaskTimer(this, 1L, 1L);
+        new ProjectileTrailTask().runTaskTimer(this, 1L, 1L);
     }
 
     @Override

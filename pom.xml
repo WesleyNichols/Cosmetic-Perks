@@ -11,7 +11,7 @@
 
     <name>CosmeticPerks</name>
 
-    <description>Perks for donators</description>
+    <description>Perks for donors</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,6 +62,11 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>repsy</id>
+            <name>quantiom</name>
+            <url>https://repo.repsy.io/mvn/quantiom/minecraft</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -70,6 +75,11 @@
             <artifactId>paper-api</artifactId>
             <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.quantiom</groupId>
+            <artifactId>advancedvanish</artifactId>
+            <version>1.2.2</version>
         </dependency>
     </dependencies>
 </project>

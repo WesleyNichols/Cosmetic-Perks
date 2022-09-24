@@ -2,7 +2,7 @@ package cosmetic.perks.cosmeticperks.enums;
 
 import org.bukkit.Particle;
 
-public enum ArrowTrails {
+public enum ProjectileTrails {
     FIREWORKS       (3500, "Firework Spark", Particle.FIREWORKS_SPARK,
             .1, .1, .1, .05, 3, false),
     MAGMA           (3501, "Hot Magma", Particle.DRIP_LAVA,
@@ -28,7 +28,7 @@ public enum ArrowTrails {
     STICKY          (3511, "Sticky", Particle.SLIME,
             .2, .2, .2, 0, 8, false),
     CUPID           (3512, "Cupid", Particle.HEART,
-            .2, .2, .2, 0, 1, true),
+            .2, .2, .2, 0, 1, false),
     DRAGON_BREATH   (3513, "Dragon's Breath", Particle.DRAGON_BREATH,
             .2, .2, .2, 0.05, 10, false),
     STAR_LIGHT      (3514, "Star Light", Particle.END_ROD,
@@ -45,7 +45,7 @@ public enum ArrowTrails {
     private final int ParticleAmount;
     private final boolean LimitedItem;
 
-    ArrowTrails(int packageID, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, boolean limitedItem) {
+    ProjectileTrails(int packageID, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, boolean limitedItem) {
         this.PackageID = packageID;
         this.EffectName = effectName;
         this.TrailEffect = trailEffect;
