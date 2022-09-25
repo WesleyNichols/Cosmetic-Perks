@@ -4,6 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
+import me.quantiom.advancedvanish.AdvancedVanish;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -38,15 +39,16 @@ public class CosmeticsMenu {
         OutlinePane navigationPane = new OutlinePane(3, 1, 3, 1);
 
 //        region Player Trails
-        ItemStack shop = new ItemStack(Material.LEATHER_BOOTS);
-        LeatherArmorMeta shopMeta = (LeatherArmorMeta) shop.getItemMeta();
-        shopMeta.setColor(Color.GREEN);
-        shopMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        shopMeta.addItemFlags(ItemFlag.HIDE_DYE);
-        shopMeta.displayName(Component.text(ChatColor.YELLOW + "Player Trails"));
-        shop.setItemMeta(shopMeta);
+        ItemStack playerTrail = new ItemStack(Material.LEATHER_BOOTS);
+        LeatherArmorMeta playerTrailMeta = (LeatherArmorMeta) playerTrail.getItemMeta();
+        playerTrailMeta.setColor(Color.GREEN);
+        playerTrailMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        playerTrailMeta.addItemFlags(ItemFlag.HIDE_DYE);
+        playerTrailMeta.displayName(Component.text(ChatColor.YELLOW + "Player Trails"));
+        playerTrail.setItemMeta(playerTrailMeta);
+        
 
-        navigationPane.addItem(new GuiItem(shop, event -> {
+        navigationPane.addItem(new GuiItem(playerTrail, event -> {
             //navigate to player trails
         }));
 //        endregion
@@ -79,6 +81,10 @@ public class CosmeticsMenu {
 
         gui.update();
         gui.show(player);
+    }
+
+    public void displayArrowGui(Player player) {
+
     }
 
     public void createArrowGUI(){
