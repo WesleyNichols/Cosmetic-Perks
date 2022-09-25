@@ -1,6 +1,7 @@
 package cosmetic.perks.cosmeticperks.commands;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
+import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import net.kyori.adventure.text.Component;
@@ -22,8 +23,30 @@ public class CosmeticsCommand implements CommandExecutor {
         if (label.equalsIgnoreCase("cosmetic") && sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (args[0].equals("projectile")) {
+            if (args[0].equals("player")) {
                 if (args[1] != null) {
+                    if (args[1].equalsIgnoreCase("NONE")) {
+                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
+                        player.sendMessage(Component.text("Disabling Player Trails"));
+                        return true;
+                    }
+                    if (Arrays.stream(PlayerTrails.values()).anyMatch(e -> e.toString().equalsIgnoreCase(args[1]))) {
+                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, args[1].toUpperCase());
+                        player.sendMessage(Component.text("Enabling Player Trail: " + args[1].toUpperCase()));
+                    } else {
+                        player.sendMessage(Component.text(args[1].toUpperCase() + " is not a valid player trail!"));
+                    }
+                } else {
+                    player.sendMessage(Component.text("Not enough arguments provided!"));
+                }
+                return true;
+            } else if (args[0].equals("projectile")) {
+                if (args[1] != null) {
+                    if (args[1].equalsIgnoreCase("NONE")) {
+                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
+                        player.sendMessage(Component.text("Disabling Projectile Trails"));
+                        return true;
+                    }
                     if (Arrays.stream(ProjectileTrails.values()).anyMatch(e -> e.toString().equalsIgnoreCase(args[1]))) {
                         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, args[1].toUpperCase());
                         player.sendMessage(Component.text("Enabling Projectile Trail: " + args[1].toUpperCase()));
@@ -34,13 +57,18 @@ public class CosmeticsCommand implements CommandExecutor {
                     player.sendMessage(Component.text("Not enough arguments provided!"));
                 }
                 return true;
-            } else if (args[0].equals("player")) {
+            } else if (args[0].equals("elytra")) {
                 if (args[1] != null) {
-                    if (Arrays.stream(PlayerTrails.values()).anyMatch(e -> e.toString().equalsIgnoreCase(args[1]))) {
-                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, args[1].toUpperCase());
-                        player.sendMessage(Component.text("Enabling Player Trail: " + args[1].toUpperCase()));
+                    if (args[1].equalsIgnoreCase("NONE")) {
+                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, "NONE");
+                        player.sendMessage(Component.text("Disabling Elytra Trails"));
+                        return true;
+                    }
+                    if (Arrays.stream(ElytraTrails.values()).anyMatch(e -> e.toString().equalsIgnoreCase(args[1]))) {
+                        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, args[1].toUpperCase());
+                        player.sendMessage(Component.text("Enabling Elytra Trail: " + args[1].toUpperCase()));
                     } else {
-                        player.sendMessage(Component.text(args[1].toUpperCase() + " is not a valid player trail!"));
+                        player.sendMessage(Component.text(args[1].toUpperCase() + " is not a valid elytra trail!"));
                     }
                 } else {
                     player.sendMessage(Component.text("Not enough arguments provided!"));

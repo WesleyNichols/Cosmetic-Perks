@@ -15,12 +15,16 @@ public class OnPlayerJoin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)) {
+        if (!player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)) {
             player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
         }
 
-        if (player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING)) {
+        if (!player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING)) {
             player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
+        }
+
+        if (!player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING)) {
+            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, "NONE");
         }
     }
 

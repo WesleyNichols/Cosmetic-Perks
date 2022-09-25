@@ -2,7 +2,6 @@ package cosmetic.perks.cosmeticperks;
 
 import cosmetic.perks.cosmeticperks.commands.Cosmetic;
 import cosmetic.perks.cosmeticperks.commands.CosmeticsCommand;
-import cosmetic.perks.cosmeticperks.listeners.GUIClick;
 import cosmetic.perks.cosmeticperks.listeners.OnProjectileShot;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerMove;
 import cosmetic.perks.cosmeticperks.tasks.ProjectileTrailTask;
@@ -18,9 +17,8 @@ public final class CosmeticPerks extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-//        this.registerEvent(new GUIClick());
-        this.registerEvent(new OnProjectileShot());
         this.registerEvent(new OnPlayerMove());
+        this.registerEvent(new OnProjectileShot());
 
         this.registerCommand(CosmeticsCommand.getMainCommand, new CosmeticsCommand());
         this.registerCommand(Cosmetic.getMainCommand, new Cosmetic());
