@@ -18,7 +18,7 @@ public final class CosmeticPerks extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.registerEvent(new GUIClick());
+//        this.registerEvent(new GUIClick());
         this.registerEvent(new OnProjectileShot());
         this.registerEvent(new OnPlayerMove());
 

@@ -1,6 +1,6 @@
 package cosmetic.perks.cosmeticperks.commands;
 
-import cosmetic.perks.cosmeticperks.GUI.GUI;
+import cosmetic.perks.cosmeticperks.menus.CosmeticsMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,9 +16,8 @@ public class Cosmetic implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 if (label.equalsIgnoreCase(getMainCommand) && player.hasPermission("group.donator")) {
-                    GUI gui = new GUI();
-                    gui.create();
-                    gui.openInv(player);
+                    CosmeticsMenu gui = new CosmeticsMenu();
+                    gui.displayCosmeticsMenu(player);
                     return true;
                 }
                 return true;
