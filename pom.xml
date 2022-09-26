@@ -86,6 +86,7 @@
             <groupId>me.quantiom</groupId>
             <artifactId>advancedvanish</artifactId>
             <version>1.2.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>

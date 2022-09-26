@@ -81,7 +81,7 @@ public class CosmeticsCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equals("vanish")) {
-                player.sendMessage(AdvancedVanishAPI.INSTANCE.getVanishedPlayers().get(0));
+                player.sendMessage(Component.text(AdvancedVanishAPI.INSTANCE.getVanishedPlayers().size()));
             }
         }
         return false;
