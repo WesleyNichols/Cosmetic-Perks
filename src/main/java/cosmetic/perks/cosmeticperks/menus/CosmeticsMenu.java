@@ -81,19 +81,18 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayPlayerMenu(Player player) {
-        ChestGui gui = new ChestGui( Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))+2, "Player Trails");
+        ChestGui gui = new ChestGui( 6, "Player Trails");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         OutlinePane background = new OutlinePane(0, 0, 9, gui.getRows(), Pane.Priority.LOWEST);
         background.addItem(new GuiItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
         background.setRepeat(true);
 
-        player.sendMessage(Component.text(PlayerTrails.values().length));
-        player.sendMessage(Component.text(Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))));
-        OutlinePane navigationPane = new OutlinePane(0, 0, PlayerTrails.values().length, gui.getRows()-1);
+        OutlinePane navigationPane = new OutlinePane(0, 0, PlayerTrails.values().length, Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))+1);
 
         for(int i=0; i==PlayerTrails.values().length; i++) {
             PlayerTrails playerTrail = PlayerTrails.values()[i];
+            player.getInventory().addItem(playerTrail.getItem());
             navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player)));
         }
 
