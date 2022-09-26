@@ -92,7 +92,6 @@
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.10.7</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

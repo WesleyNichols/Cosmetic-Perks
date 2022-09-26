@@ -36,7 +36,7 @@ public class CustomItem {
         itemMeta.displayName(name);
 
         if (enchantments != null) {
-            for (int i=0; i==enchantments.length-1; i++) {
+            for (int i=0; i<=enchantments.length-1; i++) {
                 try {
                     itemMeta.addEnchant(enchantments[i], levels[i], true);
                 } catch (Exception e) {

@@ -8,13 +8,16 @@ import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class CosmeticsMenu extends Methods {
@@ -90,10 +93,8 @@ public class CosmeticsMenu extends Methods {
 
         OutlinePane navigationPane = new OutlinePane(0, 0, 9, Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))+1);
 
-        for(int i=0; i==PlayerTrails.values().length; i++) {
+        for(int i=0; i<PlayerTrails.values().length; i++) {
             PlayerTrails playerTrail = PlayerTrails.values()[i];
-            player.sendMessage(playerTrail.getItem().toString());
-            player.getInventory().addItem(playerTrail.getItem());
             navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player)));
         }
 
