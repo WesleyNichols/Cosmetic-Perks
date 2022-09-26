@@ -5,6 +5,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
+import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -20,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 
-public class CosmeticsMenu {
+public class CosmeticsMenu extends Methods {
 
     private static Inventory inv;
 
@@ -41,7 +42,7 @@ public class CosmeticsMenu {
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
                     .amount(1)
                         .name(Component.text(ChatColor.GREEN + "Player Trails"))
-                        .enchantments(new Enchantment[]{Enchantment.DURABILITY}, new int[]{1})
+                        .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1))
                         .hideEnchants(true)
                         .armorColor(Color.GREEN)
                         .build(),
@@ -62,14 +63,22 @@ public class CosmeticsMenu {
         //endregion
 
         //region Elytra Trails
-        ItemStack elytra = new ItemStack(Material.ELYTRA);
+        ItemStack elytra = new CustomItem.ItemBuilder(Material.ELYTRA)
+                .name(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"))
+                .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1)).build();
         ItemMeta elytraMeta = elytra.getItemMeta();
         elytraMeta.addEnchant(Enchantment.DURABILITY, 1, false);
         elytraMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         elytraMeta.displayName(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"));
         elytra.setItemMeta(elytraMeta);
 
-        navigationPane.addItem(new GuiItem(elytra, event -> {
+        navigationPane.addItem(new GuiItem( new CustomItem
+                .ItemBuilder(Material.ELYTRA)
+                .name(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"))
+                .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1))
+                .hideEnchants(true)
+                .build()
+                , event -> {
             //navigate to elytra trails
         }));
         //endregion
