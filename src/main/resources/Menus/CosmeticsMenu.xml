@@ -1,21 +1,21 @@
 <chestgui title="Cosmetics Menu" rows="3">
     <outlinepane x="0" y="0" length="9" height="3" priority="lowest" repeat="true">
-        <item id="black_stained_glass_pane" />
+        <item id="black_stained_glass_pane" >
+            <displayname>§f</displayname>
+        </item>
     </outlinepane>
     <outlinepane x="3" y="1" length="3" height="1">
-        <item id="leather_boots" color="008000" show-attributes="false" show-other="false">
+        <item id="leather_boots">
             <displayname>§aPlayer Trails</displayname>
         </item>
         <item id="spectral_arrow">
-            <displayname>
-                <font color="FFAA00">Projectile Trails</font>
-            </displayname>
+            <displayname>§eProjectile Trails</displayname>
         </item>
-        <item id="elytra" show-enchants="false">
-            <displayname>
-                <font color="FF55FF">Elytra Trails</font>
-            </displayname>
-            <enchantment level="1">durability</enchantment>
+        <item id="elytra">
+            <displayname>§dElytra Trails</displayname>
+            <enchantments>
+                <enchantment id="durability" level="3"/>
+            </enchantments>
         </item>
     </outlinepane>
 </chestgui>

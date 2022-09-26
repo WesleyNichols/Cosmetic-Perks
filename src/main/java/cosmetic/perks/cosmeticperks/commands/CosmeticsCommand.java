@@ -4,6 +4,7 @@ import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
+import cosmetic.perks.cosmeticperks.menus.CosmeticsMenu;
 import me.quantiom.advancedvanish.AdvancedVanish;
 import me.quantiom.advancedvanish.sync.impl.SqlServerSyncStore;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
@@ -19,6 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 public class CosmeticsCommand implements CommandExecutor {
@@ -28,6 +30,12 @@ public class CosmeticsCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (label.equalsIgnoreCase("cosmetic") && sender instanceof Player) {
             Player player = (Player) sender;
+
+            if (args.length == 0) {
+                CosmeticsMenu menu = new CosmeticsMenu();
+                menu.displayCosmeticsMenu(player);
+                return true;
+            }
 
             if (args[0].equals("player")) {
                 if (args[1] != null) {
