@@ -3,15 +3,11 @@ package cosmetic.perks.cosmeticperks.structures;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-
-import java.awt.*;
-import java.util.Locale;
 
 
 public class CustomItem {
@@ -39,7 +35,7 @@ public class CustomItem {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.displayName(name);
 
-        if (enchantments.length != 0) {
+        if (enchantments != null) {
             for (int i=0; i==enchantments.length-1; i++) {
                 try {
                     itemMeta.addEnchant(enchantments[i], levels[i], true);
@@ -64,7 +60,7 @@ public class CustomItem {
             }
         }
 
-        itemStack.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -80,6 +76,7 @@ public class CustomItem {
 
         public ItemBuilder(Material material) {
             this.material = material;
+            this.amount = 1;
         }
 
         public ItemBuilder amount(int amount) {

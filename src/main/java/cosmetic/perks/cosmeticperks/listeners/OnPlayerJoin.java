@@ -1,13 +1,11 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 

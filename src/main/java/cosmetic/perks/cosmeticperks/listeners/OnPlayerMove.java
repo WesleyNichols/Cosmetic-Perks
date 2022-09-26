@@ -3,7 +3,7 @@ package cosmetic.perks.cosmeticperks.listeners;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import org.bukkit.Bukkit;
+import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class OnPlayerMove implements Listener {
     @EventHandler
     public void onPlayerTrailMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if(!player.hasPermission("group.donator")){return;}
+        if (!player.hasPermission("group.donator") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
 
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (player.isGliding() && !Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {

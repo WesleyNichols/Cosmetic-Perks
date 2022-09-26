@@ -3,6 +3,7 @@ package cosmetic.perks.cosmeticperks.listeners;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
+import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
@@ -21,6 +22,8 @@ public class OnProjectileShot implements Listener {
     public void onProjectileShoot(ProjectileLaunchEvent event) {
         if (event.getEntity().getShooter() instanceof Player) {
             Player player = (Player) event.getEntity().getShooter();
+
+            if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
 
             if (event.getEntity() instanceof FishHook || event.getEntity() instanceof Trident) { return; }
 

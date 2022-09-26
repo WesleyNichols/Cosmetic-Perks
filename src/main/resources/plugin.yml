@@ -1,6 +1,6 @@
 name: CosmeticPerks
 version: '${project.version}'
-softdepend: [AdvancedVanish]
+depend: [AdvancedVanish]
 main: cosmetic.perks.cosmeticperks.CosmeticPerks
 api-version: 1.19
 authors: [ WesleyNichols, TheSheepGoesBa ]

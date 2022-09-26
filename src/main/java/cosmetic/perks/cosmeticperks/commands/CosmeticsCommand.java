@@ -5,23 +5,18 @@ import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.menus.CosmeticsMenu;
-import me.quantiom.advancedvanish.AdvancedVanish;
-import me.quantiom.advancedvanish.sync.impl.SqlServerSyncStore;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
-import me.quantiom.advancedvanish.util.AdvancedVanishAPIKt;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
 import java.util.Arrays;
+
 
 public class CosmeticsCommand implements CommandExecutor {
 
@@ -89,7 +84,8 @@ public class CosmeticsCommand implements CommandExecutor {
                 }
                 return true;
             } else if (args[0].equals("vanish")) {
-                player.sendMessage(Component.text(AdvancedVanishAPI.INSTANCE.getVanishedPlayers().size()));
+                player.sendMessage(Component.text("Is " + player.getName() + " vanished? -> " + AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)));
+                player.sendMessage(Component.text(AdvancedVanishAPI.INSTANCE.getVanishedPlayers().toString() + ", " + AdvancedVanishAPI.INSTANCE.getVanishedPlayers().size()));
             }
         }
         return false;
