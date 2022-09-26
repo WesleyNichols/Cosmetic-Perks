@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class Methods {
@@ -18,7 +19,12 @@ public abstract class Methods {
         return i;
     }
 
-    public void enablePlayerTrail(PlayerTrails e, Player player) {
+    public void enablePlayerTrail(PlayerTrails e, Player player, Boolean selected) {
+        if(selected) {
+            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
+            player.sendMessage(Component.text("You disabled the " + e.getEffectName() + " player trail."));
+            return;
+        }
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, e.name().toUpperCase());
         player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " player trail."));
     }

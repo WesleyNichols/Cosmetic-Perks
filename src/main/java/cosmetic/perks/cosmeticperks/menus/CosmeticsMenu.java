@@ -4,6 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
+import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.Methods;
@@ -11,9 +12,12 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,7 +99,15 @@ public class CosmeticsMenu extends Methods {
 
         for(int i=0; i<PlayerTrails.values().length; i++) {
             PlayerTrails playerTrail = PlayerTrails.values()[i];
-            navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player)));
+            if(playerTrail.name().equals(player.getPersistentDataContainer().get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING))){
+                ItemStack item = playerTrail.getItem();
+                ItemMeta meta = item.getItemMeta();
+                meta.addEnchant(Enchantment.DURABILITY, 1, true);
+                item.setItemMeta(meta);
+                navigationPane.addItem(new GuiItem(item, event -> enablePlayerTrail(playerTrail, player, true)));
+            } else{
+                navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player, false)));
+            }
         }
 
         gui.addPane(background);
