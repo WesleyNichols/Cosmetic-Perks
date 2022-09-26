@@ -1,14 +1,10 @@
 package cosmetic.perks.cosmeticperks.menus;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.InventoryComponent;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
-import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.commands.Cosmetic;
-import jdk.internal.net.http.common.Pair;
+import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -22,12 +18,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.jetbrains.annotations.NotNull;
-import redis.clients.jedis.resps.Tuple;
-
-import java.nio.file.Paths;
-import java.util.logging.Level;
 
 
 public class CosmeticsMenu {
@@ -47,16 +37,15 @@ public class CosmeticsMenu {
         OutlinePane navigationPane = new OutlinePane(3, 1, 3, 1);
 
         //region Player Trails
-        ItemStack playerTrail = new ItemStack(Material.LEATHER_BOOTS);
-        LeatherArmorMeta playerTrailMeta = (LeatherArmorMeta) playerTrail.getItemMeta();
-        playerTrailMeta.setColor(Color.GREEN);
-        playerTrailMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        playerTrailMeta.addItemFlags(ItemFlag.HIDE_DYE);
-        playerTrailMeta.displayName(Component.text(ChatColor.YELLOW + "Player Trails"));
-        playerTrail.setItemMeta(playerTrailMeta);
-
-
-        navigationPane.addItem(new GuiItem(playerTrail, event -> {
+        navigationPane.addItem(new GuiItem(
+                new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
+                    .amount(1)
+                        .name(Component.text(ChatColor.GREEN + "Player Trails"))
+                        .enchantments(new Enchantment[]{Enchantment.DURABILITY}, new int[]{1})
+                        .hideEnchants(true)
+                        .armorColor(Color.GREEN)
+                        .build(),
+                event -> {
             //navigate to player trails
         }));
        //endregion
@@ -85,6 +74,7 @@ public class CosmeticsMenu {
         }));
         //endregion
 
+        gui.addPane(navigationPane);
         gui.update();
         gui.show(player);
     }
