@@ -104,9 +104,9 @@ public class CosmeticsMenu extends Methods {
                 ItemMeta meta = item.getItemMeta();
                 meta.addEnchant(Enchantment.DURABILITY, 1, true);
                 item.setItemMeta(meta);
-                navigationPane.addItem(new GuiItem(item, event -> enablePlayerTrail(playerTrail, player, true)));
+                navigationPane.addItem(new GuiItem(item, event -> {enablePlayerTrail(playerTrail, player, true); displayPlayerMenu(player);}));
             } else{
-                navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player, false)));
+                navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> {enablePlayerTrail(playerTrail, player, false); displayPlayerMenu(player);}));
             }
         }
 

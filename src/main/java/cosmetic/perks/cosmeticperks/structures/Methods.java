@@ -20,7 +20,7 @@ public abstract class Methods {
         return i;
     }
 
-    public void enablePlayerTrail(PlayerTrails e, Player player, Boolean selected, ChestGui gui) {
+    public void enablePlayerTrail(PlayerTrails e, Player player, Boolean selected) {
         if(selected) {
             player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
             player.sendMessage(Component.text("You disabled the " + e.getEffectName() + " player trail."));
@@ -28,7 +28,6 @@ public abstract class Methods {
             player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, e.name().toUpperCase());
             player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " player trail."));
         }
-        gui.update();
     }
 
     public void enableProjectileTrail(PlayerTrails e, Player player) {
