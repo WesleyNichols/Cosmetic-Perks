@@ -1,5 +1,6 @@
 package cosmetic.perks.cosmeticperks.structures;
 
+import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.sun.tools.javac.code.Attribute;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
@@ -19,14 +20,15 @@ public abstract class Methods {
         return i;
     }
 
-    public void enablePlayerTrail(PlayerTrails e, Player player, Boolean selected) {
+    public void enablePlayerTrail(PlayerTrails e, Player player, Boolean selected, ChestGui gui) {
         if(selected) {
             player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
             player.sendMessage(Component.text("You disabled the " + e.getEffectName() + " player trail."));
-            return;
+        } else{
+            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, e.name().toUpperCase());
+            player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " player trail."));
         }
-        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, e.name().toUpperCase());
-        player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " player trail."));
+        gui.update();
     }
 
     public void enableProjectileTrail(PlayerTrails e, Player player) {
