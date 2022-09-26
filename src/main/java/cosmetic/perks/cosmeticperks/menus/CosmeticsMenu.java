@@ -4,6 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
+import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
@@ -43,10 +44,7 @@ public class CosmeticsMenu extends Methods {
                         .hideEnchants(true)
                         .armorColor(Color.GREEN)
                         .build(),
-                event -> {
-                    //navigate to player trails
-                    displayPlayerMenu(player);
-                })
+                event -> displayPlayerMenu(player))
         );
        //endregion
 
@@ -56,10 +54,7 @@ public class CosmeticsMenu extends Methods {
                         .amount(25)
                         .name(Component.text(ChatColor.GOLD + "Projectile Trails"))
                         .build(),
-                event -> {
-                    //navigate to projectile trails
-                    displayProjectileMenu(player);
-                })
+                event -> displayProjectileMenu(player))
         );
         //endregion
 
@@ -70,10 +65,7 @@ public class CosmeticsMenu extends Methods {
                         .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1))
                         .hideEnchants(true)
                         .build(),
-                event -> {
-                    //navigate to elytra trails
-                    displayElytraMenu(player);
-                })
+                event -> displayElytraMenu(player))
         );
         //endregion
 
@@ -95,7 +87,15 @@ public class CosmeticsMenu extends Methods {
         background.addItem(new GuiItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
         background.setRepeat(true);
 
+        OutlinePane navigationPane = new OutlinePane(0, 0, PlayerTrails.values().length, Math.min(36, (int)Math.floor(PlayerTrails.values().length/9)));
+
+        for(int i=0; i==PlayerTrails.values().length; i++) {
+            PlayerTrails playerTrail = PlayerTrails.values()[i];
+            navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player)));
+        }
+
         gui.addPane(background);
+        gui.addPane(navigationPane);
         gui.update();
         gui.show(player);
     }
