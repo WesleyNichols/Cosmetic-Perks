@@ -8,6 +8,7 @@ import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -80,14 +81,16 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayPlayerMenu(Player player) {
-        ChestGui gui = new ChestGui(3, "Player Trails");
+        ChestGui gui = new ChestGui( Math.min(6, (int)Math.floor(PlayerTrails.values().length/9)), "Player Trails");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
-        OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
+        OutlinePane background = new OutlinePane(0, 0, 9, gui.getRows(), Pane.Priority.LOWEST);
         background.addItem(new GuiItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
         background.setRepeat(true);
 
-        OutlinePane navigationPane = new OutlinePane(0, 0, PlayerTrails.values().length, Math.min(36, (int)Math.floor(PlayerTrails.values().length/9)));
+        player.sendMessage(Component.text(PlayerTrails.values().length));
+        player.sendMessage(Component.text(Math.min(6, (int)Math.floor(PlayerTrails.values().length/9));
+        OutlinePane navigationPane = new OutlinePane(0, 0, PlayerTrails.values().length, gui.getRows()-1);
 
         for(int i=0; i==PlayerTrails.values().length; i++) {
             PlayerTrails playerTrail = PlayerTrails.values()[i];
