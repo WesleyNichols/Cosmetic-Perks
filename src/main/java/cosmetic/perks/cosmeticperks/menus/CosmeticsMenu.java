@@ -92,6 +92,7 @@ public class CosmeticsMenu extends Methods {
 
         for(int i=0; i==PlayerTrails.values().length; i++) {
             PlayerTrails playerTrail = PlayerTrails.values()[i];
+            player.sendMessage(playerTrail.getItem().toString());
             player.getInventory().addItem(playerTrail.getItem());
             navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> enablePlayerTrail(playerTrail, player)));
         }
