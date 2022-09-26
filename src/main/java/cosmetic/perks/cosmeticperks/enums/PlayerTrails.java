@@ -63,10 +63,10 @@ public enum PlayerTrails {
     }
 
     public ItemStack getItem() {
-        return this.Item;
+        return Item;
     }
     public int getPackageID() {
-        return this.PackageID;
+        return PackageID;
     }
 
     public String getEffectName() {
@@ -74,7 +74,7 @@ public enum PlayerTrails {
     }
 
     public Particle getTrailEffect() {
-        return this.TrailEffect;
+        return TrailEffect;
     }
 
     public double getXOffSet() {

@@ -88,7 +88,7 @@ public class CosmeticsMenu extends Methods {
         background.addItem(new GuiItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
         background.setRepeat(true);
 
-        OutlinePane navigationPane = new OutlinePane(0, 0, PlayerTrails.values().length, Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))+1);
+        OutlinePane navigationPane = new OutlinePane(0, 0, 9, Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))+1);
 
         for(int i=0; i==PlayerTrails.values().length; i++) {
             PlayerTrails playerTrail = PlayerTrails.values()[i];
