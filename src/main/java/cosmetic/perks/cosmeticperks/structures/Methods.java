@@ -1,12 +1,8 @@
 package cosmetic.perks.cosmeticperks.structures;
 
-import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import com.github.stefvanschie.inventoryframework.pane.component.Label;
-import com.sun.tools.javac.code.Attribute;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import net.kyori.adventure.text.Component;
@@ -16,7 +12,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -74,6 +69,16 @@ public abstract class Methods {
     }
 
     /**
+     * Checks if a player has a trail or not
+     *
+     * @param player The player to get the active trail for
+     * @param key The group of the trail
+     */
+    public boolean hasActiveTrail(Player player, String key) {
+        return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
+    }
+
+    /**
      * Enables an item in the GUI(enchants it)
      *
      * @param item The GuiItem to enchant
@@ -90,11 +95,10 @@ public abstract class Methods {
      *
      * @param item The GuiItem to disenchant
      */
-    public GuiItem disableItem(GuiItem item) {
+    public void disableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
         itemMeta.removeEnchant(Enchantment.DURABILITY);
         item.getItem().setItemMeta(itemMeta);
-        return item;
     }
 
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
