@@ -9,12 +9,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import java.util.List;
+
 
 public class CustomItem {
 
     private Material material;
     private int amount;
     private Component name;
+    private List<Component> lore;
     private Enchantment[] enchantments;
     private int[] levels;
     private boolean hideEnchants;
@@ -24,6 +27,7 @@ public class CustomItem {
         this.material = builder.material;
         this.amount = builder.amount;
         this.name = builder.name;
+        this.lore = builder.lore;
         this.enchantments = builder.enchantments;
         this.levels = builder.levels;
         this.hideEnchants = builder.hideEnchants;
@@ -34,6 +38,10 @@ public class CustomItem {
         ItemStack itemStack = new ItemStack(material, amount);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.displayName(name);
+
+        if (lore != null) {
+            itemMeta.lore(lore);
+        }
 
         if (enchantments != null) {
             for (int i=0; i<=enchantments.length-1; i++) {
@@ -69,6 +77,7 @@ public class CustomItem {
         private Material material;
         private int amount;
         private Component name;
+        private List<Component> lore;
         private Enchantment[] enchantments;
         private int[] levels;
         private boolean hideEnchants;
@@ -86,6 +95,11 @@ public class CustomItem {
 
         public ItemBuilder name(Component name) {
             this.name = name;
+            return this;
+        }
+
+        public ItemBuilder lore(List<Component> lore) {
+            this.lore = lore;
             return this;
         }
 
