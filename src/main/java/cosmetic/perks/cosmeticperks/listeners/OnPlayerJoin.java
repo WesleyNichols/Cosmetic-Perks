@@ -1,30 +1,22 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
-import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import org.bukkit.NamespacedKey;
+import cosmetic.perks.cosmeticperks.structures.Methods;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.persistence.PersistentDataType;
 
 
-public class OnPlayerJoin implements Listener {
+public class OnPlayerJoin extends Methods implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (!player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)) {
-            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
-        }
+        if (!hasActiveTrail(player, "player")) { removeActiveTrail(player, "player"); }
 
-        if (!player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING)) {
-            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
-        }
+        if (!hasActiveTrail(player, "projectile")) { removeActiveTrail(player, "projectile"); }
 
-        if (!player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING)) {
-            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, "NONE");
-        }
+        if (!hasActiveTrail(player, "elytra")) { removeActiveTrail(player, "elytra"); }
     }
 }
 
