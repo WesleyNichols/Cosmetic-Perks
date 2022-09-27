@@ -20,23 +20,17 @@ public abstract class Methods {
         return i;
     }
 
-    public void enablePlayerTrail(PlayerTrails e, Player player, Boolean selected) {
-        if(selected) {
-            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
-            player.sendMessage(Component.text("You disabled the " + e.getEffectName() + " player trail."));
-        } else{
-            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, e.name().toUpperCase());
-            player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " player trail."));
-        }
+    public void setActiveTrail(PlayerTrails e, Player player, String key) {
+        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, e.name().toUpperCase());
+        player.sendMessage(Component.text("Enabled the " + e.getEffectName() + " " + key + " trail!"));
     }
 
-    public void enableProjectileTrail(PlayerTrails e, Player player) {
-        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, e.name().toUpperCase());
-        player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " projectile trail."));
+    public void removeActiveTrail(Player player, String key) {
+        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, "NONE");
+        player.sendMessage(Component.text("Disabled your " + key + " trail!"));
     }
 
-    public void enableElytraTrail(PlayerTrails e, Player player) {
-        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, e.name().toUpperCase());
-        player.sendMessage(Component.text("You enabled the " + e.getEffectName() + " elytra trail."));
+    public String getActiveTrail(Player player, String key) {
+        return player.getPersistentDataContainer().get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 }
