@@ -8,25 +8,20 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
-import cosmetic.perks.cosmeticperks.CosmeticPerks;
+import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
+import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -109,7 +104,7 @@ public class CosmeticsMenu extends Methods {
         for (PlayerTrails playerTrails : PlayerTrails.values()) {
             GuiItem item = new GuiItem(playerTrails.getItem());
             item.setAction(event -> {
-                setActiveTrail(playerTrails, player, "player");
+                setActiveTrail(playerTrails.name(), player, "player");
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
                 gui.update();
@@ -122,16 +117,10 @@ public class CosmeticsMenu extends Methods {
         gui.addPane(pages);
         //  endregion
 
-        //  region Background
-        OutlinePane background = new OutlinePane(0, gui.getRows()-1, 9, 1, Pane.Priority.LOWEST);
-        background.addItem(new GuiItem(filler));
-        background.setRepeat(true);
-        gui.addPane(background);
-        //  endregion
-
         //  Add Navigation options
         gui.addPane(navigationPane(gui, pages, player));
 
+        //  Display Menu
         gui.update();
         gui.show(player);
     }
@@ -142,14 +131,36 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayProjectileMenu(Player player) {
-        ChestGui gui = new ChestGui(3, "Projectile Trails");
+        ChestGui gui = new ChestGui(6, "Projectile Trails");
+        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
+
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
-        OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
-        background.addItem(new GuiItem(filler));
-        background.setRepeat(true);
+        //  region Player Trails
+        List<GuiItem> guiItems = new ArrayList<>();
+        guiItems.add(getDefaultGuiItem(player, pages, gui, "projectile"));
 
-        gui.addPane(background);
+        String activeTrail = getActiveTrail(player, "projectile");
+        for (ProjectileTrails projectileTrails : ProjectileTrails.values()) {
+            GuiItem item = new GuiItem(projectileTrails.getItem());
+            item.setAction(event -> {
+                setActiveTrail(projectileTrails.name(), player, "projectile");
+                pages.getItems().forEach(this::disableItem);
+                enableItem(item);
+                gui.update();
+            });
+            if (projectileTrails.name().equals(activeTrail)) { enableItem(item); }
+            guiItems.add(item);
+        }
+        pages.populateWithGuiItems(guiItems);
+        gui.setRows(Math.min(6, ((guiItems.size() / 9) + ((guiItems.size() % 9) == 0 ? 0 : 1) + 1)));
+        gui.addPane(pages);
+        //  endregion
+
+        //  Add Navigation options
+        gui.addPane(navigationPane(gui, pages, player));
+
+        //  Display Menu
         gui.update();
         gui.show(player);
     }
@@ -160,14 +171,36 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayElytraMenu(Player player) {
-        ChestGui gui = new ChestGui(3, "Elytra Trails");
+        ChestGui gui = new ChestGui(6, "Elytra Trails");
+        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
+
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
-        OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
-        background.addItem(new GuiItem(filler));
-        background.setRepeat(true);
+        //  region Player Trails
+        List<GuiItem> guiItems = new ArrayList<>();
+        guiItems.add(getDefaultGuiItem(player, pages, gui, "elytra"));
 
-        gui.addPane(background);
+        String activeTrail = getActiveTrail(player, "elytra");
+        for (ElytraTrails elytraTrails : ElytraTrails.values()) {
+            GuiItem item = new GuiItem(elytraTrails.getItem());
+            item.setAction(event -> {
+                setActiveTrail(elytraTrails.name(), player, "elytra");
+                pages.getItems().forEach(this::disableItem);
+                enableItem(item);
+                gui.update();
+            });
+            if (elytraTrails.name().equals(activeTrail)) { enableItem(item); }
+            guiItems.add(item);
+        }
+        pages.populateWithGuiItems(guiItems);
+        gui.setRows(Math.min(6, ((guiItems.size() / 9) + ((guiItems.size() % 9) == 0 ? 0 : 1) + 1)));
+        gui.addPane(pages);
+        //  endregion
+
+        //  Add Navigation options
+        gui.addPane(navigationPane(gui, pages, player));
+
+        //  Display Menu
         gui.update();
         gui.show(player);
     }
@@ -177,6 +210,13 @@ public class CosmeticsMenu extends Methods {
 
         Label prevPage = new Label(3, gui.getRows()-1, 1, 1, Font.OAK_PLANKS);
         Label nextPage = new Label(5, gui.getRows()-1, 1, 1, Font.OAK_PLANKS);
+
+        //  region Background
+        OutlinePane background = new OutlinePane(0, gui.getRows()-1, 9, 1, Pane.Priority.LOWEST);
+        background.addItem(new GuiItem(filler));
+        background.setRepeat(true);
+        gui.addPane(background);
+        //  endregion
 
         //  region Main Menu
         navigation.addItem(new GuiItem(

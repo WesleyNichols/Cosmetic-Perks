@@ -67,6 +67,7 @@ public enum PlayerTrails {
     public ItemStack getItem() {
         return new CustomItem.ItemBuilder(DisplayMaterial).name(Component.text(ChatColor.WHITE + EffectName)).build();
     }
+
     public int getPackageID() {
         return PackageID;
     }
