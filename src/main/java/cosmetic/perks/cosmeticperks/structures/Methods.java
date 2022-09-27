@@ -43,12 +43,11 @@ public abstract class Methods {
         return player.getPersistentDataContainer().get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 
-    public GuiItem enableItem(GuiItem item) {
+    public void enableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
         itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.getItem().setItemMeta(itemMeta);
-        return item;
     }
 
     public GuiItem disableItem(GuiItem item) {
