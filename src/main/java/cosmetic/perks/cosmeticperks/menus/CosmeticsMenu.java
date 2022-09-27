@@ -172,37 +172,6 @@ public class CosmeticsMenu extends Methods {
         gui.show(player);
     }
 
-    public GuiItem enableItem(GuiItem item) {
-        ItemMeta itemMeta = item.getItem().getItemMeta();
-        itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.getItem().setItemMeta(itemMeta);
-        return item;
-    }
-
-    public GuiItem disableItem(GuiItem item) {
-        ItemMeta itemMeta = item.getItem().getItemMeta();
-        itemMeta.removeEnchant(Enchantment.DURABILITY);
-        item.getItem().setItemMeta(itemMeta);
-        return item;
-    }
-
-
-    public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
-        GuiItem item = new GuiItem(
-                new CustomItem.ItemBuilder(Material.BARRIER)
-                        .name(Component.text(ChatColor.WHITE + "None"))
-                        .build()
-        );
-        item.setAction(event -> {
-            removeActiveTrail(player, key);
-            enableItem(item);
-            pages.getItems().forEach(this::disableItem);
-            gui.update();
-        });
-        return item;
-    }
-
     public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
         StaticPane navigation = new StaticPane(0, gui.getRows()-1, 9, 1);
 
