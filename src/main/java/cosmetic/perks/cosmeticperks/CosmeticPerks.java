@@ -4,6 +4,7 @@ import cosmetic.perks.cosmeticperks.commands.CosmeticsCommand;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerJoin;
 import cosmetic.perks.cosmeticperks.listeners.OnProjectileShot;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerMove;
+import cosmetic.perks.cosmeticperks.tasks.ParticleAnimationTask;
 import cosmetic.perks.cosmeticperks.tasks.ProjectileTrailTask;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
@@ -24,6 +25,7 @@ public final class CosmeticPerks extends JavaPlugin {
         this.registerCommand(CosmeticsCommand.getMainCommand, new CosmeticsCommand());
 
         new ProjectileTrailTask().runTaskTimer(this, 1L, 1L);
+        new ParticleAnimationTask().runTaskTimer(this, 1L, 1L);
     }
 
     @Override

@@ -2,6 +2,7 @@ package cosmetic.perks.cosmeticperks.structures;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import net.kyori.adventure.text.Component;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -68,5 +69,9 @@ public abstract class Methods {
      */
     public boolean hasActiveTrail(Player player, String key) {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
+    }
+
+    public double evaluateExpression(String expr, double x) {
+        return new ExpressionBuilder(expr).variable("x").build().setVariable("x", x).evaluate();
     }
 }

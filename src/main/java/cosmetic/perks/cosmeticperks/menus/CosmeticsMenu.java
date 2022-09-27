@@ -9,6 +9,7 @@ import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
+import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
@@ -106,6 +107,18 @@ public class CosmeticsMenu extends Methods {
                 gui.update();
             });
             if (playerTrails.name().equals(activeTrail)) { enableItem(item); }
+            guiItems.add(item);
+        }
+        String activeAnimation = getActiveTrail(player, "player-animation");
+        for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
+            GuiItem item = new GuiItem(playerAnimations.getItem());
+            item.setAction(event -> {
+                setActiveTrail(playerAnimations.name(), player, "player-animation");
+                pages.getItems().forEach(this::disableItem);
+                enableItem(item);
+                gui.update();
+            });
+            if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
             guiItems.add(item);
         }
         pages.populateWithGuiItems(guiItems);
