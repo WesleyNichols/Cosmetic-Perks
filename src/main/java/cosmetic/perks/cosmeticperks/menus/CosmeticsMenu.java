@@ -3,6 +3,7 @@ package cosmetic.perks.cosmeticperks.menus;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
@@ -20,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -89,29 +89,31 @@ public class CosmeticsMenu extends Methods {
      */
     public void displayPlayerMenu(Player player) {
         ChestGui gui = new ChestGui( 6, "Player Trails");
+        PaginatedPane pages = new PaginatedPane(0, 0, 9, Math.min(5, (int)Math.floor(PlayerTrails.values().length/9))+1);
+
+        List<GuiItem> guiItems = new ArrayList<>();
+        guiItems.add(getDefaultGuiItem(player, pages, gui, "player-trail"));
+
+        for (PlayerTrails playerTrails : PlayerTrails.values()) {
+            GuiItem item = new GuiItem(playerTrails.getItem());
+            item.setAction(event -> {
+                pages.getItems().forEach(this::disableItem);
+                enableItem(item);
+                gui.update();
+            });
+            guiItems.add(item);
+        }
+
+        pages.populateWithGuiItems(guiItems);
+
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         OutlinePane background = new OutlinePane(0, 0, 9, gui.getRows(), Pane.Priority.LOWEST);
         background.addItem(new GuiItem(new ItemStack(Material.BLACK_STAINED_GLASS_PANE)));
         background.setRepeat(true);
 
-        OutlinePane navigationPane = new OutlinePane(0, 0, 9, Math.min(6, (int)Math.floor(PlayerTrails.values().length/9))+1);
-
-        for(int i=0; i<PlayerTrails.values().length; i++) {
-            PlayerTrails playerTrail = PlayerTrails.values()[i];
-            if(playerTrail.name().equals(player.getPersistentDataContainer().get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING))){
-                ItemStack item = playerTrail.getItem();
-                ItemMeta meta = item.getItemMeta();
-                meta.addEnchant(Enchantment.DURABILITY, 1, true);
-                item.setItemMeta(meta);
-                navigationPane.addItem(new GuiItem(item, event -> {enablePlayerTrail(playerTrail, player, true); displayPlayerMenu(player);}));
-            } else{
-                navigationPane.addItem(new GuiItem(playerTrail.getItem(), event -> {enablePlayerTrail(playerTrail, player, false); displayPlayerMenu(player);}));
-            }
-        }
-
         gui.addPane(background);
-        gui.addPane(navigationPane);
+        gui.addPane(pages);
         gui.update();
         gui.show(player);
     }
@@ -150,5 +152,45 @@ public class CosmeticsMenu extends Methods {
         gui.addPane(background);
         gui.update();
         gui.show(player);
+    }
+
+    //  Unused Toggle function, decided against it but wanted to retain the semi-functional method (doesn't actually ever toggle off enchantment)
+//    public GuiItem toggleSelected(GuiItem guiItem, Player player, PlayerTrails playerTrails, String key) {
+//        ItemMeta itemMeta = guiItem.getItem().getItemMeta();
+//
+//        if (itemMeta.hasEnchants()) {
+//            disableItem(guiItem);
+//            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key), PersistentDataType.STRING, "NONE" );
+//        } else {
+//            enableItem(guiItem);
+//            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key), PersistentDataType.STRING, playerTrails.name());
+//        }
+//        return guiItem;
+//    }
+
+    public GuiItem enableItem(GuiItem item) {
+        ItemMeta itemMeta = item.getItem().getItemMeta();
+        itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        item.getItem().setItemMeta(itemMeta);
+        return item;
+    }
+
+    public GuiItem disableItem(GuiItem item) {
+        ItemMeta itemMeta = item.getItem().getItemMeta();
+        itemMeta.removeEnchant(Enchantment.DURABILITY);
+        item.getItem().setItemMeta(itemMeta);
+        return item;
+    }
+
+
+    public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
+        GuiItem item = new GuiItem(new ItemStack(Material.BARRIER));
+        item.setAction(event -> {
+            player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key), PersistentDataType.STRING, "NONE");
+            pages.getItems().forEach(this::disableItem);
+            enableItem(item);
+            gui.update();
+        });
+        return item;
     }
 }
