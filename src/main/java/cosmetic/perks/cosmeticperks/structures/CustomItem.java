@@ -14,14 +14,14 @@ import java.util.List;
 
 public class CustomItem {
 
-    private Material material;
-    private int amount;
-    private Component name;
-    private List<Component> lore;
-    private Enchantment[] enchantments;
-    private int[] levels;
-    private boolean hideEnchants;
-    private org.bukkit.Color armorColor;
+    private final Material material;
+    private final int amount;
+    private final Component name;
+    private final List<Component> lore;
+    private final Enchantment[] enchantments;
+    private final int[] levels;
+    private final boolean hideEnchants;
+    private final org.bukkit.Color armorColor;
 
     private CustomItem(ItemBuilder builder) {
         this.material = builder.material;
@@ -74,7 +74,7 @@ public class CustomItem {
     }
 
     public static class ItemBuilder {
-        private Material material;
+        private final Material material;
         private int amount;
         private Component name;
         private List<Component> lore;

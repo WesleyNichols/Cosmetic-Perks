@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class ProjectileTrailManager {
 
-    private static HashMap<UUID, ProjectileTrails> projTrailList = new HashMap<>();
+    private static final HashMap<UUID, ProjectileTrails> projTrailList = new HashMap<>();
 
     public static HashMap<UUID, ProjectileTrails> getProjTrailList() {
         return new HashMap<>(projTrailList);

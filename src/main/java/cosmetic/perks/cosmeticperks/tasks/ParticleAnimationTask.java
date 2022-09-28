@@ -5,17 +5,14 @@ import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
-import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class ParticleAnimationTask extends BukkitRunnable {
 

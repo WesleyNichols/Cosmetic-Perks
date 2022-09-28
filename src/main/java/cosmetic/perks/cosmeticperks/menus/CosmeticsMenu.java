@@ -8,30 +8,27 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
-import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
-import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
-import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
+import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 public class CosmeticsMenu extends Methods {
@@ -54,7 +51,7 @@ public class CosmeticsMenu extends Methods {
 
         OutlinePane navigationPane = new OutlinePane(3, 1, 3, 1);
 
-        //region Player Trails
+        //  region Player Trails
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
                         .name(Component.text(ChatColor.GREEN + "Player Trails"))
@@ -62,18 +59,21 @@ public class CosmeticsMenu extends Methods {
                         .build(),
                 event -> displayPlayerMenu(player))
         );
-       //endregion
+       //   endregion
 
-       //region Projectile Trails
+       //   region Projectile Trails
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
                         .name(Component.text(ChatColor.GOLD + "Projectile Trails"))
+                        .lore(Arrays.asList(
+                                Component.text("test"),
+                                Component.text("also test")))
                         .build(),
                 event -> displayProjectileMenu(player))
         );
-        //endregion
+        //  endregion
 
-        //region Elytra Trails
+        //  region Elytra Trails
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ELYTRA)
                         .name(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"))
@@ -82,7 +82,7 @@ public class CosmeticsMenu extends Methods {
                         .build(),
                 event -> displayElytraMenu(player))
         );
-        //endregion
+        //  endregion
 
         gui.addPane(navigationPane);
         gui.update();
@@ -95,45 +95,7 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayPlayerMenu(Player player) {
-        ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Player Trails");
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
-
-        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
-
-        //  region Player Trails
-        List<GuiItem> guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "player")));
-        String activeTrail = getActiveTrail(player, "player");
-        for (PlayerTrails playerTrails : PlayerTrails.values()) {
-            GuiItem item = new GuiItem(playerTrails.getItem());
-            item.setAction(event -> {
-                setActiveTrail(playerTrails.name(), player, "player");
-                pages.getItems().forEach(this::disableItem);
-                enableItem(item);
-                gui.update();
-            });
-            if (playerTrails.name().equals(activeTrail)) { enableItem(item); }
-            guiItems.add(item);
-        }
-        guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "player-animation")));
-        String activeAnimation = getActiveTrail(player, "player-animation");
-        for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
-            GuiItem item = new GuiItem(playerAnimations.getItem());
-            item.setAction(event -> {
-                setActiveTrail(playerAnimations.name(), player, "player-animation");
-                attachParticleAnimation(player, player.getUniqueId(), "player-animation");
-                pages.getItems().forEach(this::disableItem);
-                enableItem(item);
-                gui.update();
-            });
-            if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
-            guiItems.add(item);
-        }
-        pages.populateWithGuiItems(guiItems);
-        gui.setRows(Math.min(6, ((guiItems.size() / 9) + ((guiItems.size() % 9) == 0 ? 0 : 1) + 1)));
-        gui.addPane(pages);
-        //  endregion
-
-        gui.addPane(navigationPane(gui, pages, player));
+        ChestGui gui = getSelectionMenu(player, PlayerTrails.class);
         gui.update();
         gui.show(player);
     }
@@ -144,44 +106,7 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayProjectileMenu(Player player) {
-        ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Projectile Trails");
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
-
-        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
-
-        //  region Player Trails
-        List<GuiItem> guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "projectile")));
-        String activeTrail = getActiveTrail(player, "projectile");
-        for (ProjectileTrails projectileTrails : ProjectileTrails.values()) {
-            GuiItem item = new GuiItem(projectileTrails.getItem());
-            item.setAction(event -> {
-                setActiveTrail(projectileTrails.name(), player, "projectile");
-                pages.getItems().forEach(this::disableItem);
-                enableItem(item);
-                gui.update();
-            });
-            if (projectileTrails.name().equals(activeTrail)) { enableItem(item); }
-            guiItems.add(item);
-        }
-        guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "projectile-animation")));
-        String activeAnimation = getActiveTrail(player, "projectile-animation");
-        for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
-            GuiItem item = new GuiItem(playerAnimations.getItem());
-            item.setAction(event -> {
-                setActiveTrail(playerAnimations.name(), player, "projectile-animation");
-                pages.getItems().forEach(this::disableItem);
-                enableItem(item);
-                gui.update();
-            });
-            if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
-            guiItems.add(item);
-        }
-        pages.populateWithGuiItems(guiItems);
-        gui.setRows(Math.min(6, ((guiItems.size() / 9) + ((guiItems.size() % 9) == 0 ? 0 : 1) + 1)));
-        gui.addPane(pages);
-        //  endregion
-
-        gui.addPane(navigationPane(gui, pages, player));
+        ChestGui gui = getSelectionMenu(player, ProjectileTrails.class);
         gui.update();
         gui.show(player);
     }
@@ -192,44 +117,16 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayElytraMenu(Player player) {
-        ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Elytra Trails");
-        gui.setOnGlobalClick(event -> event.setCancelled(true));
-
-        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
-
-        //  region Player Trails
-        List<GuiItem> guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "elytra")));
-        String activeTrail = getActiveTrail(player, "elytra");
-        for (ElytraTrails elytraTrails : ElytraTrails.values()) {
-            GuiItem item = new GuiItem(
-                    new CustomItem.ItemBuilder(
-                            elytraTrails.getItem().getType())
-                            .name(Component.text(elytraTrails.getEffectName()))
-                            .build()
-            );
-
-            item.setAction(event -> {
-                setActiveTrail(elytraTrails.name(), player, "elytra");
-                pages.getItems().forEach(this::disableItem);
-                enableItem(item);
-                gui.update();
-            });
-            if (elytraTrails.name().equals(activeTrail)) { enableItem(item); }
-            guiItems.add(item);
-        }
-        pages.populateWithGuiItems(guiItems);
-        gui.setRows(Math.min(6, ((guiItems.size() / 9) + ((guiItems.size() % 9) == 0 ? 0 : 1) + 1)));
-        gui.addPane(pages);
-        //  endregion
-
-        gui.addPane(navigationPane(gui, pages, player));
+        ChestGui gui = getSelectionMenu(player, ElytraTrails.class);
         gui.update();
         gui.show(player);
     }
 
+    /**
+     * The StaticPane to navigate in a menu
+     */
     public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
         StaticPane navigation = new StaticPane(0, gui.getRows()-1, 9, 1);
-
         Label prevPage = new Label(3, gui.getRows()-1, 1, 1, Font.OAK_PLANKS);
         Label nextPage = new Label(5, gui.getRows()-1, 1, 1, Font.OAK_PLANKS);
 
@@ -280,6 +177,9 @@ public class CosmeticsMenu extends Methods {
         return navigation;
     }
 
+    /**
+     * The GuiItem to disable your selection in a menu
+     */
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
         GuiItem item = new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
@@ -293,6 +193,40 @@ public class CosmeticsMenu extends Methods {
             gui.update();
         });
         return item;
+    }
+
+    /**
+     * The ChestGui to offer selections in a menu
+     */
+    public <T extends CustomTrail> ChestGui getSelectionMenu(Player player, Class<T> enumClass) {
+        ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Player Trails");
+        gui.setOnGlobalClick(event -> event.setCancelled(true));
+        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
+
+        String type = enumClass.getEnumConstants()[0].getProperties().getTrailType();
+        Bukkit.broadcast(Component.text(type));
+        List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
+
+        for (T trailType : enumClass.getEnumConstants()) {
+            CustomTrail.TrailProperties trailProperties = trailType.getProperties();
+            GuiItem item = new GuiItem(trailProperties.getItem());
+            item.setAction(event -> {
+                setActiveTrail(trailType.toString(), player, type);
+                pages.getItems().forEach(this::disableItem);
+                enableItem(item);
+                gui.update();
+            });
+            if (trailType.toString().equals(getActiveTrail(player, type))) { enableItem(item); }
+            items.add(item);
+        }
+
+        pages.populateWithGuiItems(items);
+        gui.setRows(Math.min(6, ((items.size() / 9) + ((items.size() % 9) == 0 ? 0 : 1) + 1)));
+        gui.addPane(pages);
+
+        gui.addPane(navigationPane(gui, pages, player));
+        gui.update();
+        return gui;
     }
 
     /**
@@ -317,4 +251,25 @@ public class CosmeticsMenu extends Methods {
         itemMeta.removeEnchant(Enchantment.DURABILITY);
         item.getItem().setItemMeta(itemMeta);
     }
+
+
+    /*
+    Leaving this for Sheep, delete later
+
+    guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "player-animation")));
+    String activeAnimation = getActiveTrail(player, "player-animation");
+    for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
+        GuiItem item = new GuiItem(playerAnimations.getItem());
+        item.setAction(event -> {
+            setActiveTrail(playerAnimations.name(), player, "player-animation");
+            attachParticleAnimation(player, player.getUniqueId(), "player-animation");
+            pages.getItems().forEach(this::disableItem);
+            enableItem(item);
+            gui.update();
+        });
+        if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
+        guiItems.add(item);
+    }
+
+     */
 }
