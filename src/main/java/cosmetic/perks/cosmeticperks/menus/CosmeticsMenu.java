@@ -8,25 +8,30 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
+import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
+import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CosmeticsMenu extends Methods {
@@ -109,11 +114,13 @@ public class CosmeticsMenu extends Methods {
             if (playerTrails.name().equals(activeTrail)) { enableItem(item); }
             guiItems.add(item);
         }
+        guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "player-animation")));
         String activeAnimation = getActiveTrail(player, "player-animation");
         for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
             GuiItem item = new GuiItem(playerAnimations.getItem());
             item.setAction(event -> {
                 setActiveTrail(playerAnimations.name(), player, "player-animation");
+                attachParticleAnimation(player, player.getUniqueId(), "player-animation");
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
                 gui.update();
@@ -154,6 +161,19 @@ public class CosmeticsMenu extends Methods {
                 gui.update();
             });
             if (projectileTrails.name().equals(activeTrail)) { enableItem(item); }
+            guiItems.add(item);
+        }
+        guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "projectile-animation")));
+        String activeAnimation = getActiveTrail(player, "projectile-animation");
+        for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
+            GuiItem item = new GuiItem(playerAnimations.getItem());
+            item.setAction(event -> {
+                setActiveTrail(playerAnimations.name(), player, "projectile-animation");
+                pages.getItems().forEach(this::disableItem);
+                enableItem(item);
+                gui.update();
+            });
+            if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
             guiItems.add(item);
         }
         pages.populateWithGuiItems(guiItems);

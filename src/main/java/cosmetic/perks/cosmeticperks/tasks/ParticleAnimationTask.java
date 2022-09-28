@@ -15,16 +15,21 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class ParticleAnimationTask extends BukkitRunnable {
 
-    public double[] evaluateExpressions(String[] expr, double x) {
-        return new double[]{new ExpressionBuilder(expr[0]).variable("x").build().setVariable("x", x).evaluate(),
-                new ExpressionBuilder(expr[1]).variable("x").build().setVariable("x", x).evaluate(),
-                new ExpressionBuilder(expr[2]).variable("x").build().setVariable("x", x).evaluate()
-        };
+    public double[][] evaluateExpressions(String[] expr, double x) {
+        double[][] finalList = new double[expr.length/3][3];
+        int exprNumber = 0;
+        for (int i=1;i<=expr.length/3;i++) {
+            for(int j=0; j<3; j++) {
+                finalList[i-1][j] = new ExpressionBuilder(expr[exprNumber]).variable("x").build().setVariable("x", x).evaluate();
+                exprNumber++;
+            }
+        }
+        return finalList;
     }
-    double x;
 
     public void run() {
         if (!CosmeticPerks.getInstance().isEnabled()) { this.cancel(); }
@@ -44,10 +49,13 @@ public class ParticleAnimationTask extends BukkitRunnable {
             }
 
             ParticleAnimations particleAnimations = particleAnimationList.get(entityId);
+            if(particleAnimations.getCurrentDistance() >= particleAnimations.getMaxDistance()) {
+                particleAnimations.resetCurrentDistance();
+            } else {
+                particleAnimations.addToCurrentDistance();
+            }
 
-            x += particleAnimations.getDistanceBetweenParticles();
-            Bukkit.broadcast(Component.text(x));
-            double[] values = this.evaluateExpressions(particleAnimations.getEquationList(), x);
+            double[][] values = this.evaluateExpressions(particleAnimations.getEquationList(), particleAnimations.getCurrentDistance());
 
             World world = entity.getWorld();
             world.getPlayers().stream()
@@ -55,7 +63,9 @@ public class ParticleAnimationTask extends BukkitRunnable {
                     .filter(player -> player.getLocation().distance(entity.getLocation()) <= 40)
                     .forEach(player -> {
                                 if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
-                                player.spawnParticle(particleAnimations.getTrailEffect(), entity.getLocation().add(values[0], values[1], values[2]), 0);
+                                for(double[] loc: values) {
+                                    player.spawnParticle(particleAnimations.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), 0);
+                                }
                             }
                     );
         }

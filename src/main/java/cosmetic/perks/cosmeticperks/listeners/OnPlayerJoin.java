@@ -34,13 +34,10 @@ public class OnPlayerJoin extends Methods implements Listener {
 
         if (!hasActiveTrail(player, "player-animation")) { removeActiveTrail(player, "player-animation"); }
 
+        if (!hasActiveTrail(player, "projectile-animation")) { removeActiveTrail(player, "projectile-animation"); }
+
         //Attach animation trail to player
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-animation-trail"), PersistentDataType.STRING), "NONE")) {
-            ParticleAnimations particleAnimations = ParticleAnimations.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-animation-trail"), PersistentDataType.STRING));
-            ParticleAnimationManager.addParticleAnimation(event.getPlayer().getUniqueId(), particleAnimations);
-            player.sendMessage(Component.text("Animation trail attached to " + player.getName()));
-        }
+        attachParticleAnimation(player, player.getUniqueId(), "player-animation");
     }
 }
 
