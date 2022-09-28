@@ -95,7 +95,7 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayPlayerMenu(Player player) {
-        ChestGui gui = getSelectionMenu(player, PlayerTrails.class);
+        ChestGui gui = getTrailSelectionMenu(player, PlayerTrails.class);
         gui.update();
         gui.show(player);
     }
@@ -106,7 +106,7 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayProjectileMenu(Player player) {
-        ChestGui gui = getSelectionMenu(player, ProjectileTrails.class);
+        ChestGui gui = getTrailSelectionMenu(player, ProjectileTrails.class);
         gui.update();
         gui.show(player);
     }
@@ -117,7 +117,7 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayElytraMenu(Player player) {
-        ChestGui gui = getSelectionMenu(player, ElytraTrails.class);
+        ChestGui gui = getTrailSelectionMenu(player, ElytraTrails.class);
         gui.update();
         gui.show(player);
     }
@@ -198,7 +198,7 @@ public class CosmeticsMenu extends Methods {
     /**
      * The ChestGui to offer selections in a menu
      */
-    public <T extends CustomTrail> ChestGui getSelectionMenu(Player player, Class<T> enumClass) {
+    public <T extends CustomTrail> ChestGui getTrailSelectionMenu(Player player, Class<T> enumClass) {
         ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Player Trails");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
