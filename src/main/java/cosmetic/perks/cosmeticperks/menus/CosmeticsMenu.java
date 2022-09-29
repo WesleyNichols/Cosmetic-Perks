@@ -204,7 +204,6 @@ public class CosmeticsMenu extends Methods {
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
         String type = enumClass.getEnumConstants()[0].getProperties().getTrailType();
-        Bukkit.broadcast(Component.text(type));
         List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
 
         for (T trailType : enumClass.getEnumConstants()) {
