@@ -204,14 +204,19 @@ public class CosmeticsMenu extends Methods {
     }
 
     /**
-     * The ChestGui to offer selections in a menu
+     * Creates a ChestGui to offer selections in a given menu type
+     *
+     * @param player The player to read from
+     * @param enumClass The class name to read from
+     * @param <T> The class type (which extends CustomTrail)
+     * @return The ChestGui with collection of GuiItems from a CustomTrail type
      */
     public <T extends CustomTrail> ChestGui getTrailSelectionMenu(Player player, Class<T> enumClass) {
         ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Player Trails");   //  TODO Replace "Player Trails" with "[type] Trails"
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
-        String type = enumClass.getEnumConstants()[0].getProperties().getTrailType();   //  TODO this is cringe, find an alternative
+//        String type;   //  TODO this is cringe, find an alternative
         List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
 
         //  It may be better if we iterate over enum's properties rather than the class' stuff

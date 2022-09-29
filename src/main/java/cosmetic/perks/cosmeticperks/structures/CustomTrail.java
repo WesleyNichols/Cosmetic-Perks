@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 public interface CustomTrail {
 
     TrailProperties getProperties();
+    String getTrailType();
 
     interface TrailProperties {
-        String getTrailType();
         ItemStack getItem();
         String getEffectName();
         Particle getTrailEffect();
@@ -25,7 +25,6 @@ public interface CustomTrail {
 
     final class ImmutableProperties implements TrailProperties {
 
-        private final String TrailType;
         private final Material DisplayMaterial;
         private final String EffectName;
         private final Particle TrailEffect;
@@ -36,8 +35,7 @@ public interface CustomTrail {
         private final int ParticleAmount;
         private final boolean LimitedItem;
 
-        public ImmutableProperties(String type, Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, boolean limitedItem) {
-            this.TrailType = type;
+        public ImmutableProperties(Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, boolean limitedItem) {
             this.DisplayMaterial = material;
             this.EffectName = effectName;
             this.TrailEffect = trailEffect;
@@ -47,11 +45,6 @@ public interface CustomTrail {
             this.ParticleSpeed = ParticleSpeed;
             this.ParticleAmount = ParticleAmount;
             this.LimitedItem = limitedItem;
-        }
-
-        @Override
-        public String getTrailType() {
-            return TrailType;
         }
 
         @Override

@@ -40,7 +40,12 @@ public enum ProjectileTrails implements CustomTrail {
     private final TrailProperties properties;
 
     ProjectileTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, boolean limitedItem) {
-        this.properties = new ImmutableProperties("projectile", material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, limitedItem);
+        this.properties = new ImmutableProperties(material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, limitedItem);
+    }
+
+    @Override
+    public String getTrailType() {
+        return "projectile";
     }
 
     public TrailProperties getProperties() {

@@ -40,7 +40,12 @@ public enum PlayerTrails implements CustomTrail{
     private final CustomTrail.TrailProperties properties;
 
     PlayerTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, boolean limitedItem) {
-        this.properties = new CustomTrail.ImmutableProperties("player", material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, limitedItem);
+        this.properties = new CustomTrail.ImmutableProperties(material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, limitedItem);
+    }
+
+    @Override
+    public String getTrailType() {
+        return "player";
     }
 
     public CustomTrail.TrailProperties getProperties() {
