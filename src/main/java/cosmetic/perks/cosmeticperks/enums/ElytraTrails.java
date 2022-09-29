@@ -43,7 +43,6 @@ public enum ElytraTrails implements CustomTrail {
         this.properties = new ImmutableProperties(material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, limitedItem);
     }
 
-    @Override
     public String getTrailType() {
         return "elytra";
     }

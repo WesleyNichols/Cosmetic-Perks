@@ -43,7 +43,6 @@ public enum PlayerTrails implements CustomTrail{
         this.properties = new CustomTrail.ImmutableProperties(material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, limitedItem);
     }
 
-    @Override
     public String getTrailType() {
         return "player";
     }
