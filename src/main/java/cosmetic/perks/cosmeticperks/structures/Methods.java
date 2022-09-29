@@ -4,7 +4,6 @@ import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import net.kyori.adventure.text.Component;
-import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;

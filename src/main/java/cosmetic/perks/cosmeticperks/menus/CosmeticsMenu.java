@@ -58,7 +58,8 @@ public class CosmeticsMenu extends Methods {
                         .name(Component.text(ChatColor.GREEN + "Player Trails"))
                         .armorColor(Color.GREEN)
                         .lore(Arrays.asList(
-                                Component.text("\n" + ChatColor.YELLOW + "Current:"),
+                                Component.text(""),
+                                Component.text(ChatColor.YELLOW + "Current:"),
                                 Component.text(getActiveTrail(player, "player"))))
                         .build(),
                 event -> displayPlayerMenu(player))
@@ -70,7 +71,8 @@ public class CosmeticsMenu extends Methods {
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
                         .name(Component.text(ChatColor.GOLD + "Projectile Trails"))
                         .lore(Arrays.asList(
-                                Component.text("\n" + ChatColor.YELLOW + "Current:"),
+                                Component.text(""),
+                                Component.text(ChatColor.YELLOW + "Current:"),
                                 Component.text(getActiveTrail(player, "projectile"))))
                         .build(),
                 event -> displayProjectileMenu(player))
@@ -84,7 +86,8 @@ public class CosmeticsMenu extends Methods {
                         .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1))
                         .hideEnchants(true)
                         .lore(Arrays.asList(
-                                Component.text("\n" + ChatColor.YELLOW + "Current:"),
+                                Component.text(""),
+                                Component.text(ChatColor.YELLOW + "Current:"),
                                 Component.text(getActiveTrail(player, "elytra"))))
                         .build(),
                 event -> displayElytraMenu(player))
