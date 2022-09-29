@@ -11,7 +11,9 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.List;
 
-
+/**
+ * Create items with various inputs in a clean and formal way
+ */
 public class CustomItem {
 
     private final Material material;
@@ -71,6 +73,24 @@ public class CustomItem {
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         itemStack.setItemMeta(itemMeta);
         return itemStack;
+    }
+
+    /**
+     * Returns an array of enchantments
+     *
+     * @param enchants Enchants
+     */
+    public static Enchantment[] enchantArray(Enchantment... enchants) {
+        return enchants;
+    }
+
+    /**
+     * Returns an array of integers for the enchant levels
+     *
+     * @param i Integers
+     */
+    public static int[] levelArray(int... i) {
+        return i;
     }
 
     public static class ItemBuilder {

@@ -16,24 +16,6 @@ import java.util.UUID;
 public abstract class Methods {
 
     /**
-     * Returns an array of enchantments
-     *
-     * @param enchants Enchants
-     */
-    public Enchantment[] enchantArray(Enchantment... enchants) {
-        return enchants;
-    }
-
-    /**
-     * Returns an array of integers for the enchant levels
-     *
-     * @param i Integers
-     */
-    public int[] levelArray(int... i) {
-        return i;
-    }
-
-    /**
      * Sets and stores the player's active trail
      *
      * @param e      Enum for the trail

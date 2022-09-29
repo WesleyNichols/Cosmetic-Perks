@@ -81,7 +81,7 @@ public class CosmeticsMenu extends Methods {
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ELYTRA)
                         .name(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"))
-                        .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1))
+                        .enchantments(CustomItem.enchantArray(Enchantment.DURABILITY), CustomItem.levelArray(1))
                         .hideEnchants(true)
                         .lore(Arrays.asList(
                                 Component.text(""),
@@ -223,18 +223,16 @@ public class CosmeticsMenu extends Methods {
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
         List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
-
-        //  It may be better if we iterate over enum's properties rather than the class' stuff
-        for (T trailType : enumClass.getEnumConstants()) {
-            CustomTrail.TrailProperties trailProperties = trailType.getProperties();    //  TODO Not sure if this is smart to call for every item
+        for (T trailEnum : enumClass.getEnumConstants()) {
+            CustomTrail.TrailProperties trailProperties = trailEnum.getProperties();
             GuiItem item = new GuiItem(trailProperties.getItem());
             item.setAction(event -> {
-                setActiveTrail(trailType.toString(), player, type);     //  TODO this toString is weird
+                setActiveTrail(trailEnum.toString(), player, type);
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
                 gui.update();
             });
-            if (trailType.toString().equals(getActiveTrail(player, type))) { enableItem(item); }    //  TODO more weird toString
+            if (trailEnum.toString().equals(getActiveTrail(player, type))) { enableItem(item); }
             items.add(item);
         }
 
