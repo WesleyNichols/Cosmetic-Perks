@@ -8,7 +8,6 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
-import com.sun.tools.javac.util.StringUtils;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
@@ -16,7 +15,6 @@ import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -209,23 +207,24 @@ public class CosmeticsMenu extends Methods {
      * The ChestGui to offer selections in a menu
      */
     public <T extends CustomTrail> ChestGui getTrailSelectionMenu(Player player, Class<T> enumClass) {
-        ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Player Trails");
+        ChestGui gui = new ChestGui(6, ChatColor.GOLD + "Player Trails");   //  TODO Replace "Player Trails" with "[type] Trails"
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
-        String type = enumClass.getEnumConstants()[0].getProperties().getTrailType();
+        String type = enumClass.getEnumConstants()[0].getProperties().getTrailType();   //  TODO this is cringe, find an alternative
         List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
 
+        //  It may be better if we iterate over enum's properties rather than the class' stuff
         for (T trailType : enumClass.getEnumConstants()) {
-            CustomTrail.TrailProperties trailProperties = trailType.getProperties();
+            CustomTrail.TrailProperties trailProperties = trailType.getProperties();    //  TODO Not sure if this is smart to call for every item
             GuiItem item = new GuiItem(trailProperties.getItem());
             item.setAction(event -> {
-                setActiveTrail(trailType.toString(), player, type);
+                setActiveTrail(trailType.toString(), player, type);     //  TODO this toString is weird
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
                 gui.update();
             });
-            if (trailType.toString().equals(getActiveTrail(player, type))) { enableItem(item); }
+            if (trailType.toString().equals(getActiveTrail(player, type))) { enableItem(item); }    //  TODO more weird toString
             items.add(item);
         }
 
@@ -261,9 +260,7 @@ public class CosmeticsMenu extends Methods {
         item.getItem().setItemMeta(itemMeta);
     }
 
-
-    /*
-    Leaving this for Sheep, delete later
+    /* Leaving this for Sheep, delete later
 
     guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "player-animation")));
     String activeAnimation = getActiveTrail(player, "player-animation");
@@ -279,6 +276,5 @@ public class CosmeticsMenu extends Methods {
         if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
         guiItems.add(item);
     }
-
      */
 }
