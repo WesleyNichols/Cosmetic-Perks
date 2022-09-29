@@ -8,6 +8,7 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
+import com.sun.tools.javac.util.StringUtils;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
@@ -56,6 +57,9 @@ public class CosmeticsMenu extends Methods {
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
                         .name(Component.text(ChatColor.GREEN + "Player Trails"))
                         .armorColor(Color.GREEN)
+                        .lore(Arrays.asList(
+                                Component.text(ChatColor.YELLOW + "Current:"),
+                                Component.text(getActiveTrail(player, "player"))))
                         .build(),
                 event -> displayPlayerMenu(player))
         );
@@ -66,8 +70,8 @@ public class CosmeticsMenu extends Methods {
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
                         .name(Component.text(ChatColor.GOLD + "Projectile Trails"))
                         .lore(Arrays.asList(
-                                Component.text("test"),
-                                Component.text("also test")))
+                                Component.text(ChatColor.YELLOW + "Current:"),
+                                Component.text(getActiveTrail(player, "projectile"))))
                         .build(),
                 event -> displayProjectileMenu(player))
         );
@@ -79,6 +83,9 @@ public class CosmeticsMenu extends Methods {
                         .name(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"))
                         .enchantments(enchantArray(Enchantment.DURABILITY), levelArray(1))
                         .hideEnchants(true)
+                        .lore(Arrays.asList(
+                                Component.text(ChatColor.YELLOW + "Current:"),
+                                Component.text(getActiveTrail(player, "elytra"))))
                         .build(),
                 event -> displayElytraMenu(player))
         );
