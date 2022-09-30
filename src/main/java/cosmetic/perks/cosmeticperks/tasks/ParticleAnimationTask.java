@@ -5,6 +5,7 @@ import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -32,6 +33,7 @@ public class ParticleAnimationTask extends BukkitRunnable {
         if (!CosmeticPerks.getInstance().isEnabled()) { this.cancel(); }
 
         HashMap<UUID, ParticleAnimations> particleAnimationList = ParticleAnimationManager.getParticleAnimationList();
+        Bukkit.broadcast(Component.text(particleAnimationList.toString()));
         for (UUID entityId : particleAnimationList.keySet()) {
             Entity entity = Bukkit.getEntity(entityId);
 
@@ -61,7 +63,8 @@ public class ParticleAnimationTask extends BukkitRunnable {
                     .forEach(player -> {
                                 if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
                                 for(double[] loc: values) {
-                                    player.spawnParticle(particleAnimations.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), 0);
+                                    player.spawnParticle(particleAnimations.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleAnimations.getParticleAmount(),
+                                            particleAnimations.getXOffSet(), particleAnimations.getYOffSet(), particleAnimations.getZOffSet(), particleAnimations.getParticleSpeed());
                                 }
                             }
                     );

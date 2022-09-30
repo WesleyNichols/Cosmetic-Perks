@@ -2,6 +2,7 @@ package cosmetic.perks.cosmeticperks;
 
 import cosmetic.perks.cosmeticperks.commands.CosmeticsCommand;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerJoin;
+import cosmetic.perks.cosmeticperks.listeners.OnPlayerQuit;
 import cosmetic.perks.cosmeticperks.listeners.OnProjectileShot;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerMove;
 import cosmetic.perks.cosmeticperks.tasks.ParticleAnimationTask;
@@ -19,6 +20,7 @@ public final class CosmeticPerks extends JavaPlugin {
         instance = this;
 
         this.registerEvent(new OnPlayerJoin());
+        this.registerEvent(new OnPlayerQuit());
         this.registerEvent(new OnPlayerMove());
         this.registerEvent(new OnProjectileShot());
 

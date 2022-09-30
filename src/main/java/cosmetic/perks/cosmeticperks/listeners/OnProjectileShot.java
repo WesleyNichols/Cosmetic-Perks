@@ -33,7 +33,6 @@ public class OnProjectileShot extends Methods implements Listener {
                 ProjectileTrails projectileTrails = ProjectileTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING));
                 ProjectileTrailManager.addProjTrail(event.getEntity().getUniqueId(), projectileTrails);
             }
-            attachParticleAnimation(player, event.getEntity().getUniqueId(), "projectile-animation");
         }
     }
 
