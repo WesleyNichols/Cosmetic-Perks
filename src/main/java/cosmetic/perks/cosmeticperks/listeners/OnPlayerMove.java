@@ -37,6 +37,7 @@ public class OnPlayerMove implements Listener {
                     );
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail.TrailProperties trailProperties = PlayerTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)).getProperties();
+            if(trailProperties.getAnimation() != null) {return;}
 
             World world = player.getWorld();
             world.getPlayers().stream()

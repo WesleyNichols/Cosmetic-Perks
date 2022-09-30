@@ -4,6 +4,8 @@ import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
+import cosmetic.perks.cosmeticperks.structures.Animations;
+import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
@@ -15,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ParticleAnimationTask extends BukkitRunnable {
+public class ParticleAnimationTask<T extends CustomTrail> extends BukkitRunnable {
 
     public double[][] evaluateExpressions(String[] expr, double x) {
         double[][] finalList = new double[expr.length/3][3];
@@ -32,8 +34,7 @@ public class ParticleAnimationTask extends BukkitRunnable {
     public void run() {
         if (!CosmeticPerks.getInstance().isEnabled()) { this.cancel(); }
 
-        HashMap<UUID, ParticleAnimations> particleAnimationList = ParticleAnimationManager.getParticleAnimationList();
-        Bukkit.broadcast(Component.text(particleAnimationList.toString()));
+        HashMap<UUID, CustomTrail> particleAnimationList = ParticleAnimationManager.getParticleAnimationList();
         for (UUID entityId : particleAnimationList.keySet()) {
             Entity entity = Bukkit.getEntity(entityId);
 
@@ -47,7 +48,9 @@ public class ParticleAnimationTask extends BukkitRunnable {
                 continue;
             }
 
-            ParticleAnimations particleAnimations = particleAnimationList.get(entityId);
+            CustomTrail.TrailProperties particleProperties = particleAnimationList.get(entityId).getProperties();
+            Animations particleAnimations = particleProperties.getAnimation();
+            Bukkit.broadcast(Component.text(particleAnimations.toString()));
             if(particleAnimations.getCurrentDistance() >= particleAnimations.getMaxDistance()) {
                 particleAnimations.resetCurrentDistance();
             } else {
@@ -63,8 +66,8 @@ public class ParticleAnimationTask extends BukkitRunnable {
                     .forEach(player -> {
                                 if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
                                 for(double[] loc: values) {
-                                    player.spawnParticle(particleAnimations.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleAnimations.getParticleAmount(),
-                                            particleAnimations.getXOffSet(), particleAnimations.getYOffSet(), particleAnimations.getZOffSet(), particleAnimations.getParticleSpeed());
+                                    player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
+                                            particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
                                 }
                             }
                     );

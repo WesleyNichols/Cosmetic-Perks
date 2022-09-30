@@ -23,7 +23,7 @@ public class OnPlayerJoin extends Methods implements Listener {
         if (!hasActiveTrail(player, "projectile-animation")) { removeActiveTrail(player, "projectile-animation"); }
 
         //Attach animation trail to player
-        attachParticleAnimation(player, player.getUniqueId(), "player-animation");
+        //attachParticleAnimation(player, player.getUniqueId(), "player-animation");
     }
 }
 

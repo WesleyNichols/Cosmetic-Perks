@@ -1,25 +1,23 @@
 package cosmetic.perks.cosmeticperks.managers;
 
-import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ParticleAnimationManager<T> {
+public class ParticleAnimationManager {
 
-    private static HashMap<UUID, Class> particleAnimationList = new HashMap<>();
+    private static HashMap<UUID, CustomTrail> particleAnimationList = new HashMap<>();
 
-    public static HashMap<UUID, Class> getParticleAnimationList() {
+    public static HashMap<UUID, CustomTrail> getParticleAnimationList() {
         return new HashMap<>(particleAnimationList);
     }
 
-    public void addParticleAnimation(UUID entity, T e) {
+    public static void addParticleAnimation(UUID entity, CustomTrail e) {
         particleAnimationList.put(entity, e);
     }
 
     public static void removeParticleAnimation(UUID entity) {
         particleAnimationList.remove(entity);
     }
-
 }
