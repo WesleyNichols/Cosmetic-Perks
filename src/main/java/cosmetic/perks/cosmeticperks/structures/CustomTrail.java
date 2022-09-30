@@ -92,7 +92,7 @@ public interface CustomTrail {
 
         @Override
         public Animations getAnimation() {
-            return this.Animation;
+            return Animation;
         }
 
         @Override

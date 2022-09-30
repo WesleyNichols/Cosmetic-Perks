@@ -37,7 +37,7 @@ public enum PlayerTrails implements CustomTrail{
     STAR_LIGHT      (Material.FIRE_CHARGE, "Star Light", Particle.END_ROD,
             .2, .2, .2, 0.1, 5, null, false),
     TOTEM_CIRCLE    (Material.TOTEM_OF_UNDYING, "Totem Circle", Particle.TOTEM,
-            0, .2, 0, 0, 0, new Animations(new String[]{"xcos(16x)", "x/5 + 0.5", "xsin(16x)", "-xcos(16x)", "x/5 + 0.5", "-xsin(16x)"}, 1/37, 1), false)
+            .2, .2, .2, 0, 0, new Animations(new String[]{"xcos(16x)", "x/5 + 0.5", "xsin(16x)", "-xcos(16x)", "x/5 + 0.5", "-xsin(16x)"}, 66, 1), false)
     ;
 
     private final TrailProperties properties;

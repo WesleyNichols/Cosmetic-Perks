@@ -1,39 +1,44 @@
 package cosmetic.perks.cosmeticperks.structures;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
+
 public class Animations {
 
     private final String[] EquationList;
-    private double DistanceToAdd;
-    private double MaxDistance;
-    private double CurrentDistance = 0.0;
+    private final double DistanceToAdd;
+    private final double MaxDistance;
+    private double CurrentDistance;
 
-    public Animations(String[] equationList, double distanceToAdd, double maxDistance) {
+    public Animations(String[] equationList, int distanceToAdd, double maxDistance) {
         this.EquationList = equationList;
+        Bukkit.broadcast(Component.text(distanceToAdd));
         this.DistanceToAdd = Math.PI/distanceToAdd;
+        Bukkit.broadcast(Component.text(DistanceToAdd));
         this.MaxDistance = maxDistance * Math.PI;
-    }
-
-    public double getDistanceBetweenParticles() {
-        return this.DistanceToAdd;
-    }
-
-    public void addToCurrentDistance() {
-        this.CurrentDistance += getDistanceBetweenParticles();
-    }
-
-    public void resetCurrentDistance() {
         this.CurrentDistance = 0.0;
     }
 
+    public void addToCurrentDistance() {
+        //Bukkit.broadcast(Component.text(DistanceToAdd));
+        CurrentDistance += DistanceToAdd;
+        //Bukkit.broadcast(Component.text(CurrentDistance));
+    }
+
+    public void resetCurrentDistance() {
+        CurrentDistance = 0.0;
+    }
+
     public double getMaxDistance() {
-        return this.MaxDistance;
+        return MaxDistance;
     }
 
     public double getCurrentDistance() {
-        return this.CurrentDistance;
+        return CurrentDistance;
     }
 
     public String[] getEquationList() {
-        return this.EquationList;
+        return EquationList;
     }
 }

@@ -50,11 +50,12 @@ public class ParticleAnimationTask<T extends CustomTrail> extends BukkitRunnable
 
             CustomTrail.TrailProperties particleProperties = particleAnimationList.get(entityId).getProperties();
             Animations particleAnimations = particleProperties.getAnimation();
-            Bukkit.broadcast(Component.text(particleAnimations.toString()));
-            if(particleAnimations.getCurrentDistance() >= particleAnimations.getMaxDistance()) {
-                particleAnimations.resetCurrentDistance();
-            } else {
+            //Bukkit.broadcast(Component.text(particleAnimations.getCurrentDistance()));
+
+            if(particleAnimations.getCurrentDistance() < particleAnimations.getMaxDistance()) {
                 particleAnimations.addToCurrentDistance();
+            } else {
+                particleAnimations.resetCurrentDistance();
             }
 
             double[][] values = this.evaluateExpressions(particleAnimations.getEquationList(), particleAnimations.getCurrentDistance());
