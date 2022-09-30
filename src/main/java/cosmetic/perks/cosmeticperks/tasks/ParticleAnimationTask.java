@@ -39,12 +39,11 @@ public class ParticleAnimationTask<T extends CustomTrail> extends BukkitRunnable
             Entity entity = Bukkit.getEntity(entityId);
 
             if (entity == null) {
-                ProjectileTrailManager.removeProjTrail(entityId);
+                ParticleAnimationManager.removeParticleAnimation(entityId);
                 continue;
             }
 
-            if (entity.isOnGround() || entity.isDead()) {
-                ProjectileTrailManager.removeProjTrail(entityId);
+            if (entity.isDead()) {
                 continue;
             }
 
