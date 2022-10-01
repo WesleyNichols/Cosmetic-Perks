@@ -2,7 +2,6 @@ package cosmetic.perks.cosmeticperks.structures;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Animations {
 
@@ -21,9 +20,7 @@ public class Animations {
     }
 
     public void addToCurrentDistance() {
-        //Bukkit.broadcast(Component.text(DistanceToAdd));
         CurrentDistance += DistanceToAdd;
-        //Bukkit.broadcast(Component.text(CurrentDistance));
     }
 
     public void resetCurrentDistance() {

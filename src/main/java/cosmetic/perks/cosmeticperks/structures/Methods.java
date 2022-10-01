@@ -42,6 +42,13 @@ public abstract class Methods {
         player.sendMessage(Component.text("Disabled your " + key + " trail!"));
     }
 
+    public void removeActiveTrails(Player player) {
+        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
+        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
+        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, "NONE");
+        player.sendMessage(Component.text("Disabled your trails!"));
+    }
+
     /**
      * Gets the player's active trail
      *
@@ -73,7 +80,7 @@ public abstract class Methods {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {
            // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-            ParticleAnimationManager.addParticleAnimation(id, e);
+            //TODO ParticleAnimationManager.addParticleAnimation(id, e);
             player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
         }
     }

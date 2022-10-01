@@ -11,7 +11,6 @@ import com.github.stefvanschie.inventoryframework.pane.component.Label;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
-import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.Methods;
@@ -33,7 +32,7 @@ import java.util.List;
 
 public class CosmeticsMenu extends Methods {
 
-    public final ItemStack filler = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(Component.text(" ")).build();
+    public final ItemStack filler = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(Component.text("")).build();
 
     /**
      * Method to display the cosmetic menu to a player.
@@ -41,10 +40,10 @@ public class CosmeticsMenu extends Methods {
      * @param player The player to show the menu to
      */
     public void displayCosmeticsMenu(Player player){
-        ChestGui gui = new ChestGui(3, ChatColor.GOLD + "Cosmetics Menu");
+        ChestGui gui = new ChestGui(4, ChatColor.BLACK + "" + ChatColor.BOLD + "Cosmetics Menu");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
-        OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
+        OutlinePane background = new OutlinePane(0, 3, 9, 1, Pane.Priority.LOWEST);
         background.addItem(new GuiItem(filler));
         background.setRepeat(true);
         gui.addPane(background);
@@ -52,48 +51,90 @@ public class CosmeticsMenu extends Methods {
         OutlinePane navigationPane = new OutlinePane(3, 1, 3, 1);
 
         //  region Player Trails
+        String playerTrail = getActiveTrail(player, "player");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
-                        .name(Component.text(ChatColor.GREEN + "Player Trails"))
+                        .name(Component.text(ChatColor.GREEN + "" + ChatColor.BOLD + "Player Trails"))
                         .armorColor(Color.GREEN)
                         .lore(Arrays.asList(
                                 Component.text(""),
                                 Component.text(ChatColor.YELLOW + "Current:"),
-                                Component.text(getActiveTrail(player, "player"))))
+                                Component.text(ChatColor.DARK_GREEN + (playerTrail.substring(0, 1).toUpperCase() + playerTrail.substring(1).toLowerCase()))))
                         .build(),
-                event -> displayPlayerMenu(player))
+                event -> {
+                    if (!player.hasPermission("group.donator")) { player.performCommand("shop cosmetic"); }
+                    else { displayPlayerMenu(player); }
+                })
         );
        //   endregion
 
        //   region Projectile Trails
+        String projTrail = getActiveTrail(player, "projectile");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
-                        .name(Component.text(ChatColor.GOLD + "Projectile Trails"))
+                        .name(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "Projectile Trails"))
                         .lore(Arrays.asList(
                                 Component.text(""),
                                 Component.text(ChatColor.YELLOW + "Current:"),
-                                Component.text(getActiveTrail(player, "projectile"))))
+                                Component.text(ChatColor.DARK_GREEN + (projTrail.substring(0, 1).toUpperCase() + projTrail.substring(1).toLowerCase()))))
                         .build(),
-                event -> displayProjectileMenu(player))
+                event -> {
+                    if (!player.hasPermission("group.donator")) { player.performCommand("shop cosmetic"); }
+                    else { displayProjectileMenu(player); }
+                })
         );
         //  endregion
 
         //  region Elytra Trails
+        String elytraTrail = getActiveTrail(player, "elytra");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ELYTRA)
-                        .name(Component.text(ChatColor.LIGHT_PURPLE + "Elytra Trails"))
+                        .name(Component.text(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Elytra Trails"))
                         .enchantments(CustomItem.enchantArray(Enchantment.DURABILITY), CustomItem.levelArray(1))
                         .hideEnchants(true)
                         .lore(Arrays.asList(
                                 Component.text(""),
                                 Component.text(ChatColor.YELLOW + "Current:"),
-                                Component.text(getActiveTrail(player, "elytra"))))
+                                Component.text(ChatColor.DARK_GREEN + (elytraTrail.substring(0, 1).toUpperCase() + elytraTrail.substring(1).toLowerCase()))))
                         .build(),
-                event -> displayElytraMenu(player))
+                event -> {
+                    if (!player.hasPermission("group.donator")) { player.performCommand("shop cosmetic"); }
+                    else { displayElytraMenu(player); }
+                })
         );
         //  endregion
 
+        StaticPane selectionPane = new StaticPane(0, 3, 9, 1);
+
+        //  region Shop
+        selectionPane.addItem(new GuiItem(
+                        new CustomItem.ItemBuilder(Material.CHEST)
+                                .name(Component.text(ChatColor.WHITE + "Buy Cosmetics"))
+                                .lore(Arrays.asList(
+                                        Component.text(""),
+                                        Component.text(ChatColor.RED + "Click to visit the Store")))
+                                .build(),
+                        event -> player.performCommand("shop cosmetic"))
+                , 1, 0);
+        //  endregion
+
+        //  region Deselect Trails
+        selectionPane.addItem(new GuiItem(
+                new CustomItem.ItemBuilder(Material.BARRIER)
+                        .name(Component.text(ChatColor.WHITE + "Deselect All"))
+                        .lore(Arrays.asList(
+                                Component.text(""),
+                                Component.text(ChatColor.RED + "Disables all active trails")))
+                        .build(),
+                event -> {
+                    removeActiveTrails(player);
+                    displayCosmeticsMenu(player);
+                })
+        , 7, 0);
+        // endregion
+
         gui.addPane(navigationPane);
+        gui.addPane(selectionPane);
         gui.update();
         gui.show(player);
     }
@@ -132,7 +173,9 @@ public class CosmeticsMenu extends Methods {
     }
 
     /**
-     * The StaticPane to navigate in a menu
+     * Creates a basic navigation menu with main menu, previous page, and next page buttons
+     *
+     * @return The StaticPane containing basic navigation options
      */
     public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
         StaticPane navigation = new StaticPane(0, gui.getRows()-1, 9, 1);
@@ -192,13 +235,14 @@ public class CosmeticsMenu extends Methods {
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
         GuiItem item = new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
-                        .name(Component.text(ChatColor.WHITE + "None"))
+                        .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + "None"))
+                        .lore(Collections.singletonList(Component.text(ChatColor.YELLOW + "" + ChatColor.ITALIC + "Disables active trail")))
                         .build()
         );
         item.setAction(event -> {
             removeActiveTrail(player, key);
             if(hasActiveAnimation(player)){
-                ParticleAnimationManager.removeParticleAnimation(player.getUniqueId());
+                // Remove active animation
             }
             enableItem(item);
             pages.getItems().forEach(this::disableItem);
@@ -212,7 +256,7 @@ public class CosmeticsMenu extends Methods {
      *
      * @param player The player to read from
      * @param enumClass The class name to read from
-     * @param <T> The class type (which extends CustomTrail)
+     * @param <T> The enum (must extend CustomTrail)
      * @return The ChestGui with collection of GuiItems from a CustomTrail type
      */
     public <T extends CustomTrail> ChestGui getTrailSelectionMenu(Player player, Class<T> enumClass) {
@@ -261,6 +305,14 @@ public class CosmeticsMenu extends Methods {
         ItemMeta itemMeta = item.getItem().getItemMeta();
         itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+        List<Component> itemLore = itemMeta.lore();
+        if (itemLore != null) {
+            itemLore.remove(itemLore.size()-1);
+            itemLore.add(Component.text(ChatColor.GREEN + "Selected"));
+            itemMeta.lore(itemLore);
+        }
+
         item.getItem().setItemMeta(itemMeta);
     }
 
@@ -272,24 +324,15 @@ public class CosmeticsMenu extends Methods {
     public void disableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
         itemMeta.removeEnchant(Enchantment.DURABILITY);
+
+        List<Component> itemLore = itemMeta.lore();
+        if (itemLore != null) {
+            itemLore.remove(itemLore.size()-1);
+            itemLore.add(Component.text(ChatColor.RED + "Click to Select"));
+            itemMeta.lore(itemLore);
+        }
+
         item.getItem().setItemMeta(itemMeta);
     }
 
-    /* Leaving this for Sheep, delete later
-
-    guiItems = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, "player-animation")));
-    String activeAnimation = getActiveTrail(player, "player-animation");
-    for (ParticleAnimations playerAnimations : ParticleAnimations.values()) {
-        GuiItem item = new GuiItem(playerAnimations.getItem());
-        item.setAction(event -> {
-            setActiveTrail(playerAnimations.name(), player, "player-animation");
-            attachParticleAnimation(player, player.getUniqueId(), "player-animation");
-            pages.getItems().forEach(this::disableItem);
-            enableItem(item);
-            gui.update();
-        });
-        if (playerAnimations.name().equals(activeAnimation)) { enableItem(item); }
-        guiItems.add(item);
-    }
-     */
 }

@@ -28,7 +28,7 @@ public enum ElytraTrails implements CustomTrail {
             0, 0, 0, 0, 3, null, false),
     GUST            (Material.WHITE_WOOL, "Gust", Particle.CLOUD,
             .2, .2, .2, .05, 5, null, false),
-    STICKY          (Material.HONEY_BLOCK, "Sticky", Particle.FALLING_HONEY,
+    STICKY          (Material.HONEY_BLOCK, "Sticky", Particle.LANDING_HONEY,
             .2, .2, .2, 0, 8, null, false),
     CUPID           (Material.RED_WOOL, "Cupid", Particle.HEART,
             .2, .2, .2, 0, 1, null, false),
@@ -41,7 +41,7 @@ public enum ElytraTrails implements CustomTrail {
     private final TrailProperties properties;
 
     ElytraTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, Animations animation, boolean limitedItem) {
-        this.properties = new ImmutableProperties(material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, animation, limitedItem);
+        this.properties = new ImmutableProperties(getTrailType(), material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, animation, limitedItem);
     }
 
     public String getTrailType() {

@@ -9,4 +9,8 @@ commands:
   cosmetic:
     description: Access the cosmetic menu
     usage: /cosmetic
-    permission: cosmeticperks.cosmetic
+    aliases: [cosmetics, flare, style, custom, customize, accessory, trail, trails]
+  shop:
+    description: Prompt user to visit Shop page
+    usage: /shop
+    aliases: [shops, store, stores, buy, donate, donation, donations, donator, donators, donor, donors, purchase]

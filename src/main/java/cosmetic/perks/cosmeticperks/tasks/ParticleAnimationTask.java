@@ -1,13 +1,10 @@
 package cosmetic.perks.cosmeticperks.tasks;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
-import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
-import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -17,9 +14,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ParticleAnimationTask<T extends CustomTrail> extends BukkitRunnable {
+public class ParticleAnimationTask extends BukkitRunnable {
 
-    public double[][] evaluateExpressions(String[] expr, double x) {
+    private static double[][] evaluateExpressions(String[] expr, double x) {
         double[][] finalList = new double[expr.length/3][3];
         int exprNumber = 0;
         for (int i=1;i<=expr.length/3;i++) {
@@ -49,7 +46,6 @@ public class ParticleAnimationTask<T extends CustomTrail> extends BukkitRunnable
 
             CustomTrail.TrailProperties particleProperties = particleAnimationList.get(entityId).getProperties();
             Animations particleAnimations = particleProperties.getAnimation();
-            //Bukkit.broadcast(Component.text(particleAnimations.getCurrentDistance()));
 
             if(particleAnimations.getCurrentDistance() < particleAnimations.getMaxDistance()) {
                 particleAnimations.addToCurrentDistance();
@@ -57,7 +53,7 @@ public class ParticleAnimationTask<T extends CustomTrail> extends BukkitRunnable
                 particleAnimations.resetCurrentDistance();
             }
 
-            double[][] values = this.evaluateExpressions(particleAnimations.getEquationList(), particleAnimations.getCurrentDistance());
+            double[][] values = evaluateExpressions(particleAnimations.getEquationList(), particleAnimations.getCurrentDistance());
 
             World world = entity.getWorld();
             world.getPlayers().stream()

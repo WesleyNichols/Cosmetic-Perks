@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+
 public interface CustomTrail {
 
     TrailProperties getProperties();
@@ -26,6 +28,7 @@ public interface CustomTrail {
 
     final class ImmutableProperties implements TrailProperties {
 
+        private final String TrailType;
         private final Material DisplayMaterial;
         private final String EffectName;
         private final Particle TrailEffect;
@@ -37,7 +40,8 @@ public interface CustomTrail {
         private final boolean LimitedItem;
         private final Animations Animation;
 
-        public ImmutableProperties(Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, Animations animation, boolean limitedItem) {
+        public ImmutableProperties(String trailType, Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, Animations animation, boolean limitedItem) {
+            this.TrailType = trailType;
             this.DisplayMaterial = material;
             this.EffectName = effectName;
             this.TrailEffect = trailEffect;
@@ -52,7 +56,14 @@ public interface CustomTrail {
 
         @Override
         public ItemStack getItem() {
-            return new CustomItem.ItemBuilder(DisplayMaterial).name(Component.text(ChatColor.WHITE + EffectName)).build();
+            return new CustomItem.ItemBuilder(DisplayMaterial)
+                    .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + EffectName))
+                    .lore(Arrays.asList(
+                            Component.text(ChatColor.ITALIC + (getAnimation() != null ? ChatColor.GOLD + "Animated ": ChatColor.YELLOW + "")
+                                    + (TrailType.substring(0, 1).toUpperCase() + TrailType.substring(1)) + " Trail"),
+                            Component.text(""),
+                            Component.text(ChatColor.RED + "Click to Select")))
+                    .build();
         }
 
         @Override

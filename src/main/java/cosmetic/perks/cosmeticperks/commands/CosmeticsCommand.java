@@ -10,10 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class CosmeticsCommand implements CommandExecutor {
 
-    public static String getMainCommand = "cosmetic";
+    public static String getCommand = "cosmetic";
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (label.equalsIgnoreCase(getMainCommand) && sender instanceof Player) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
 
             if (args.length == 0) {
@@ -24,4 +24,5 @@ public class CosmeticsCommand implements CommandExecutor {
         }
         return false;
     }
+
 }
