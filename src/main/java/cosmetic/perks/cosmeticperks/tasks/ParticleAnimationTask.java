@@ -1,10 +1,13 @@
 package cosmetic.perks.cosmeticperks.tasks;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
+import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
+import cosmetic.perks.cosmeticperks.structures.EquationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -45,15 +48,9 @@ public class ParticleAnimationTask extends BukkitRunnable {
             }
 
             CustomTrail.TrailProperties particleProperties = particleAnimationList.get(entityId).getProperties();
-            Animations particleAnimations = particleProperties.getAnimation();
+            EquationValues particleAnimationValues = particleProperties.getAnimation();
+            int step = particleAnimationValues.getCurrentStep();
 
-            if(particleAnimations.getCurrentDistance() < particleAnimations.getMaxDistance()) {
-                particleAnimations.addToCurrentDistance();
-            } else {
-                particleAnimations.resetCurrentDistance();
-            }
-
-            double[][] values = evaluateExpressions(particleAnimations.getEquationList(), particleAnimations.getCurrentDistance());
 
             World world = entity.getWorld();
             world.getPlayers().stream()
@@ -61,12 +58,13 @@ public class ParticleAnimationTask extends BukkitRunnable {
                     .filter(player -> player.getLocation().distance(entity.getLocation()) <= 40)
                     .forEach(player -> {
                                 if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
-                                for(double[] loc: values) {
-                                    player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
+                                for(double[][] loc: particleAnimationValues.getEquationValues()) {
+                                    player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[step][0], loc[step][1], loc[step][2]), particleProperties.getParticleAmount(),
                                             particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
                                 }
                             }
                     );
+        particleAnimationValues.addStep();
         }
     }
 }

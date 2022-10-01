@@ -6,8 +6,13 @@ import cosmetic.perks.cosmeticperks.listeners.OnPlayerJoin;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerQuit;
 import cosmetic.perks.cosmeticperks.listeners.OnProjectileShot;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerMove;
+import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
+import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.tasks.ParticleAnimationTask;
 import cosmetic.perks.cosmeticperks.tasks.ProjectileTrailTask;
+import cosmetic.perks.cosmeticperks.util.AnimationValueInitialize;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +24,8 @@ public final class CosmeticPerks extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        this.initializeAnimations();
 
         this.registerEvent(new OnPlayerJoin());
         this.registerEvent(new OnPlayerQuit());
@@ -34,6 +41,15 @@ public final class CosmeticPerks extends JavaPlugin {
 
     @Override
     public void onDisable() {
+    }
+
+    public void initializeAnimations() {
+        new AnimationValueInitialize("Totem Circle",
+                new Animations(new String[]{"xcos(16x)", "x/5 + 0.5", "xsin(16x)", "-xcos(16x)", "x/5 + 0.5", "-xsin(16x)"}, 66, 1, true));
+        new AnimationValueInitialize("Totem Circle2",
+                new Animations(new String[]{"cos(x/6)", "sin(x/6)", "sin(x/8)", "-cos(x/6)", "sin(x/6)", "-sin(x/8)"}, 20, 16, true));
+        new AnimationValueInitialize("Fire Circle",
+                new Animations(new String[]{"cos(x)", "0", "sin(x)", "-1.1*cos(x)", "0.2", "-1.1*sin(x)", "1.2*cos(x)", "0.4", "1.2*sin(x)", "-1.3*cos(x)", "0.6", "-1.3*sin(x)", "1.4*cos(x)", "0.8", "1.4*sin(x)", "-1.5*cos(x)", "1", "-1.5*sin(x)"}, 20, 2, false));
     }
 
     public static CosmeticPerks getInstance() {

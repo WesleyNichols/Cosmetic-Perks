@@ -80,7 +80,7 @@ public abstract class Methods {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {
            // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-            //TODO ParticleAnimationManager.addParticleAnimation(id, e);
+            ParticleAnimationManager.addParticleAnimation(id, e); //TODO OnPlayerJoin
             player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
         }
     }

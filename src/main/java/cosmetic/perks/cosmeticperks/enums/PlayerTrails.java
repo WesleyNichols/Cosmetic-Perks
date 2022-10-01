@@ -1,7 +1,9 @@
 package cosmetic.perks.cosmeticperks.enums;
 
+import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
 import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
+import cosmetic.perks.cosmeticperks.structures.EquationValues;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 
@@ -37,14 +39,16 @@ public enum PlayerTrails implements CustomTrail{
     STAR_LIGHT      (Material.FIRE_CHARGE, "Star Light", Particle.END_ROD,
             .2, .2, .2, 0.1, 5, null, false),
     TOTEM_CIRCLE    (Material.TOTEM_OF_UNDYING, "Totem Circle", Particle.TOTEM,
-            0, 0, 0, 0, 0, new Animations(new String[]{"xcos(16x)", "x/5 + 0.5", "xsin(16x)", "-xcos(16x)", "x/5 + 0.5", "-xsin(16x)"}, 66, 1), false),
+            0, 0, 0, 0, 0, new EquationValues("Totem Circle"), false),
     TOTEM_CIRCLE2    (Material.TOTEM_OF_UNDYING, "Totem Circle2", Particle.TOTEM,
-            0, 1, 0, 0, 0, new Animations(new String[]{"cos(x/6)", "sin(x/6)", "sin(x/8)", "-cos(x/6)", "-sin(x/6)", "-sin(x/8)"}, 5, 32), false)
+            0, 1, 0, 0, 0, new EquationValues("Totem Circle2"), false),
+    CIRCLE    (Material.LAVA_BUCKET, "Fire Circle", Particle.DRIP_LAVA,
+            0, 2, 0, 0, 0, new EquationValues("Fire Circle"), false)
     ;
 
     private final TrailProperties properties;
 
-    PlayerTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, Animations animation, boolean limitedItem) {
+    PlayerTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, EquationValues animation, boolean limitedItem) {
         this.properties = new ImmutableProperties(getTrailType(), material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, animation, limitedItem);
     }
 

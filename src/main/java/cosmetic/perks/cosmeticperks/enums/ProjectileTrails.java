@@ -2,6 +2,7 @@ package cosmetic.perks.cosmeticperks.enums;
 
 import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
+import cosmetic.perks.cosmeticperks.structures.EquationValues;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 
@@ -40,7 +41,7 @@ public enum ProjectileTrails implements CustomTrail {
 
     private final TrailProperties properties;
 
-    ProjectileTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, Animations animation, boolean limitedItem) {
+    ProjectileTrails(Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, EquationValues animation, boolean limitedItem) {
         this.properties = new ImmutableProperties(getTrailType(), material, effectName, trailEffect, xOffSet,  yOffSet, zOffSet, ParticleSpeed, ParticleAmount, animation, limitedItem);
     }
 
