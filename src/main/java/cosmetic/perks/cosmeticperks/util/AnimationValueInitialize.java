@@ -12,7 +12,7 @@ public class AnimationValueInitialize {
     private final String[] EquationList;
     private final int TicksToComplete;
     private final boolean ReversingAnimation;
-    private Animations Animation;
+    private final Animations Animation;
 
     public AnimationValueInitialize(String name, Animations animation) {
         this.Name = name;
