@@ -4,9 +4,9 @@ import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
+import cosmetic.perks.cosmeticperks.structures.Methods;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,24 +28,13 @@ public class OnPlayerMove implements Listener {
         if (player.isGliding() && !Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail.TrailProperties trailProperties = ElytraTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING)).getProperties();
 
-            World world = player.getWorld();
-            world.getPlayers().stream()
-                    .filter(e -> e.getWorld().getUID().equals(world.getUID()))
-                    .filter(e -> e.getLocation().distance(player.getLocation()) <= 40)
-                    .forEach(e -> e.spawnParticle(trailProperties.getTrailEffect(), player.getLocation(), trailProperties.getParticleAmount(),
-                            trailProperties.getXOffSet(), trailProperties.getYOffSet(), trailProperties.getZOffSet(), trailProperties.getParticleSpeed())
-                    );
+            Methods.spawnParticle(player, trailProperties);
+
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail.TrailProperties trailProperties = PlayerTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)).getProperties();
             if(trailProperties.getAnimation() != null) {return;}
 
-            World world = player.getWorld();
-            world.getPlayers().stream()
-                    .filter(e -> e.getWorld().getUID().equals(world.getUID()))
-                    .filter(e -> e.getLocation().distance(player.getLocation()) <= 40)
-                    .forEach(e -> e.spawnParticle(trailProperties.getTrailEffect(), player.getLocation(), trailProperties.getParticleAmount(),
-                            trailProperties.getXOffSet(), trailProperties.getYOffSet(), trailProperties.getZOffSet(), trailProperties.getParticleSpeed())
-                    );
+            Methods.spawnParticle(player, trailProperties);
         }
     }
 }

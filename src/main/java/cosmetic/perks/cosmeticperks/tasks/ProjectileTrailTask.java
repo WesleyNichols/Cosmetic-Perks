@@ -4,8 +4,8 @@ import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
+import cosmetic.perks.cosmeticperks.structures.Methods;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -32,13 +32,7 @@ public class ProjectileTrailTask extends BukkitRunnable {
 
             CustomTrail.TrailProperties projTrails = projTrailList.get(projId).getProperties();
 
-            World world = projEntity.getWorld();
-            world.getPlayers().stream()
-                    .filter(player -> player.getWorld().getUID().equals(world.getUID()))
-                    .filter(player -> player.getLocation().distance(projEntity.getLocation()) <= 40)
-                    .forEach(player -> player.spawnParticle(projTrails.getTrailEffect(), projEntity.getLocation(), projTrails.getParticleAmount(),
-                            projTrails.getXOffSet(), projTrails.getYOffSet(), projTrails.getZOffSet(), projTrails.getParticleSpeed())
-                    );
+            Methods.spawnParticle(projEntity, projTrails);
         }
     }
 }
