@@ -14,9 +14,9 @@ public class AnimationValueInitialize {
     private final int TicksToComplete;
     private final boolean ReversingAnimation;
     private final Animations Animation;
-    private final Particles[] StyleValues;
+    private final double[][][] StyleValues;
 
-    public AnimationValueInitialize(String name, Particles[] styleValues, Animations animation) {
+    public AnimationValueInitialize(String name, double[][][] styleValues, Animations animation) {
         this.Name = name;
         this.Animation = animation;
         this.StyleValues = styleValues;
@@ -26,7 +26,7 @@ public class AnimationValueInitialize {
         initialize();
     }
 
-    public AnimationValueInitialize(String name, Particles[] styleValues) {
+    public AnimationValueInitialize(String name, double[][][] styleValues) {
         this.Name = name;
         this.Animation = null;
         this.StyleValues = styleValues;
@@ -39,7 +39,7 @@ public class AnimationValueInitialize {
     public AnimationValueInitialize(String name, Animations animation) {
         this.Name = name;
         this.Animation = animation;
-        this.StyleValues = new Particles[]{};
+        this.StyleValues = new double[][][]{};
         this.EquationList = animation.getEquationList();
         this.TicksToComplete = animation.getTickToComplete();
         this.ReversingAnimation = animation.isReversingAnimation();
@@ -50,21 +50,19 @@ public class AnimationValueInitialize {
         AnimationValueManager.addParticleAnimation(Name, new AnimationValues(StyleValues, generateEquationValueList()));
     }
 
-    private Particles[] generateEquationValueList() {
-        if(this.Animation == null) {return new Particles[]{};}
+    private double[][][] generateEquationValueList() {
+        if(this.Animation == null) {return new double[][][]{};}
         int length = TicksToComplete * (ReversingAnimation ? 2 : 1);
-        Particles[] finalList = new Particles[EquationList.length/3];
+        double[][][] finalList = new double[EquationList.length/3][length][3];
         int exprNumber;
         for (int i=0; i<EquationList.length/3; i++) {
-            double[][] tempList = new double[length][3];
             for(int j=0; j<length; j++) {
                 exprNumber = (i) * 3;
                 Animation.addToCurrentDistance();
                 for (int k = 0; k<3; k++) {
-                    tempList[j][k] = BigDecimal.valueOf(new ExpressionBuilder(EquationList[exprNumber]).variable("x").build().setVariable("x", Animation.getCurrentDistance()).evaluate()).setScale(5, RoundingMode.UP).doubleValue();
+                    finalList[i][j][k] = BigDecimal.valueOf(new ExpressionBuilder(EquationList[exprNumber]).variable("x").build().setVariable("x", Animation.getCurrentDistance()).evaluate()).setScale(5, RoundingMode.UP).doubleValue();
                     exprNumber++;
                 }
-                finalList[i] = new Particles(Animation.getParticleEffect(), tempList);
             }
         }
         return finalList;

@@ -11,7 +11,6 @@ import cosmetic.perks.cosmeticperks.styles.Styles;
 import cosmetic.perks.cosmeticperks.tasks.AnimationTask;
 import cosmetic.perks.cosmeticperks.tasks.ProjectileTrailTask;
 import cosmetic.perks.cosmeticperks.util.AnimationValueInitialize;
-import org.bukkit.Particle;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,19 +43,19 @@ public final class CosmeticPerks extends JavaPlugin {
 
     public void initializeAnimations() {
         new AnimationValueInitialize("Fire Circle1",
-                Styles.styleValues(Styles.circle(Particle.FALLING_LAVA, 1.0, 30, null),
-                        Styles.circle(Particle.FALLING_WATER , 1.5, 30, new double[]{0, 1, 0}),
-                        Styles.circle(Particle.FALLING_HONEY,1.25, 30, new double[]{0, 0.5, 0})));
+                Styles.styleValues(Styles.circle(1.0, 30, null),
+                        Styles.circle(1.5, 30, new double[]{0, 1, 0}),
+                        Styles.circle(1.25, 30, new double[]{0, 0.5, 0})));
 
         new AnimationValueInitialize("Totem Circle",
-                Styles.styleValues(Styles.circle(Particle.FALLING_LAVA,1.0, 20, null)),
-                new Animations(Particle.TOTEM, new String[]{"xcos(16x)", "x/5 + 0.5", "xsin(16x)", "-xcos(16x)", "x/5 + 0.5", "-xsin(16x)"}, 66, 1, true));
+                Styles.styleValues(Styles.circle(1.0, 10, null)),
+                new Animations(new String[]{"xcos(16x)", "x/5 + 0.5", "xsin(16x)", "-xcos(16x)", "x/5 + 0.5", "-xsin(16x)"}, 66, 1, true));
 
         new AnimationValueInitialize("Totem Circle2",
-                new Animations(Particle.TOTEM, new String[]{"cos(x/6)", "sin(x/6)", "sin(x/8)", "-cos(x/6)", "sin(x/6)", "-sin(x/8)"}, 20, 16, true));
+                new Animations(new String[]{"cos(x/6)", "sin(x/6)", "sin(x/8)", "-cos(x/6)", "sin(x/6)", "-sin(x/8)"}, 20, 16, true));
 
         new AnimationValueInitialize("Fire Circle",
-                new Animations(Particle.TOTEM, new String[]{"cos(x)", "0", "sin(x)", "-1.1*cos(x)", "0.2", "-1.1*sin(x)", "1.2*cos(x)", "0.4", "1.2*sin(x)", "-1.3*cos(x)", "0.6", "-1.3*sin(x)", "1.4*cos(x)", "0.8", "1.4*sin(x)", "-1.5*cos(x)", "1", "-1.5*sin(x)"}, 20, 2, false));
+                new Animations(new String[]{"cos(x)", "0", "sin(x)", "-1.1*cos(x)", "0.2", "-1.1*sin(x)", "1.2*cos(x)", "0.4", "1.2*sin(x)", "-1.3*cos(x)", "0.6", "-1.3*sin(x)", "1.4*cos(x)", "0.8", "1.4*sin(x)", "-1.5*cos(x)", "1", "-1.5*sin(x)"}, 20, 2, false));
     }
 
     public static CosmeticPerks getInstance() {

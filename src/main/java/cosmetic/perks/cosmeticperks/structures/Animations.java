@@ -1,10 +1,7 @@
 package cosmetic.perks.cosmeticperks.structures;
 
-import org.bukkit.Particle;
-
 public class Animations {
 
-    private final Particle ParticleEffect;
     private final String[] EquationList;
     private final double AmountToAdd;
     private final double MaxDistance;
@@ -14,8 +11,7 @@ public class Animations {
     private boolean Reversed;
     private final int TickToComplete;
 
-    public Animations(Particle particleEffect, String[] equationList, int ticksToComplete, double maxDistance, boolean reversingAnimation) {
-        this.ParticleEffect = particleEffect;
+    public Animations(String[] equationList, int ticksToComplete, double maxDistance, boolean reversingAnimation) {
         this.EquationList = equationList;
         this.MaxDistance = maxDistance * Math.PI;
         this.TickToComplete = ticksToComplete;
@@ -43,8 +39,8 @@ public class Animations {
         CurrentDistance = AmountToAdd * CurrentStep;
     }
 
-    public Particle getParticleEffect() {
-        return ParticleEffect;
+    public double getMaxDistance() {
+        return MaxDistance;
     }
 
     public int getTickToComplete() {
