@@ -41,7 +41,7 @@ public class CosmeticsMenu extends TrailManager {
      * @param player The player to show the menu to
      */
     public void displayCosmeticsMenu(Player player){
-        ChestGui gui = new ChestGui(4, ChatColor.BLACK + "" + ChatColor.BOLD + "Cosmetics Menu");
+        ChestGui gui = new ChestGui(4, "Cosmetics Menu");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
 
         OutlinePane background = new OutlinePane(0, 3, 9, 1, Pane.Priority.LOWEST);
@@ -237,7 +237,9 @@ public class CosmeticsMenu extends TrailManager {
         GuiItem item = new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
                         .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + "None"))
-                        .lore(Collections.singletonList(Component.text(ChatColor.YELLOW + "" + ChatColor.ITALIC + "Disables active trail")))
+                        .lore(Arrays.asList(
+                                Component.text(""),
+                                Component.text(ChatColor.RED + "Click to Select")))
                         .build()
         );
         item.setAction(event -> {
