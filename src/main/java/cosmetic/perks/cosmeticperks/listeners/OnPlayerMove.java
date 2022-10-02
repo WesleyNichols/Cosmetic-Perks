@@ -3,8 +3,8 @@ package cosmetic.perks.cosmeticperks.listeners;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
+import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
-import cosmetic.perks.cosmeticperks.structures.Methods;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -28,13 +28,14 @@ public class OnPlayerMove implements Listener {
         if (player.isGliding() && !Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail.TrailProperties trailProperties = ElytraTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING)).getProperties();
 
-            Methods.spawnParticle(player, trailProperties);
+            AnimationManager.spawnParticle(player, trailProperties);
 
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail.TrailProperties trailProperties = PlayerTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)).getProperties();
             if(trailProperties.getAnimation() != null) {return;}
 
-            Methods.spawnParticle(player, trailProperties);
+            AnimationManager.spawnParticle(player, trailProperties);
         }
     }
+
 }

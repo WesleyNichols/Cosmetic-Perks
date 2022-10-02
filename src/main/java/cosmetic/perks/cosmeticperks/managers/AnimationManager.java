@@ -5,6 +5,8 @@ import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -45,5 +47,15 @@ public class AnimationManager {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
         attachParticleAnimation(player, player.getUniqueId(), key, PlayerTrails.valueOf((data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING))));
+    }
+
+    public static void spawnParticle(Entity entity, CustomTrail.TrailProperties trailProperties) {
+        World world = entity.getWorld();
+        world.getPlayers().stream()
+                .filter(e -> e.getWorld().getUID().equals(world.getUID()))
+                .filter(e -> e.getLocation().distance(entity.getLocation()) <= 40)
+                .forEach(e -> e.spawnParticle(trailProperties.getTrailEffect(), entity.getLocation(), trailProperties.getParticleAmount(),
+                        trailProperties.getXOffSet(), trailProperties.getYOffSet(), trailProperties.getZOffSet(), trailProperties.getParticleSpeed())
+                );
     }
 }

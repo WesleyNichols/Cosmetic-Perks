@@ -1,9 +1,6 @@
 package cosmetic.perks.cosmeticperks.managers;
 
-import cosmetic.perks.cosmeticperks.structures.CustomTrail;
-
 import java.util.HashMap;
-import java.util.UUID;
 
 public class AnimationValueManager {
     private static HashMap<String, double[][][]> equationValueList = new HashMap<>();

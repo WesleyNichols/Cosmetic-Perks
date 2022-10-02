@@ -1,8 +1,5 @@
 package cosmetic.perks.cosmeticperks.structures;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-
 public class Animations {
 
     private final String[] EquationList;

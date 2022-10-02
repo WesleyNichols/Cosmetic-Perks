@@ -1,13 +1,12 @@
 package cosmetic.perks.cosmeticperks.enums;
 
-import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
-import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.EquationValues;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 
-public enum PlayerTrails implements CustomTrail{
+public enum PlayerTrails implements CustomTrail {
+
     FIREWORKS       (Material.FIREWORK_ROCKET, "Firework Spark", Particle.FIREWORKS_SPARK,
             .1, .1, .1, .05, 3, null, false),
     MAGMA           (Material.MAGMA_CREAM, "Hot Magma", Particle.DRIP_LAVA,

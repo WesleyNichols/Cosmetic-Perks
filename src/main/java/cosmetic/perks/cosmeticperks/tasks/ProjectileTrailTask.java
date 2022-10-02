@@ -2,9 +2,9 @@ package cosmetic.perks.cosmeticperks.tasks;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
+import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
-import cosmetic.perks.cosmeticperks.structures.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class ProjectileTrailTask extends BukkitRunnable {
+
     public void run() {
         if (!CosmeticPerks.getInstance().isEnabled()) { this.cancel(); }
 
@@ -32,7 +33,8 @@ public class ProjectileTrailTask extends BukkitRunnable {
 
             CustomTrail.TrailProperties projTrails = projTrailList.get(projId).getProperties();
 
-            Methods.spawnParticle(projEntity, projTrails);
+            AnimationManager.spawnParticle(projEntity, projTrails);
         }
     }
+
 }

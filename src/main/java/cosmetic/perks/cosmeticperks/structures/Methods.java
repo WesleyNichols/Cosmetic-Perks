@@ -4,8 +4,6 @@ import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -62,21 +60,5 @@ public abstract class Methods {
      */
     public boolean hasActiveTrail(Player player, String key) {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
-    }
-
-    /**
-     * Checks if a player has a trail or not
-     *
-     * @param entity Entity
-     * @param trailProperties Trail properties of the Enum
-     */
-    public static void spawnParticle(Entity entity, CustomTrail.TrailProperties trailProperties) {
-        World world = entity.getWorld();
-        world.getPlayers().stream()
-                .filter(e -> e.getWorld().getUID().equals(world.getUID()))
-                .filter(e -> e.getLocation().distance(entity.getLocation()) <= 40)
-                .forEach(e -> e.spawnParticle(trailProperties.getTrailEffect(), entity.getLocation(), trailProperties.getParticleAmount(),
-                        trailProperties.getXOffSet(), trailProperties.getYOffSet(), trailProperties.getZOffSet(), trailProperties.getParticleSpeed())
-                );
     }
 }

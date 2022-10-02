@@ -54,6 +54,20 @@ public interface CustomTrail {
             this.Animation = animation;
         }
 
+        public ImmutableProperties(String trailType, Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount,  boolean limitedItem) {
+            this.TrailType = trailType;
+            this.DisplayMaterial = material;
+            this.EffectName = effectName;
+            this.TrailEffect = trailEffect;
+            this.XOffSet = xOffSet;
+            this.YOffSet = yOffSet;
+            this.ZOffSet = zOffSet;
+            this.ParticleSpeed = ParticleSpeed;
+            this.ParticleAmount = ParticleAmount;
+            this.LimitedItem = limitedItem;
+            this.Animation = null;
+        }
+
         @Override
         public ItemStack getItem() {
             return new CustomItem.ItemBuilder(DisplayMaterial)

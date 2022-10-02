@@ -2,9 +2,7 @@ package cosmetic.perks.cosmeticperks.util;
 
 import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
 import cosmetic.perks.cosmeticperks.structures.Animations;
-import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
-import org.bukkit.Bukkit;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,7 +29,7 @@ public class AnimationValueInitialize {
     private double[][][] generateEquationValueList() {
         int length = TicksToComplete * (ReversingAnimation ? 2 : 1);
         double[][][] finalList = new double[EquationList.length/3][length][3];
-        int exprNumber = 0;
+        int exprNumber;
         for (int i=0; i<EquationList.length/3; i++) {
             for(int j=0; j<length; j++) {
                 exprNumber = (i) * 3;
