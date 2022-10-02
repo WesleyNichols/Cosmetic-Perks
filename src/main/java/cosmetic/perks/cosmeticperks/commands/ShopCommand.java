@@ -47,7 +47,7 @@ public class ShopCommand implements CommandExecutor {
 
             if (args.length != 0) {
                 if (args[0].equals("cosmetic")) {
-                    textComponent = textComponent.append(Component.text("\n  [Back to Menu]")
+                    textComponent = textComponent.append(Component.text("\n\n  [Back to Menu]")
                             .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/cosmetic"))
                             .color(NamedTextColor.DARK_BLUE)
                             .decoration(TextDecoration.BOLD, true));
