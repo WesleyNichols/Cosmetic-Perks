@@ -1,7 +1,7 @@
 package cosmetic.perks.cosmeticperks.tasks;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
+import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.EquationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
@@ -14,12 +14,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ParticleAnimationTask extends BukkitRunnable {
+public class AnimationTask extends BukkitRunnable {
 
     public void run() {
         if (!CosmeticPerks.getInstance().isEnabled()) { this.cancel(); }
 
-        HashMap<UUID, CustomTrail> particleAnimationList = ParticleAnimationManager.getParticleAnimationList();
+        HashMap<UUID, CustomTrail> particleAnimationList = AnimationManager.getParticleAnimationList();
         for (UUID entityId : particleAnimationList.keySet()) {
             Entity entity = Bukkit.getEntity(entityId);
             assert entity != null;

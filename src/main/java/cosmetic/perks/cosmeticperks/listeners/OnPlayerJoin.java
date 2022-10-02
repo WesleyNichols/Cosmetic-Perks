@@ -1,5 +1,6 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
+import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.Methods;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,11 +13,11 @@ public class OnPlayerJoin extends Methods implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (!hasActiveTrail(player, "player")) { removeActiveTrail(player, "player"); } else { callAttachParticleAnimation(player, "player"); }
+        if (!hasActiveTrail(player, "player")) { removeActiveTrail(player, "player"); } else { AnimationManager.callAttachParticleAnimation(player, "player"); }
 
-        if (!hasActiveTrail(player, "projectile")) { removeActiveTrail(player, "projectile"); } else { callAttachParticleAnimation(player, "projectile"); }
+        if (!hasActiveTrail(player, "projectile")) { removeActiveTrail(player, "projectile"); } else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
 
-        if (!hasActiveTrail(player, "elytra")) { removeActiveTrail(player, "elytra"); }  else { callAttachParticleAnimation(player, "elytra"); }
+        if (!hasActiveTrail(player, "elytra")) { removeActiveTrail(player, "elytra"); }  else { AnimationManager.callAttachParticleAnimation(player, "elytra"); }
 
     }
 }

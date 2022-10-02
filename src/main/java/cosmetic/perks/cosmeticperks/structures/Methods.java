@@ -1,18 +1,13 @@
 package cosmetic.perks.cosmeticperks.structures;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
+import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.Objects;
-import java.util.UUID;
 
 public abstract class Methods {
 
@@ -43,8 +38,8 @@ public abstract class Methods {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, "NONE");
-        if(ParticleAnimationManager.hasActiveAnimation(player)){
-            ParticleAnimationManager.removeParticleAnimation(player.getUniqueId());
+        if(AnimationManager.hasActiveAnimation(player)){
+            AnimationManager.removeParticleAnimation(player.getUniqueId());
         }
         player.sendMessage(Component.text("Disabled your trails!"));
     }
@@ -69,21 +64,12 @@ public abstract class Methods {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 
-    public <T extends CustomTrail> void attachParticleAnimation(Player player, UUID id, String key, T e) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
-        if (ParticleAnimationManager.hasActiveAnimation(player)) {ParticleAnimationManager.removeParticleAnimation(id);}
-       // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-        ParticleAnimationManager.addParticleAnimation(id, e);
-        player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
-    }
-
-    public void callAttachParticleAnimation(Player player, String key) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
-        attachParticleAnimation(player, player.getUniqueId(), key, PlayerTrails.valueOf((data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING))));
-    }
-
+    /**
+     * Checks if a player has a trail or not
+     *
+     * @param entity Entity
+     * @param trailProperties Trail properties of the Enum
+     */
     public static void spawnParticle(Entity entity, CustomTrail.TrailProperties trailProperties) {
         World world = entity.getWorld();
         world.getPlayers().stream()
