@@ -1,14 +1,17 @@
 package cosmetic.perks.cosmeticperks.structures;
 
+import cosmetic.perks.cosmeticperks.util.Particles;
+import org.bukkit.Particle;
+
 public class AnimationValues {
 
-    private final double[][][] EquationValues;
+    private final Particles[] EquationValues;
     private final int EquationValuesLength;
-    private final double[][][] StyleValues;
+    private final Particles[] StyleValues;
     private final int StyleValuesLength;
     private int CurrentStep;
 
-    public AnimationValues(double[][][] styleValues, double[][][] equationValues) {
+    public AnimationValues(Particles[] styleValues, Particles[] equationValues) {
         this.EquationValues = equationValues;
         this.EquationValuesLength = equationValues.length;
         this.StyleValues = styleValues;
@@ -16,7 +19,7 @@ public class AnimationValues {
         this.CurrentStep = 0;
     }
 
-    public double[][][] getEquationValues() {
+    public Particles[] getEquationValues() {
         return EquationValues;
     }
 
@@ -28,7 +31,7 @@ public class AnimationValues {
         return StyleValuesLength;
     }
 
-    public double[][][] getStyleValues() {
+    public Particles[] getStyleValues() {
         return StyleValues;
     }
 
@@ -38,7 +41,7 @@ public class AnimationValues {
 
     public void addStep() {
         CurrentStep++;
-        if(CurrentStep >= EquationValues[0].length) {
+        if(CurrentStep >= EquationValues[0].getParticleValues().length) {
             CurrentStep = 0;
         }
     }

@@ -1,10 +1,13 @@
 package cosmetic.perks.cosmeticperks.styles;
 
+import cosmetic.perks.cosmeticperks.util.Particles;
+import org.bukkit.Particle;
+
 import javax.annotation.Nullable;
 
 public class Styles {
 
-    public static double[][][] styleValues(double[][]... styles) {
+    public static Particles[] styleValues(Particles... styles) {
         return styles;
     } // TODO Maybe make this return a double[][]
 
@@ -15,7 +18,7 @@ public class Styles {
         return offset;
     }
 
-    public static double[][] circle(double radius, int points, @Nullable double[] offset) {
+    public static Particles circle(Particle particleEffect, double radius, int points, @Nullable double[] offset) {
         offset = checkOffset(offset);
         double[][] styleValues = new double[points][3];
         double amountToAdd = 2*Math.PI/points;
@@ -23,6 +26,6 @@ public class Styles {
             double currentValue = amountToAdd * i;
             styleValues[i] = new double[]{radius * Math.cos(currentValue) + offset[0], offset[1], radius * Math.sin(currentValue) + offset[2]};
         }
-        return styleValues;
+        return new Particles(particleEffect, styleValues);
     } // TODO Maybe make styles return a double[]
 }
