@@ -1,18 +1,13 @@
 package cosmetic.perks.cosmeticperks.structures;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
-import cosmetic.perks.cosmeticperks.enums.ParticleAnimations;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -46,6 +41,9 @@ public abstract class Methods {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING, "NONE");
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING, "NONE");
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING, "NONE");
+        if(ParticleAnimationManager.hasActiveAnimation(player)){
+            ParticleAnimationManager.removeParticleAnimation(player.getUniqueId());
+        }
         player.sendMessage(Component.text("Disabled your trails!"));
     }
 
@@ -69,18 +67,12 @@ public abstract class Methods {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 
-    public boolean hasActiveAnimation(Player player) {
-        PersistentDataContainer data = player.getPersistentDataContainer();
-        return PlayerTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)).getProperties().getAnimation() != null
-                || ElytraTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING)).getProperties().getAnimation() != null
-                || ElytraTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING)).getProperties().getAnimation() != null;
-    }
-
     public <T extends CustomTrail> void attachParticleAnimation(Player player, UUID id, String key, T e) {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
+        if (ParticleAnimationManager.hasActiveAnimation(player)) {ParticleAnimationManager.removeParticleAnimation(id);}
        // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-        ParticleAnimationManager.addParticleAnimation(id, e); //TODO OnPlayerJoin
+        ParticleAnimationManager.addParticleAnimation(id, e);
         player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
     }
 

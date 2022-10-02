@@ -1,13 +1,13 @@
 package cosmetic.perks.cosmeticperks.managers;
 
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
+import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class ParticleAnimationManager {
 
-    private static HashMap<UUID, CustomTrail> particleAnimationList = new HashMap<>();
+    private static final HashMap<UUID, CustomTrail> particleAnimationList = new HashMap<>();
 
     public static HashMap<UUID, CustomTrail> getParticleAnimationList() {
         return new HashMap<>(particleAnimationList);
@@ -19,5 +19,8 @@ public class ParticleAnimationManager {
 
     public static void removeParticleAnimation(UUID entity) {
         particleAnimationList.remove(entity);
+    }
+    public static boolean hasActiveAnimation(Player player) {
+        return particleAnimationList.containsKey(player.getUniqueId());
     }
 }

@@ -11,6 +11,7 @@ import com.github.stefvanschie.inventoryframework.pane.component.Label;
 import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
 import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
+import cosmetic.perks.cosmeticperks.managers.ParticleAnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.Methods;
@@ -241,8 +242,8 @@ public class CosmeticsMenu extends Methods {
         );
         item.setAction(event -> {
             removeActiveTrail(player, key);
-            if(hasActiveAnimation(player)){
-                // Remove active animation
+            if(ParticleAnimationManager.hasActiveAnimation(player)){
+                ParticleAnimationManager.removeParticleAnimation(player.getUniqueId());
             }
             enableItem(item);
             pages.getItems().forEach(this::disableItem);
