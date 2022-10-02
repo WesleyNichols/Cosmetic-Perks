@@ -78,10 +78,15 @@ public abstract class Methods {
 
     public <T extends CustomTrail> void attachParticleAnimation(Player player, UUID id, String key, T e) {
         PersistentDataContainer data = player.getPersistentDataContainer();
-        if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {
-           // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-            ParticleAnimationManager.addParticleAnimation(id, e); //TODO OnPlayerJoin
-            player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
-        }
+        if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
+       // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
+        ParticleAnimationManager.addParticleAnimation(id, e); //TODO OnPlayerJoin
+        player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
+    }
+
+    public void callAttachParticleAnimation(Player player, String key) {
+        PersistentDataContainer data = player.getPersistentDataContainer();
+        if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
+        attachParticleAnimation(player, player.getUniqueId(), key, PlayerTrails.valueOf((data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING))));
     }
 }

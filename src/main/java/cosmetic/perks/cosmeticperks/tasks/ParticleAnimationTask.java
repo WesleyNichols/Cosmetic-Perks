@@ -12,6 +12,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -38,12 +39,13 @@ public class ParticleAnimationTask extends BukkitRunnable {
         for (UUID entityId : particleAnimationList.keySet()) {
             Entity entity = Bukkit.getEntity(entityId);
 
-            if (entity == null) {
-                ParticleAnimationManager.removeParticleAnimation(entityId);
-                continue;
+            if (entity instanceof Player && entity.isDead()) {
+                return;
             }
 
-            if (entity.isDead()) {
+            if (entity == null) {
+                entity.sendMessage(Component.text("removed"));
+                ParticleAnimationManager.removeParticleAnimation(entityId);
                 continue;
             }
 

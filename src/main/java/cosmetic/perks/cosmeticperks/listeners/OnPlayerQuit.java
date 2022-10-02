@@ -13,7 +13,7 @@ public class OnPlayerQuit extends Methods implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         if(hasActiveAnimation(event.getPlayer())) {
-//            TODO ParticleAnimationManager.removeParticleAnimation(event.getPlayer().getUniqueId());
+            ParticleAnimationManager.removeParticleAnimation(event.getPlayer().getUniqueId());
             Bukkit.broadcast(Component.text("Removed Animation"));
         }
     }
