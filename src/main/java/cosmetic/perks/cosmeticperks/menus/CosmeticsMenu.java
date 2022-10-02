@@ -14,7 +14,7 @@ import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
-import cosmetic.perks.cosmeticperks.structures.Methods;
+import cosmetic.perks.cosmeticperks.managers.TrailManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class CosmeticsMenu extends Methods {
+public class CosmeticsMenu extends TrailManager {
 
     public final ItemStack filler = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(Component.text("")).build();
 

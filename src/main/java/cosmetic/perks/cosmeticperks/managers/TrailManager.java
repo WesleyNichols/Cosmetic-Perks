@@ -1,13 +1,16 @@
-package cosmetic.perks.cosmeticperks.structures;
+package cosmetic.perks.cosmeticperks.managers;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.managers.AnimationManager;
+import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
-public abstract class Methods {
+public abstract class TrailManager {
 
     /**
      * Sets and stores the player's active trail
@@ -60,5 +63,21 @@ public abstract class Methods {
      */
     public boolean hasActiveTrail(Player player, String key) {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
+    }
+
+    /**
+     * Displays particles at an Entity, given the TrailProperties to show
+     *
+     * @param entity The entity to display from
+     * @param trailProperties The trail to display
+     */
+    public static void spawnParticle(Entity entity, CustomTrail.TrailProperties trailProperties) {
+        World world = entity.getWorld();
+        world.getPlayers().stream()
+                .filter(e -> e.getWorld().getUID().equals(world.getUID()))
+                .filter(e -> e.getLocation().distance(entity.getLocation()) <= 40)
+                .forEach(e -> e.spawnParticle(trailProperties.getTrailEffect(), entity.getLocation(), trailProperties.getParticleAmount(),
+                        trailProperties.getXOffSet(), trailProperties.getYOffSet(), trailProperties.getZOffSet(), trailProperties.getParticleSpeed())
+                );
     }
 }

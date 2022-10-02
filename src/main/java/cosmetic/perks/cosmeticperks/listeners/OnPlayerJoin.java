@@ -1,14 +1,14 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
 import cosmetic.perks.cosmeticperks.managers.AnimationManager;
-import cosmetic.perks.cosmeticperks.structures.Methods;
+import cosmetic.perks.cosmeticperks.managers.TrailManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 
-public class OnPlayerJoin extends Methods implements Listener {
+public class OnPlayerJoin extends TrailManager implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {

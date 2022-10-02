@@ -38,9 +38,7 @@ public class AnimationManager {
         if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
         if (AnimationManager.hasActiveAnimation(player)) {
             AnimationManager.removeParticleAnimation(id);}
-        // T particleAnimations = e.(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
         AnimationManager.addParticleAnimation(id, e);
-        player.sendMessage(Component.text("Animations trail attached to " + player.getName()));
     }
 
     public static void callAttachParticleAnimation(Player player, String key) {
@@ -49,13 +47,4 @@ public class AnimationManager {
         attachParticleAnimation(player, player.getUniqueId(), key, PlayerTrails.valueOf((data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING))));
     }
 
-    public static void spawnParticle(Entity entity, CustomTrail.TrailProperties trailProperties) {
-        World world = entity.getWorld();
-        world.getPlayers().stream()
-                .filter(e -> e.getWorld().getUID().equals(world.getUID()))
-                .filter(e -> e.getLocation().distance(entity.getLocation()) <= 40)
-                .forEach(e -> e.spawnParticle(trailProperties.getTrailEffect(), entity.getLocation(), trailProperties.getParticleAmount(),
-                        trailProperties.getXOffSet(), trailProperties.getYOffSet(), trailProperties.getZOffSet(), trailProperties.getParticleSpeed())
-                );
-    }
 }

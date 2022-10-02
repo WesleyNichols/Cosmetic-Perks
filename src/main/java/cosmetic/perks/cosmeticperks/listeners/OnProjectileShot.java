@@ -3,7 +3,7 @@ package cosmetic.perks.cosmeticperks.listeners;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
-import cosmetic.perks.cosmeticperks.structures.Methods;
+import cosmetic.perks.cosmeticperks.managers.TrailManager;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.FishHook;
@@ -17,7 +17,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
-public class OnProjectileShot extends Methods implements Listener {
+public class OnProjectileShot extends TrailManager implements Listener {
 
     @EventHandler
     public void onProjectileShoot(ProjectileLaunchEvent event) {
