@@ -22,7 +22,7 @@ public interface CustomTrail {
         double getZOffSet();
         double getParticleSpeed();
         int getParticleAmount();
-        EquationValues getAnimation();
+        AnimationValues getAnimation();
         boolean isLimitedItem();
     }
 
@@ -38,9 +38,9 @@ public interface CustomTrail {
         private final double ParticleSpeed;
         private final int ParticleAmount;
         private final boolean LimitedItem;
-        private final EquationValues Animation;
+        private final AnimationValues Animation;
 
-        public ImmutableProperties(String trailType, Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, EquationValues animation, boolean limitedItem) {
+        public ImmutableProperties(String trailType, Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, AnimationValues animation, boolean limitedItem) {
             this.TrailType = trailType;
             this.DisplayMaterial = material;
             this.EffectName = effectName;
@@ -116,7 +116,7 @@ public interface CustomTrail {
         }
 
         @Override
-        public EquationValues getAnimation() {
+        public AnimationValues getAnimation() {
             return Animation;
         }
 
