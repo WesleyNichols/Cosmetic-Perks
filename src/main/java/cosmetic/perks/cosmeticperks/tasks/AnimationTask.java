@@ -49,6 +49,7 @@ public class AnimationTask extends BukkitRunnable {
                                 }
                                 if(particleAnimationValues.getStyleValuesLength() != 0) {
                                     for(double[] loc: particleAnimationValues.getStyleValues()) {
+                                        Bukkit.broadcast(Component.text(loc[2]));
                                         player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
                                                 particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
                                     }
