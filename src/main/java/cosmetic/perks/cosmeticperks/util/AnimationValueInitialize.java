@@ -14,9 +14,9 @@ public class AnimationValueInitialize {
     private final int TicksToComplete;
     private final boolean ReversingAnimation;
     private final Animations Animation;
-    private final double[][][] StyleValues;
+    private final double[][] StyleValues;
 
-    public AnimationValueInitialize(String name, double[][][] styleValues, Animations animation) {
+    public AnimationValueInitialize(String name, double[][] styleValues, Animations animation) {
         this.Name = name;
         this.Animation = animation;
         this.StyleValues = styleValues;
@@ -26,7 +26,7 @@ public class AnimationValueInitialize {
         initialize();
     }
 
-    public AnimationValueInitialize(String name, double[][][] styleValues) {
+    public AnimationValueInitialize(String name, double[][] styleValues) {
         this.Name = name;
         this.Animation = null;
         this.StyleValues = styleValues;
@@ -39,7 +39,7 @@ public class AnimationValueInitialize {
     public AnimationValueInitialize(String name, Animations animation) {
         this.Name = name;
         this.Animation = animation;
-        this.StyleValues = new double[][][]{};
+        this.StyleValues = new double[][]{};
         this.EquationList = animation.getEquationList();
         this.TicksToComplete = animation.getTickToComplete();
         this.ReversingAnimation = animation.isReversingAnimation();

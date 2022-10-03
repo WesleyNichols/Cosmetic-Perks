@@ -5,6 +5,7 @@ import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.AnimationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -47,15 +48,16 @@ public class AnimationTask extends BukkitRunnable {
                                     particleAnimationValues.addStep();
                                 }
                                 if(particleAnimationValues.getStyleValuesLength() != 0) {
-                                    for(double[][] style: particleAnimationValues.getStyleValues()) {
-                                        for(double[] loc: style) {
-                                            player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
-                                                    particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
-                                        }
+                                    for(double[] loc: particleAnimationValues.getStyleValues()) {
+                                        player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
+                                                particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
                                     }
                                 }
                             }
                     );
+            if(particleAnimationValues.getEquationValuesLength() != 0) {
+                particleAnimationValues.addStep();
+            }
         }
     }
 }
