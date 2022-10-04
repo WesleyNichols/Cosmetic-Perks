@@ -1,5 +1,7 @@
 package cosmetic.perks.cosmeticperks.styles;
 
+import cosmetic.perks.cosmeticperks.util.VectorUtils;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,9 +46,9 @@ public class Styles {
         double amountToAdd = 2*Math.PI/points;
         for(int i = 0; i < points; i++){
             double currentValue = amountToAdd * i;
-            styleValues[i] = new double[]{Math.cos(Math.toRadians(angleOffset[1])) * radius * Math.cos(currentValue) + positionOffset[0],
-                    Math.cos(Math.toRadians(90-angleOffset[1])) * radius * Math.cos(currentValue) + positionOffset[1],
-                    radius * Math.sin(currentValue) + positionOffset[2]};
+            styleValues[i] = VectorUtils.rotateVector(new double[]{radius * Math.cos(currentValue) + positionOffset[0],
+                    positionOffset[1],
+                    radius * Math.sin(currentValue) + positionOffset[2]}, angleOffset[0], angleOffset[1]);
         }
         return styleValues;
     }
@@ -73,7 +75,7 @@ public class Styles {
         double[][] styleValues = new double[styleValuesTemp.size()][3];
         for(int i = 0; i < styleValuesTemp.size(); i++){
             List<Double> doubleList = styleValuesTemp.get(i);
-            styleValues[i] = new double[]{doubleList.get(0), doubleList.get(1), doubleList.get(2)};
+            styleValues[i] = VectorUtils.rotateVector(new double[]{doubleList.get(0), doubleList.get(1), doubleList.get(2)}, angleOffset[0], angleOffset[1]);
         }
         return styleValues;
     }
