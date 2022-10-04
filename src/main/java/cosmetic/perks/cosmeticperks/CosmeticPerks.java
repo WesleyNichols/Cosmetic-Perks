@@ -43,9 +43,13 @@ public final class CosmeticPerks extends JavaPlugin {
 
     public void initializeAnimations() {
         new AnimationValueInitialize("Fire Circle1",
-                Styles.styleValues(//Styles.circle(1.25, 30, new double[]{45, 0, 0}, new double[]{0, 1, 0}),
-                        //Styles.circle(1.25, 30, new double[]{-45, 0, 0}, new double[]{0, 1, 0}),
-                        Styles.rectangle(1, 1,  30, null, null)
+                Styles.styleValues(Styles.circle(1.75, 30, new double[]{0, 30, 0}, new double[]{0, 1, 0}),
+                        Styles.circle(1.75, 30, new double[]{0, -30, 0}, new double[]{0, 1, 0}),
+                        Styles.circle(1.75, 30, new double[]{0, 60, 0}, new double[]{0, 1, 0}),
+                        Styles.circle(1.75, 30, new double[]{0, -60, 0}, new double[]{0, 1, 0}),
+                        Styles.square(2.5, 4, null, new double[]{0, 1, 0}),
+                        Styles.square(2, 4, null, new double[]{0, 0.5, 0}),
+                        Styles.square(1.5, 4, null, null)
                         ));
 
         new AnimationValueInitialize("Totem Circle",

@@ -1,6 +1,10 @@
 package cosmetic.perks.cosmeticperks.styles;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class Styles {
 
@@ -47,21 +51,29 @@ public class Styles {
         return styleValues;
     }
 
-    public static double[][] rectangle(double length, double width, int points, @Nullable double[] angleOffset, @Nullable double[] positionOffset) {
+    public static double[][] square(double size, int pointsPerSide, @Nullable double[] angleOffset, @Nullable double[] positionOffset) {
         angleOffset = checkAngleOffset(angleOffset);
         positionOffset = checkOffset(positionOffset);
-        double[][] styleValues = new double[points][3];
-        double amountToAdd = (length+width)/points;
-        double minX = -length/2;
-        double maxX = length/2;
-        double minY = -width/2;
-        double maxY = width/2;
-        double tempX = minX;
-        double tempY = minY;
-        for (int i = 0; i < points; i++) {
-            tempX += amountToAdd;
-            tempY += amountToAdd;
-            styleValues[i] = new double[]{tempX, 0, minY};
+        List<List<Double>> styleValuesTemp = new ArrayList<>();
+        double amountToAdd = 2*(size)/(pointsPerSide*4);
+        double min = -size/2;
+        double max = size/2;
+        styleValuesTemp.add(Arrays.asList(min+positionOffset[0], positionOffset[1], min+positionOffset[2]));
+        styleValuesTemp.add(Arrays.asList(min+positionOffset[0], positionOffset[1], max+positionOffset[2]));
+        styleValuesTemp.add(Arrays.asList(max+positionOffset[0], positionOffset[1], min+positionOffset[2]));
+        styleValuesTemp.add(Arrays.asList(max+positionOffset[0], positionOffset[1], max+positionOffset[2]));
+        for (double x = min+amountToAdd; x <= max-amountToAdd; x+=amountToAdd) {
+            styleValuesTemp.add(Arrays.asList(x+positionOffset[0], positionOffset[1], min+positionOffset[2]));
+            styleValuesTemp.add(Arrays.asList(x+positionOffset[0], positionOffset[1], max+positionOffset[2]));
+        }
+        for (double z = min+amountToAdd; z <= max-amountToAdd; z+=amountToAdd) {
+            styleValuesTemp.add(Arrays.asList(min+positionOffset[0], positionOffset[1], z+positionOffset[2]));
+            styleValuesTemp.add(Arrays.asList(max+positionOffset[0], positionOffset[1], z+positionOffset[2]));
+        }
+        double[][] styleValues = new double[styleValuesTemp.size()][3];
+        for(int i = 0; i < styleValuesTemp.size(); i++){
+            List<Double> doubleList = styleValuesTemp.get(i);
+            styleValues[i] = new double[]{doubleList.get(0), doubleList.get(1), doubleList.get(2)};
         }
         return styleValues;
     }
