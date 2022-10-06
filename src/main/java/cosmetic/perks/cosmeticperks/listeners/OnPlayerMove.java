@@ -1,10 +1,8 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
-import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.managers.TrailManager;
+import cosmetic.perks.cosmeticperks.managers.TrailMethods;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
@@ -27,15 +25,15 @@ public class OnPlayerMove implements Listener {
 
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (player.isGliding() && !Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
-            CustomTrail.TrailProperties trailProperties = ElytraTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING)).getProperties();
+            CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING));
 
-            TrailManager.spawnParticle(player, trailProperties);
+            TrailMethods.spawnParticle(player, trail);
 
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
-            CustomTrail.TrailProperties trailProperties = PlayerTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING)).getProperties();
+            CustomTrail trailProperties = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING));
             if(trailProperties.getAnimation() != null) {return;}
 
-            TrailManager.spawnParticle(player, trailProperties);
+            TrailMethods.spawnParticle(player, trailProperties);
         }
     }
 

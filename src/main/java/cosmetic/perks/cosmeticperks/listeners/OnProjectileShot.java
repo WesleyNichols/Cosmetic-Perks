@@ -1,9 +1,10 @@
 package cosmetic.perks.cosmeticperks.listeners;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
-import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.ProjectileTrailManager;
 import cosmetic.perks.cosmeticperks.managers.TrailManager;
+import cosmetic.perks.cosmeticperks.managers.TrailMethods;
+import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.FishHook;
@@ -17,12 +18,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
-public class OnProjectileShot extends TrailManager implements Listener {
+public class OnProjectileShot extends TrailMethods implements Listener {
 
     @EventHandler
     public void onProjectileShoot(ProjectileLaunchEvent event) {
-        if (event.getEntity().getShooter() instanceof Player) {
-            Player player = (Player) event.getEntity().getShooter();
+        if (event.getEntity().getShooter() instanceof Player player) {
 
             if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
 
@@ -30,7 +30,7 @@ public class OnProjectileShot extends TrailManager implements Listener {
 
             PersistentDataContainer data = player.getPersistentDataContainer();
             if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING), "NONE")) {
-                ProjectileTrails projectileTrails = ProjectileTrails.valueOf(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING));
+                CustomTrail projectileTrails = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING));
                 ProjectileTrailManager.addProjTrail(event.getEntity().getUniqueId(), projectileTrails);
             }
         }

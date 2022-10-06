@@ -8,121 +8,125 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
-public interface CustomTrail {
+public class CustomTrail {
 
-    TrailProperties getProperties();
-    String getTrailType();
+    private final String TrailType;
+    private final Material DisplayMaterial;
+    private final String EffectName;
+    private final Particle TrailEffect;
+    private final double[] Offset;
+    private final double ParticleSpeed;
+    private final int ParticleAmount;
+    private final boolean LimitedItem;
+    private final AnimationValues Animation;
 
-    interface TrailProperties {
-        ItemStack getItem();
-        String getEffectName();
-        Particle getTrailEffect();
-        double getXOffSet();
-        double getYOffSet();
-        double getZOffSet();
-        double getParticleSpeed();
-        int getParticleAmount();
-        AnimationValues getAnimation();
-        boolean isLimitedItem();
+    public CustomTrail(CustomTrailBuilder builder) {
+        this.TrailType = builder.trailType;
+        this.DisplayMaterial = builder.displayMaterial;
+        this.EffectName = builder.effectName;
+        this.TrailEffect = builder.trailEffect;
+        this.Offset = builder.offset;
+        this.ParticleSpeed = builder.particleSpeed;
+        this.ParticleAmount = builder.particleAmount;
+        this.LimitedItem = builder.limitedItem;
+        this.Animation = builder.animation;
     }
 
-    final class ImmutableProperties implements TrailProperties {
+    public ItemStack getItem() {
+        return new CustomItem.ItemBuilder(DisplayMaterial)
+                .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + EffectName))
+                .lore(Arrays.asList(
+                        Component.text(ChatColor.ITALIC + (getAnimation() != null ? ChatColor.GOLD + "Animated ": ChatColor.YELLOW + "")
+                                + (TrailType.substring(0, 1).toUpperCase() + TrailType.substring(1)) + " Trail"),
+                        Component.text(""),
+                        Component.text(ChatColor.RED + "Click to Select")))
+                .build();
+    }
 
-        private final String TrailType;
-        private final Material DisplayMaterial;
-        private final String EffectName;
-        private final Particle TrailEffect;
-        private final double XOffSet;
-        private final double YOffSet;
-        private final double ZOffSet;
-        private final double ParticleSpeed;
-        private final int ParticleAmount;
-        private final boolean LimitedItem;
-        private final AnimationValues Animation;
+    public String getEffectName() {
+        return EffectName;
+    }
 
-        public ImmutableProperties(String trailType, Material material, String effectName, Particle trailEffect, double xOffSet, double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount, AnimationValues animation, boolean limitedItem) {
-            this.TrailType = trailType;
-            this.DisplayMaterial = material;
-            this.EffectName = effectName;
-            this.TrailEffect = trailEffect;
-            this.XOffSet = xOffSet;
-            this.YOffSet = yOffSet;
-            this.ZOffSet = zOffSet;
-            this.ParticleSpeed = ParticleSpeed;
-            this.ParticleAmount = ParticleAmount;
-            this.LimitedItem = limitedItem;
-            this.Animation = animation;
+    public Particle getTrailEffect() {
+        return TrailEffect;
+    }
+
+    public double[] getOffset() {
+        return Offset;
+    }
+
+    public double getParticleSpeed() {
+        return ParticleSpeed;
+    }
+
+    public int getParticleAmount() {
+        return ParticleAmount;
+    }
+
+    public AnimationValues getAnimation() {
+        return Animation;
+    }
+
+    public boolean isLimitedItem() {
+        return LimitedItem;
+    }
+
+    public static class CustomTrailBuilder {
+        private final String trailType;
+        private Material displayMaterial;
+        private final String effectName;
+        private Particle trailEffect;
+        private double[] offset;
+        private double particleSpeed;
+        private int particleAmount;
+        private boolean limitedItem;
+        private AnimationValues animation;
+
+        public CustomTrailBuilder(String trailType, String effectName) {
+            this.trailType = trailType;
+            this.effectName = effectName;
         }
 
-        public ImmutableProperties(String trailType, Material material, String effectName, Particle trailEffect, double xOffSet,  double yOffSet, double zOffSet, double ParticleSpeed, int ParticleAmount,  boolean limitedItem) {
-            this.TrailType = trailType;
-            this.DisplayMaterial = material;
-            this.EffectName = effectName;
-            this.TrailEffect = trailEffect;
-            this.XOffSet = xOffSet;
-            this.YOffSet = yOffSet;
-            this.ZOffSet = zOffSet;
-            this.ParticleSpeed = ParticleSpeed;
-            this.ParticleAmount = ParticleAmount;
-            this.LimitedItem = limitedItem;
-            this.Animation = null;
+        public CustomTrailBuilder displayMaterial(Material material) {
+            this.displayMaterial = material;
+            return this;
         }
 
-        @Override
-        public ItemStack getItem() {
-            return new CustomItem.ItemBuilder(DisplayMaterial)
-                    .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + EffectName))
-                    .lore(Arrays.asList(
-                            Component.text(ChatColor.ITALIC + (getAnimation() != null ? ChatColor.GOLD + "Animated ": ChatColor.YELLOW + "")
-                                    + (TrailType.substring(0, 1).toUpperCase() + TrailType.substring(1)) + " Trail"),
-                            Component.text(""),
-                            Component.text(ChatColor.RED + "Click to Select")))
-                    .build();
+        public CustomTrailBuilder trailEffect(Particle trailEffect) {
+            this.trailEffect = trailEffect;
+            return this;
         }
 
-        @Override
-        public String getEffectName() {
-            return EffectName;
+        public CustomTrailBuilder offset(double[] offset) {
+            this.offset = offset;
+            return this;
         }
 
-        @Override
-        public Particle getTrailEffect() {
-            return this.TrailEffect;
+        public CustomTrailBuilder particleSpeed(double speed) {
+            this.particleSpeed = speed;
+            return this;
         }
 
-        @Override
-        public double getXOffSet() {
-            return XOffSet;
+        public CustomTrailBuilder particleAmount(int amount) {
+            this.particleAmount = amount;
+            return this;
         }
 
-        @Override
-        public double getYOffSet() {
-            return YOffSet;
+        public CustomTrailBuilder limitedItem(boolean value) {
+            this.limitedItem = value;
+            return this;
         }
 
-        @Override
-        public double getZOffSet() {
-            return ZOffSet;
+        public CustomTrailBuilder animation(AnimationValues values) {
+            this.animation = values;
+            return this;
         }
 
-        @Override
-        public double getParticleSpeed() {
-            return ParticleSpeed;
-        }
-
-        @Override
-        public int getParticleAmount() {
-            return ParticleAmount;
-        }
-
-        @Override
-        public AnimationValues getAnimation() {
-            return Animation;
-        }
-
-        @Override
-        public boolean isLimitedItem() {
-            return LimitedItem;
+        public CustomTrail build() {
+            if(this.trailEffect == null) {this.trailEffect = Particle.REDSTONE;}
+            if(this.displayMaterial == null) {this.displayMaterial = Material.WHITE_WOOL;}
+            if(this.offset == null) {this.offset = new double[]{0,0,0};}
+            return new CustomTrail(this);
         }
     }
 }

@@ -20,8 +20,7 @@ public class ShopCommand implements CommandExecutor {
     private static final String shop = "https://media.tenor.com/LIhLGbs7jSIAAAAC/rat-jam.gif";
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
             BookMeta bookmeta = (BookMeta) book.getItemMeta();
             bookmeta.setAuthor("");

@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class AnimationValueManager {
     private static final HashMap<String, AnimationValues> equationValueList = new HashMap<>();
 
-    public static AnimationValues getEquationValues(String name) {
+    public static AnimationValues getAnimationValues(String name) {
         return equationValueList.get(name);
     }
 

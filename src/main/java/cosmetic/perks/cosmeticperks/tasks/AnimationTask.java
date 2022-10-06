@@ -5,7 +5,6 @@ import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.AnimationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -29,9 +28,10 @@ public class AnimationTask extends BukkitRunnable {
                 return;
             }
 
-            CustomTrail.TrailProperties particleProperties = particleAnimationList.get(entityId).getProperties();
+            CustomTrail particleProperties = particleAnimationList.get(entityId);
             AnimationValues particleAnimationValues = particleProperties.getAnimation();
             int step = particleAnimationValues.getCurrentStep();
+            double[] offset = particleProperties.getOffset();
 
 
             World world = entity.getWorld();
@@ -43,14 +43,14 @@ public class AnimationTask extends BukkitRunnable {
                                 if(particleAnimationValues.getEquationValuesLength() != 0) {
                                     for(double[][] loc: particleAnimationValues.getEquationValues()) {
                                         player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[step][0], loc[step][1], loc[step][2]), particleProperties.getParticleAmount(),
-                                                particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
+                                                offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
                                     }
                                     particleAnimationValues.addStep();
                                 }
                                 if(particleAnimationValues.getStyleValuesLength() != 0) {
                                     for(double[] loc: particleAnimationValues.getStyleValues()) {
                                         player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
-                                                particleProperties.getXOffSet(), particleProperties.getYOffSet(), particleProperties.getZOffSet(), particleProperties.getParticleSpeed());
+                                                offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
                                     }
                                 }
                             }

@@ -39,13 +39,13 @@ public enum PlayerTrails implements CustomTrail {
     STAR_LIGHT      (Material.FIRE_CHARGE, "Star Light", Particle.END_ROD,
             .2, .2, .2, 0.1, 5, null, false),
     TOTEM_CIRCLE    (Material.TOTEM_OF_UNDYING, "Totem Circle", Particle.TOTEM,
-            0, 0, 0, 0, 0, AnimationValueManager.getEquationValues("Totem Circle"), false),
+            0, 0, 0, 0, 0, AnimationValueManager.getAnimationValues("Totem Circle"), false),
     TOTEM_CIRCLE2    (Material.TOTEM_OF_UNDYING, "Totem Circle2", Particle.TOTEM,
-            0, 1, 0, 0, 0, AnimationValueManager.getEquationValues("Totem Circle2"), false),
+            0, 1, 0, 0, 0, AnimationValueManager.getAnimationValues("Totem Circle2"), false),
     CIRCLE    (Material.LAVA_BUCKET, "Fire Circle", Particle.DRIP_LAVA,
-            0, 2, 0, 0, 0, AnimationValueManager.getEquationValues("Fire Circle"), false),
+            0, 2, 0, 0, 0, AnimationValueManager.getAnimationValues("Fire Circle"), false),
     FIRE_CIRCLE    (Material.LAVA_BUCKET, "Fire Circle1", Particle.DRIP_LAVA,
-            0, 0, 0, 0, 0, AnimationValueManager.getEquationValues("Fire Circle1"), false)
+            0, 0, 0, 0, 0, AnimationValueManager.getAnimationValues("Fire Circle1"), false)
     ;
 
     private final TrailProperties properties;

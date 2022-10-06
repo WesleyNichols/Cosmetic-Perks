@@ -1,0 +1,13 @@
+# DO NOT USE ANIMATIONS IN THIS FILE
+# Follow this structure to create a projectile trail
+# The only required field is the effect name
+# For all lists, surround them with [] and use semicolons to separate the components(e.g [0;0;0])
+# White space is not allowed in lists
+#
+# effect_name:
+#   particle: particle_name(case-sensitive)
+#   display_material: material(case-sensitive)
+#   offset: [x;y;z]
+#   particle_speed: speed(double)
+#   particle_amount: amount(int)
+#   limited_item: true/false

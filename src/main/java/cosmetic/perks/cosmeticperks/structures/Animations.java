@@ -10,8 +10,9 @@ public class Animations {
     private int CurrentStep;
     private boolean Reversed;
     private final int TickToComplete;
+    private final double[] Offset;
 
-    public Animations(String[] equationList, int ticksToComplete, double maxDistance, boolean reversingAnimation) {
+    public Animations(String[] equationList, int ticksToComplete, double maxDistance, double[] offset, boolean reversingAnimation) {
         this.EquationList = equationList;
         this.MaxDistance = maxDistance * Math.PI;
         this.TickToComplete = ticksToComplete;
@@ -19,6 +20,7 @@ public class Animations {
         this.AmountToAdd = MaxDistance/TickToComplete;
         this.CurrentDistance = 0.0;
         this.CurrentStep = 0;
+        this.Offset = offset;
         this.Reversed = false;
     }
 
@@ -53,6 +55,10 @@ public class Animations {
 
     public String[] getEquationList() {
         return EquationList;
+    }
+
+    public double[] getOffset() {
+        return Offset;
     }
 
     public boolean isReversingAnimation() {
