@@ -56,25 +56,26 @@ public class Styles {
         angleOffset = checkAngleOffset(angleOffset);
         offset = checkOffset(offset);
         List<List<Double>> styleValuesTemp = new ArrayList<>();
-        double amountToAdd = 2*(size)/(pointsPerSide*4);
+        double amountToAdd = size/(pointsPerSide+1);
         double min = -size/2;
         double max = size/2;
-        styleValuesTemp.add(Arrays.asList(min+offset[0], offset[1], min+offset[2]));
-        styleValuesTemp.add(Arrays.asList(min+offset[0], offset[1], max+offset[2]));
-        styleValuesTemp.add(Arrays.asList(max+offset[0], offset[1], min+offset[2]));
-        styleValuesTemp.add(Arrays.asList(max+offset[0], offset[1], max+offset[2]));
-        for (double x = min+amountToAdd; x <= max-amountToAdd; x+=amountToAdd) {
-            styleValuesTemp.add(Arrays.asList(x+offset[0], offset[1], min+offset[2]));
-            styleValuesTemp.add(Arrays.asList(x+offset[0], offset[1], max+offset[2]));
+        styleValuesTemp.add(Arrays.asList(min, 0.0, min));
+        styleValuesTemp.add(Arrays.asList(min, 0.0, max));
+        styleValuesTemp.add(Arrays.asList(max, 0.0, min));
+        styleValuesTemp.add(Arrays.asList(max, 0.0, max));
+        for (double x = min+amountToAdd; x <= max; x+=amountToAdd) {
+            styleValuesTemp.add(Arrays.asList(x, 0.0, min));
+            styleValuesTemp.add(Arrays.asList(x, 0.0, max));
         }
-        for (double z = min+amountToAdd; z <= max-amountToAdd; z+=amountToAdd) {
-            styleValuesTemp.add(Arrays.asList(min+offset[0], offset[1], z+offset[2]));
-            styleValuesTemp.add(Arrays.asList(max+offset[0], offset[1], z+offset[2]));
+        for (double z = min+amountToAdd; z <= max; z+=amountToAdd) {
+            styleValuesTemp.add(Arrays.asList(min, 0.0, z));
+            styleValuesTemp.add(Arrays.asList(max, 0.0, z));
         }
         double[][] styleValues = new double[styleValuesTemp.size()][3];
         for(int i = 0; i < styleValuesTemp.size(); i++){
             List<Double> doubleList = styleValuesTemp.get(i);
-            styleValues[i] = VectorUtils.rotateVector(new double[]{doubleList.get(0), doubleList.get(1), doubleList.get(2)}, angleOffset[0], angleOffset[1]);
+            double[] rotatedVector = VectorUtils.rotateVector(new double[]{doubleList.get(0), doubleList.get(1), doubleList.get(2)}, angleOffset[0], angleOffset[1]);
+            styleValues[i] = new double[]{rotatedVector[0] + offset[0], rotatedVector[1] + offset[1], rotatedVector[2] + offset[2]};
         }
         return styleValues;
     }

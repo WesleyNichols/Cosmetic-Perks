@@ -7,10 +7,13 @@ import cosmetic.perks.cosmeticperks.listeners.OnPlayerJoin;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerQuit;
 import cosmetic.perks.cosmeticperks.listeners.OnProjectileShot;
 import cosmetic.perks.cosmeticperks.listeners.OnPlayerMove;
+import cosmetic.perks.cosmeticperks.managers.TrailMethods;
 import cosmetic.perks.cosmeticperks.tasks.AnimationTask;
 import cosmetic.perks.cosmeticperks.tasks.ProjectileTrailTask;
 import cosmetic.perks.cosmeticperks.config.CustomConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +25,7 @@ public final class CosmeticPerks extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        saveConfigs();
+        reloadConfigs();
 
         this.registerEvent(new OnPlayerJoin());
         this.registerEvent(new OnPlayerQuit());
@@ -52,7 +55,7 @@ public final class CosmeticPerks extends JavaPlugin {
         instance.getCommand(command).setExecutor(executor);
     }
 
-    public void saveConfigs() {
+    public void reloadConfigs() {
         CustomConfig.load("player.yml");
         CustomConfig.save();
         ConfigParser.parseConfig(CustomConfig.get(), "player");
@@ -62,5 +65,8 @@ public final class CosmeticPerks extends JavaPlugin {
         CustomConfig.load("projectile.yml");
         CustomConfig.save();
         ConfigParser.parseConfig(CustomConfig.get(), "projectile");
+        for(Player player: Bukkit.getOnlinePlayers()) {
+            TrailMethods.removeOrAttachAnimation(player);
+        }
     }
 }

@@ -123,7 +123,7 @@ public class CustomTrail {
         }
 
         public CustomTrail build() {
-            if(this.trailEffect == null) {this.trailEffect = Particle.REDSTONE;}
+            if(this.trailEffect == null) {this.trailEffect = Particle.SMOKE_NORMAL;}
             if(this.displayMaterial == null) {this.displayMaterial = Material.WHITE_WOOL;}
             if(this.offset == null) {this.offset = new double[]{0,0,0};}
             return new CustomTrail(this);

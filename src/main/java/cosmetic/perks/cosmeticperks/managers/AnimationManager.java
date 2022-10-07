@@ -17,6 +17,10 @@ public class AnimationManager {
         return new HashMap<>(particleAnimationList);
     }
 
+    public static void clearParticleAnimationList() {
+        particleAnimationList.clear();
+    }
+
     public static void addParticleAnimation(UUID entity, CustomTrail e) {
         particleAnimationList.put(entity, e);
     }
@@ -35,15 +39,14 @@ public class AnimationManager {
         if (AnimationManager.hasActiveAnimation(player)) {
             AnimationManager.removeParticleAnimation(id);
         }
-        if(trail.getAnimation() != null) {
-            AnimationManager.addParticleAnimation(id, trail);
-        }
+        AnimationManager.addParticleAnimation(id, trail);
     }
 
     public static void callAttachParticleAnimation(Player player, String key) {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
-        attachParticleAnimation(player, player.getUniqueId(), key, TrailManager.getTrail((data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING))));
+        CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
+        if(trail.getAnimation() == null) {return;}
+        attachParticleAnimation(player, player.getUniqueId(), key, trail);
     }
-
 }

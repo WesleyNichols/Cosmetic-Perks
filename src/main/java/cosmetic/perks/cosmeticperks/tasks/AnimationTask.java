@@ -2,11 +2,9 @@ package cosmetic.perks.cosmeticperks.tasks;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.managers.AnimationManager;
-import cosmetic.perks.cosmeticperks.managers.TrailManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.AnimationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -47,7 +45,6 @@ public class AnimationTask extends BukkitRunnable {
                                         player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[step][0], loc[step][1], loc[step][2]), particleProperties.getParticleAmount(),
                                                 offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
                                     }
-                                    particleAnimationValues.addStep();
                                 }
                                 if(particleAnimationValues.getStyleValuesLength() != 0) {
                                     for(double[] loc: particleAnimationValues.getStyleValues()) {

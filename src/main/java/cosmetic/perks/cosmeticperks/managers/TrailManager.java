@@ -19,6 +19,11 @@ public class TrailManager {
         return new HashMap<>(trailTypeList);
     }
 
+    public static void clearTrailLists() {
+        trailList.clear();
+        trailTypeList.clear();
+    }
+
     public static CustomTrail getTrail(String name) {
         return trailList.get(name);
     }

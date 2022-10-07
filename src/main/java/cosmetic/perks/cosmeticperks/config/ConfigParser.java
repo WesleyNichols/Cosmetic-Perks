@@ -7,8 +7,8 @@ import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.styles.Styles;
 import cosmetic.perks.cosmeticperks.util.AnimationValueInitialize;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -52,12 +52,28 @@ public class ConfigParser {
 
     private static int checkForAmount(String trailName, FileConfiguration config) {
         if(!config.contains(trailName + ".particle_amount") || config.get(trailName + ".particle_amount") == null) {return 0;}
-        return Integer.parseInt(config.getString(trailName + ".particle_amount"));
+        int amount;
+        try {
+            amount = Integer.parseInt(config.getString(trailName + ".particle_amount"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            return 0;
+        }
+        return amount;
     }
 
     private static double checkForSpeed(String trailName, FileConfiguration config) {
         if(!config.contains(trailName + ".particle_speed") || config.get(trailName + ".particle_speed") == null) {return 0.0;}
-        return Double.parseDouble(config.getString(trailName + ".particle_speed"));
+        double speed;
+        try {
+            speed = Double.parseDouble(config.getString(trailName + ".particle_speed"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            return 0.0;
+        }
+        return speed;
     }
 
     private static double[] checkForOffset(String trailName, FileConfiguration config) {
@@ -68,12 +84,28 @@ public class ConfigParser {
 
     private static Material checkForMaterial(String trailName, FileConfiguration config) {
         if(!config.contains(trailName + ".display_material") || config.get(trailName + ".display_material") == null) {return null;}
-        return Material.getMaterial(config.getString(trailName + ".display_material"));
+        Material material;
+        try {
+            material = Material.getMaterial(config.getString(trailName + ".display_material"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            return null;
+        }
+        return material;
     }
 
     private static Particle checkForEffect(String trailName, FileConfiguration config) {
         if(!config.contains(trailName + ".particle") || config.get(trailName + ".particle") == null) {return null;}
-        return Particle.valueOf(config.getString(trailName + ".particle"));
+        Particle particle;
+        try {
+            particle = Particle.valueOf(config.getString(trailName + ".particle"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            return null;
+        }
+        return particle;
     }
 
     private static AnimationValues checkForAnimation(String trailName, FileConfiguration config) {
@@ -95,7 +127,7 @@ public class ConfigParser {
             String[] argList = args.get(i).replaceAll("\\s", "").split(",");
             checkListError(argList, 5, "equation");
             double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
-            animations[i] =  new Animations(argList[0].substring(1, argList[1].length()-1).split(";"), Integer.parseInt(argList[1]),
+            animations[i] =  new Animations(argList[0].substring(1, argList[0].length()-1).split(";"), Integer.parseInt(argList[1]),
                     Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]));
         }
         return animations;

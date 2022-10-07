@@ -29,7 +29,7 @@ public abstract class TrailMethods {
      * @param player The player to remove the trail for
      * @param key    The group of the trail
      */
-    public void removeActiveTrail(Player player, String key) {
+    public static void removeActiveTrail(Player player, String key) {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, "NONE");
         player.sendMessage(Component.text("Disabled your " + key + " trail!"));
     }
@@ -60,7 +60,7 @@ public abstract class TrailMethods {
      * @param player The player to get the active trail for
      * @param key    The group of the trail
      */
-    public boolean hasActiveTrail(Player player, String key) {
+    public static boolean hasActiveTrail(Player player, String key) {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 
@@ -87,7 +87,7 @@ public abstract class TrailMethods {
      *
      * @param player The player to remove or attach a trail for
      */
-    public void removeOrAttachAnimation(Player player) {
+    public static void removeOrAttachAnimation(Player player) {
         if (!hasActiveTrail(player, "player")) { removeActiveTrail(player, "player"); } else { AnimationManager.callAttachParticleAnimation(player, "player"); }
 
         if (!hasActiveTrail(player, "projectile")) { removeActiveTrail(player, "projectile"); } else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
