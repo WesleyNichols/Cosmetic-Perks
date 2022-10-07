@@ -69,7 +69,6 @@ public class ConfigParser {
     private static Material checkForMaterial(String trailName, FileConfiguration config) {
         if(!config.contains(trailName + ".display_material") || config.get(trailName + ".display_material") == null) {return null;}
         return Material.getMaterial(config.getString(trailName + ".display_material"));
-        Particle.DRip_
     }
 
     private static Particle checkForEffect(String trailName, FileConfiguration config) {
