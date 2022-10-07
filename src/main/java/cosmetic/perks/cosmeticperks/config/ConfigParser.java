@@ -7,17 +7,21 @@ import cosmetic.perks.cosmeticperks.structures.Animations;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.styles.Styles;
 import cosmetic.perks.cosmeticperks.util.AnimationValueInitialize;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ConfigParser {
 
-    public static void parseConfig(FileConfiguration config) {
+    public static void parseConfig(FileConfiguration config, String trailType) {
+        List<CustomTrail> trailList = new ArrayList<>();
         for(String trailName: config.getKeys(false)) {
             AnimationValues animation = checkForAnimation(trailName, config);
             Particle trailEffect = checkForEffect(trailName, config);
@@ -26,7 +30,7 @@ public class ConfigParser {
             double speed = checkForSpeed(trailName, config);
             int amount = checkForAmount(trailName, config);
             boolean limited = checkForLimited(trailName, config);
-            TrailManager.addTrail(trailName, new CustomTrail.CustomTrailBuilder(config.getName(), trailName)
+            CustomTrail trail = new CustomTrail.CustomTrailBuilder(trailType, trailName)
                     .animation(animation)
                     .trailEffect(trailEffect)
                     .displayMaterial(displayMaterial)
@@ -34,9 +38,11 @@ public class ConfigParser {
                     .particleSpeed(speed)
                     .particleAmount(amount)
                     .limitedItem(limited)
-                    .build()
-            );
+                    .build();
+            TrailManager.addTrail(trailName, trail);
+            trailList.add(trail);
         }
+        TrailManager.addTrailType(trailType, trailList);
     }
 
     private static boolean checkForLimited(String trailName, FileConfiguration config) {
@@ -63,6 +69,7 @@ public class ConfigParser {
     private static Material checkForMaterial(String trailName, FileConfiguration config) {
         if(!config.contains(trailName + ".display_material") || config.get(trailName + ".display_material") == null) {return null;}
         return Material.getMaterial(config.getString(trailName + ".display_material"));
+        Particle.DRip_
     }
 
     private static Particle checkForEffect(String trailName, FileConfiguration config) {
@@ -87,7 +94,7 @@ public class ConfigParser {
         Animations[] animations = new Animations[args.size()];
         for(int i = 0; i < args.size(); i++) {
             String[] argList = args.get(i).replaceAll("\\s", "").split(",");
-            checkListError(argList, 4, "equation");
+            checkListError(argList, 5, "equation");
             double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
             animations[i] =  new Animations(argList[0].substring(1, argList[1].length()-1).split(";"), Integer.parseInt(argList[1]),
                     Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]));
@@ -97,21 +104,22 @@ public class ConfigParser {
 
     private static double[][] styleCase(@NotNull List<String> args) {
         double[][][] values = new double[args.size()][][];
-        for(int i = 0; i < args.size(); i++){
+        for (int i = 0; i < args.size(); i++) {
             String[] argList = args.get(i).replaceAll("\\s", "").split(",");
             double[][] value;
-            double[] offset = argList[1].equals("null") ? null : stringArrToDouble(argList[1].substring(1, argList[1].length()-1).split(";"));
-            double[] angleOffset = argList[2].equals("null") ? null : stringArrToDouble(argList[2].substring(1, argList[2].length()-1).split(";"));
+            double[] offset = argList[1].equals("null") ? null : stringArrToDouble(argList[1].substring(1, argList[1].length() - 1).split(";"));
+            double[] angleOffset = argList[2].equals("null") ? null : stringArrToDouble(argList[2].substring(1, argList[2].length() - 1).split(";"));
             switch (argList[0]) {
-                case "circle" -> {
+                case "circle":
                     checkListError(argList, 5, "circle");
                     value = Styles.circle(offset, angleOffset, Double.parseDouble(argList[3]), Integer.parseInt(argList[4]));
-                }
-                case "square" -> {
+                    break;
+                case "square":
                     checkListError(argList, 5, "square");
                     value = Styles.square(offset, angleOffset, Double.parseDouble(argList[3]), Integer.parseInt(argList[4]));
-                }
-                default -> throw new IllegalArgumentException("The style provided was not found!");
+                    break;
+                default:
+                    throw new IllegalArgumentException("The style provided was not found!");
             }
             values[i] = value;
         }

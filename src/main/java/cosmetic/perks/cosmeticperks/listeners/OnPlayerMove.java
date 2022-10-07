@@ -5,6 +5,8 @@ import cosmetic.perks.cosmeticperks.managers.TrailManager;
 import cosmetic.perks.cosmeticperks.managers.TrailMethods;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +33,8 @@ public class OnPlayerMove implements Listener {
 
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail trailProperties = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING));
+            if(trailProperties == null) {throw new NullPointerException("Trail Properties is null!");}
+            // TODO particle effect is not being parsed correctly Bukkit.broadcast(Component.text(trailProperties.getTrailEffect().toString()));
             if(trailProperties.getAnimation() != null) {return;}
 
             TrailMethods.spawnParticle(player, trailProperties);

@@ -22,7 +22,8 @@ public class OnProjectileShot extends TrailMethods implements Listener {
 
     @EventHandler
     public void onProjectileShoot(ProjectileLaunchEvent event) {
-        if (event.getEntity().getShooter() instanceof Player player) {
+        if (event.getEntity().getShooter() instanceof Player) {
+            Player player = (Player) event.getEntity().getShooter();
 
             if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
 

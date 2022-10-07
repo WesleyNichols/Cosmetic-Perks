@@ -55,12 +55,12 @@ public final class CosmeticPerks extends JavaPlugin {
     public void saveConfigs() {
         CustomConfig.load("player.yml");
         CustomConfig.save();
-        ConfigParser.parseConfig(CustomConfig.get());
+        ConfigParser.parseConfig(CustomConfig.get(), "player");
         CustomConfig.load("elytra.yml");
         CustomConfig.save();
-        ConfigParser.parseConfig(CustomConfig.get());
+        ConfigParser.parseConfig(CustomConfig.get(), "elytra");
         CustomConfig.load("projectile.yml");
         CustomConfig.save();
-        ConfigParser.parseConfig(CustomConfig.get());
+        ConfigParser.parseConfig(CustomConfig.get(), "projectile");
     }
 }

@@ -8,10 +8,8 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
-import cosmetic.perks.cosmeticperks.enums.ElytraTrails;
-import cosmetic.perks.cosmeticperks.enums.PlayerTrails;
-import cosmetic.perks.cosmeticperks.enums.ProjectileTrails;
 import cosmetic.perks.cosmeticperks.managers.AnimationManager;
+import cosmetic.perks.cosmeticperks.managers.TrailManager;
 import cosmetic.perks.cosmeticperks.structures.CustomItem;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.managers.TrailMethods;
@@ -146,7 +144,7 @@ public class CosmeticsMenu extends TrailMethods {
      * @param player The player to show the menu to
      */
     public void displayPlayerMenu(Player player) {
-        ChestGui gui = getTrailSelectionMenu(player, PlayerTrails.class);
+        ChestGui gui = getTrailSelectionMenu(player, "player");
         gui.update();
         gui.show(player);
     }
@@ -157,7 +155,7 @@ public class CosmeticsMenu extends TrailMethods {
      * @param player The player to show the menu to
      */
     public void displayProjectileMenu(Player player) {
-        ChestGui gui = getTrailSelectionMenu(player, ProjectileTrails.class);
+        ChestGui gui = getTrailSelectionMenu(player, "projectile");
         gui.update();
         gui.show(player);
     }
@@ -168,7 +166,7 @@ public class CosmeticsMenu extends TrailMethods {
      * @param player The player to show the menu to
      */
     public void displayElytraMenu(Player player) {
-        ChestGui gui = getTrailSelectionMenu(player, ElytraTrails.class);
+        ChestGui gui = getTrailSelectionMenu(player, "elytra");
         gui.update();
         gui.show(player);
     }
@@ -258,28 +256,22 @@ public class CosmeticsMenu extends TrailMethods {
      * Creates a ChestGui to offer selections in a given menu type
      *
      * @param player The player to read from
-     * @param enumClass The class name to read from
-     * @param <T> The enum (must extend CustomTrail)
+     * @param type The type name of the trails (must match a config name)
      * @return The ChestGui with collection of GuiItems from a CustomTrail type
      */
-    public <T extends CustomTrail> ChestGui getTrailSelectionMenu(Player player, Class<T> enumClass) {
-        String type;
-        try { type = enumClass.getEnumConstants()[0].getTrailType(); } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public ChestGui getTrailSelectionMenu(Player player, String type) {
+        List<CustomTrail> trails = TrailManager.getTrailType(type);
 
         ChestGui gui = new ChestGui(6, ChatColor.GOLD + type.substring(0, 1).toUpperCase() + type.substring(1) + " Trails");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
         List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
-        for (T trailEnum : enumClass.getEnumConstants()) {
-            CustomTrail.TrailProperties trailProperties = trailEnum.getProperties();
-            GuiItem item = new GuiItem(trailProperties.getItem());
+        for (CustomTrail trailEnum : trails) {
+            GuiItem item = new GuiItem(trailEnum.getItem());
             item.setAction(event -> {
-                setActiveTrail(trailEnum.toString(), player, type);
-                if(trailProperties.getAnimation() != null){
+                setActiveTrail(trailEnum.getEffectName(), player, type);
+                if(trailEnum.getAnimation() != null){
                     AnimationManager.attachParticleAnimation(player, player.getUniqueId(), type, trailEnum);
                 }
                 pages.getItems().forEach(this::disableItem);

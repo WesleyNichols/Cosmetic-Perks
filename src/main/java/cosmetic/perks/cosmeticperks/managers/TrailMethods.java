@@ -19,7 +19,7 @@ public abstract class TrailMethods {
      * @param key    The group of the trail
      */
     public void setActiveTrail(String e, Player player, String key) {
-        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, e.toUpperCase());
+        player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, e);
         player.sendMessage(Component.text("Enabled the " + e + " " + key + " trail!"));
     }
 
