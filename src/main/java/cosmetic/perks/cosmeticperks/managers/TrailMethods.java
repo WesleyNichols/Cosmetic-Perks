@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public abstract class TrailMethods {
@@ -88,10 +89,22 @@ public abstract class TrailMethods {
      * @param player The player to remove or attach a trail for
      */
     public static void removeOrAttachAnimation(Player player) {
-        if (!hasActiveTrail(player, "player")) { removeActiveTrail(player, "player"); } else { AnimationManager.callAttachParticleAnimation(player, "player"); }
+        PersistentDataContainer data = player.getPersistentDataContainer();
 
-        if (!hasActiveTrail(player, "projectile")) { removeActiveTrail(player, "projectile"); } else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
+        if (!hasActiveTrail(player, "player") ||
+                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player" + "-trail"), PersistentDataType.STRING)) == null ||
+                !player.hasPermission("group.donator")) { removeActiveTrail(player, "player"); }
+        else { AnimationManager.callAttachParticleAnimation(player, "player"); }
 
-        if (!hasActiveTrail(player, "elytra")) { removeActiveTrail(player, "elytra"); }  else { AnimationManager.callAttachParticleAnimation(player, "elytra"); }
+        if (!hasActiveTrail(player, "projectile") ||
+                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile" + "-trail"), PersistentDataType.STRING)) == null ||
+                !player.hasPermission("group.donator")) { removeActiveTrail(player, "projectile"); }
+        else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
+
+        if (!hasActiveTrail(player, "elytra") ||
+                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra" + "-trail"), PersistentDataType.STRING)) == null ||
+                !player.hasPermission("group.donator")) { removeActiveTrail(player, "elytra"); }
+        else { AnimationManager.callAttachParticleAnimation(player, "elytra"); }
+
     }
 }
