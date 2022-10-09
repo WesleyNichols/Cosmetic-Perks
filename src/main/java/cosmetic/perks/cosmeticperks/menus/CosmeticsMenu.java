@@ -270,7 +270,10 @@ public class CosmeticsMenu extends TrailMethods {
         for (CustomTrail trailEnum : trails) {
             GuiItem item = new GuiItem(trailEnum.getItem());
             item.setAction(event -> {
-                setActiveTrail(trailEnum.getEffectName(), player, type);
+                if(AnimationManager.hasActiveAnimation(player)){
+                    AnimationManager.removeParticleAnimation(player.getUniqueId());
+                }
+                setActiveTrail(trailEnum.getTrailName(), player, type);
                 if(trailEnum.getAnimation() != null){
                     AnimationManager.attachParticleAnimation(player, player.getUniqueId(), type, trailEnum);
                 }
@@ -278,7 +281,7 @@ public class CosmeticsMenu extends TrailMethods {
                 enableItem(item);
                 gui.update();
             });
-            if (trailEnum.toString().equals(getActiveTrail(player, type))) { enableItem(item); }
+            if (trailEnum.getTrailName().equals(getActiveTrail(player, type))) { enableItem(item); }
             items.add(item);
         }
 

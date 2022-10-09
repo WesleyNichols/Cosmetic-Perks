@@ -43,7 +43,7 @@ public class CustomTrail {
                 .build();
     }
 
-    public String getEffectName() {
+    public String getTrailName() {
         return EffectName;
     }
 
