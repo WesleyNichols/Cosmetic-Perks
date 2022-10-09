@@ -46,7 +46,7 @@ public class AnimationManager {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
         CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-        if(trail.getAnimation() == null) {return;}
+        if(trail != null && trail.getAnimation() == null) {return;}
         attachParticleAnimation(player, player.getUniqueId(), key, trail);
     }
 }
