@@ -25,6 +25,8 @@ public final class CosmeticPerks extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        saveConfig();
+
         reloadConfigs();
 
         this.registerEvent(new OnPlayerJoin());

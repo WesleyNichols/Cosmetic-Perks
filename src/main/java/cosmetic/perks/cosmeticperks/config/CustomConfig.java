@@ -1,12 +1,12 @@
 package cosmetic.perks.cosmeticperks.config;
 
+import com.google.common.io.ByteStreams;
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.Level;
 
 public class CustomConfig {
@@ -17,9 +17,15 @@ public class CustomConfig {
     public static void load(String FilePath) {
         file = new File(CosmeticPerks.getInstance().getDataFolder(), FilePath);
 
-        if (!file.exists()) {
+        if (!file.exists() || file.length() == 0) {
             try {
                 file.createNewFile();
+                try (InputStream in = CosmeticPerks.getInstance().getResource(FilePath);
+                     OutputStream out = new FileOutputStream(file)) {
+                    ByteStreams.copy(in, out);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 Bukkit.getLogger().log(Level.SEVERE, "Could not create config for " + FilePath, e);
             }
