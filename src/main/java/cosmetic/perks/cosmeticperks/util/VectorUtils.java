@@ -37,4 +37,8 @@ public class VectorUtils {
 
         return new double[]{x,y,z};
     }
+
+    public static double magnitude(double[] v) {
+        return Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2) + Math.pow(v[2], 2));
+    }
 }

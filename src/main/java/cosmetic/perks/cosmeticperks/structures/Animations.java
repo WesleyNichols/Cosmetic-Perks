@@ -1,5 +1,7 @@
 package cosmetic.perks.cosmeticperks.structures;
 
+import javax.annotation.Nullable;
+
 public class Animations {
 
     private final String[] EquationList;
@@ -11,8 +13,10 @@ public class Animations {
     private boolean Reversed;
     private final int TickToComplete;
     private final double[] Offset;
+    private final boolean Rotating;
+    private final double[][] StyleValues;
 
-    public Animations(String[] equationList, int ticksToComplete, double maxDistance, double[] offset, boolean reversingAnimation) {
+    public Animations(String[] equationList, int ticksToComplete, double maxDistance, double[] offset, boolean reversingAnimation, boolean rotating, @Nullable double[][] styleValues) {
         this.EquationList = equationList;
         this.MaxDistance = maxDistance * Math.PI;
         this.TickToComplete = ticksToComplete;
@@ -22,6 +26,8 @@ public class Animations {
         this.CurrentStep = 0;
         this.Offset = offset;
         this.Reversed = false;
+        this.Rotating = rotating;
+        this.StyleValues = styleValues;
     }
 
     public void addToCurrentDistance() {
@@ -63,5 +69,13 @@ public class Animations {
 
     public boolean isReversingAnimation() {
         return ReversingAnimation;
+    }
+
+    public boolean isRotating() {
+        return Rotating;
+    }
+
+    public double[][] getStyleValues() {
+        return StyleValues;
     }
 }

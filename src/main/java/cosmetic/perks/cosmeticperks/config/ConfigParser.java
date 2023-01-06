@@ -14,9 +14,7 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ConfigParser {
 
@@ -125,10 +123,19 @@ public class ConfigParser {
         Animations[] animations = new Animations[args.size()];
         for(int i = 0; i < args.size(); i++) {
             String[] argList = args.get(i).replaceAll("\\s", "").split(",");
-            checkListError(argList, 5, "equation");
-            double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
-            animations[i] =  new Animations(argList[0].substring(1, argList[0].length()-1).split(";"), Integer.parseInt(argList[1]),
-                    Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]));
+            if(argList.length > 5) {
+                //For using a style in the animation
+                checkListError(argList, 7, "equation");
+                double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
+                animations[i] =  new Animations(argList[0].substring(1, argList[0].length()-1).split(";"), Integer.parseInt(argList[1]),
+                        Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]), Boolean.parseBoolean(argList[5]), styleCase(Collections.singletonList(argList[6])));
+            } else {
+                //Regular animation
+                checkListError(argList, 5, "equation");
+                double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
+                animations[i] =  new Animations(argList[0].substring(1, argList[0].length()-1).split(";"), Integer.parseInt(argList[1]),
+                        Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]), false, null);
+            }
         }
         return animations;
     }
