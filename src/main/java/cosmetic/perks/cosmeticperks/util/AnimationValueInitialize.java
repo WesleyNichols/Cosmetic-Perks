@@ -16,6 +16,7 @@ public class AnimationValueInitialize {
     private final String Name;
     private final Animations[] AnimationList;
     private final double[][] StyleValues;
+    private double[][][][] FinalAList;
 
     public AnimationValueInitialize(String name, double[][] styleValues, Animations[] animationList) {
         this.Name = name;
@@ -39,24 +40,21 @@ public class AnimationValueInitialize {
     }
 
     public void initialize() {
-
-        AnimationValueManager.addParticleAnimation(Name, new AnimationValues(StyleValues, generateEquationValueList()));
+        double[][][] equationValues = generateEquationValueList();
+        AnimationValueManager.addParticleAnimation(Name, new AnimationValues(StyleValues, equationValues, FinalAList));
     }
 
     private double[][][] generateEquationValueList() {
+        //No animations present
+        if(this.AnimationList == null) {return new double[][][]{};}
         //Equation Value List
         List<double[][]> storedEValues = new ArrayList<>();
         //Animated Equation Value List
         List<double[][][]> storedAValues = new ArrayList<>();
-        if(this.AnimationList == null) {return new double[][][]{};}
-        //int finalListLength = 0;
-        //double[][][][] storedValues = new double[Animation.length][][][];
         for(Animations animation: AnimationList) {
             String[] equationList = animation.getEquationList();
             double[] offset = animation.getOffset();
-            //finalListLength += equationList.length/3;
             int length = animation.getTickToComplete() * (animation.isReversingAnimation() ? 2 : 1);
-            //double[][][] tempList = new double[equationList.length/3][length][3];
             int exprNumber;
             for (int i=0; i<equationList.length/3; i++) {
                 //Equating the equation
@@ -84,7 +82,6 @@ public class AnimationValueInitialize {
                     storedAValues.add(currentAnimationValues);
                 }
             }
-            //storedValues[a] = tempList;
         }
 
         double[][][] finalList = new double[storedEValues.size()][][];
@@ -96,13 +93,8 @@ public class AnimationValueInitialize {
         for(int c = 0; c < storedAValues.size(); c++) {
             finalAList[c] = storedAValues.get(c);
         }
-        /*
-        for (double[][][] storedValue : storedValues) {
-            for (int c = 0; c < storedValue.length; c++) {
-                finalList[c] = storedValue[c];
-            }
-        }
-        */
+        this.FinalAList = finalAList;
+
         return finalList;
     }
 }

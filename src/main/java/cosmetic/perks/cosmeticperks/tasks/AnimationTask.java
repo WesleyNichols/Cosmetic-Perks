@@ -46,6 +46,16 @@ public class AnimationTask extends BukkitRunnable {
                                                 offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
                                     }
                                 }
+
+                                if(particleAnimationValues.getEquationStyleValuesLength() != 0) {
+                                    for(double[][][] valueStep: particleAnimationValues.getEquationStyleValues()) {
+                                        for(double[] loc: valueStep[step]) {
+                                            player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
+                                                    offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
+                                        }
+                                    }
+                                }
+
                                 if(particleAnimationValues.getStyleValuesLength() != 0) {
                                     for(double[] loc: particleAnimationValues.getStyleValues()) {
                                         player.spawnParticle(particleProperties.getTrailEffect(), entity.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
