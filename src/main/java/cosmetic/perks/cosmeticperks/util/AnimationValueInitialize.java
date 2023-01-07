@@ -39,6 +39,7 @@ public class AnimationValueInitialize {
     }
 
     public void initialize() {
+
         AnimationValueManager.addParticleAnimation(Name, new AnimationValues(StyleValues, generateEquationValueList()));
     }
 
@@ -89,6 +90,11 @@ public class AnimationValueInitialize {
         double[][][] finalList = new double[storedEValues.size()][][];
         for(int c = 0; c < storedEValues.size(); c++) {
             finalList[c] = storedEValues.get(c);
+        }
+
+        double[][][][] finalAList = new double[storedAValues.size()][][][];
+        for(int c = 0; c < storedAValues.size(); c++) {
+            finalAList[c] = storedAValues.get(c);
         }
         /*
         for (double[][][] storedValue : storedValues) {
