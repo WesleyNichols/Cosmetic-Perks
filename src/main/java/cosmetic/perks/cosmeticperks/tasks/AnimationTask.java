@@ -5,6 +5,7 @@ import cosmetic.perks.cosmeticperks.managers.AnimationManager;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
 import cosmetic.perks.cosmeticperks.structures.AnimationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -64,7 +65,7 @@ public class AnimationTask extends BukkitRunnable {
                                 }
                             }
                     );
-            if(particleAnimationValues.getEquationValuesLength() != 0) {
+            if(particleAnimationValues.getEquationValuesLength() != 0 || particleAnimationValues.getEquationStyleValuesLength() != 0) {
                 particleAnimationValues.addStep();
             }
         }

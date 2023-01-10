@@ -50,7 +50,11 @@ public class AnimationValues {
 
     public void addStep() {
         CurrentStep++;
-        if(CurrentStep >= EquationValues[0].length) {
+        if(EquationValues.length != 0) {
+            if(CurrentStep >= EquationValues[0].length) {
+                CurrentStep = 0;
+            }
+        } else if (CurrentStep >= EquationStyleValues[0].length) {
             CurrentStep = 0;
         }
     }

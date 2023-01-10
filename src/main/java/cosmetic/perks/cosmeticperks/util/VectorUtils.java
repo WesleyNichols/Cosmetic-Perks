@@ -1,5 +1,8 @@
 package cosmetic.perks.cosmeticperks.util;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+
 public class VectorUtils {
 
     public static double[] rotateAroundAxisX(double[] v, double angle) {

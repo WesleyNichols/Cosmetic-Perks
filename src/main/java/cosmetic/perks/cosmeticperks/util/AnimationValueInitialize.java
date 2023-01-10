@@ -4,7 +4,9 @@ import com.google.common.primitives.Doubles;
 import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
 import cosmetic.perks.cosmeticperks.structures.AnimationValues;
 import cosmetic.perks.cosmeticperks.structures.Animations;
+import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import org.bukkit.Bukkit;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,6 +30,7 @@ public class AnimationValueInitialize {
     public AnimationValueInitialize(String name, double[][] styleValues) {
         this.Name = name;
         this.AnimationList = null;
+        this.FinalAList = new double[][][][]{};
         this.StyleValues = styleValues;
         initialize();
     }
@@ -41,11 +44,14 @@ public class AnimationValueInitialize {
 
     public void initialize() {
         double[][][] equationValues = generateEquationValueList();
+        Bukkit.broadcast(Component.text("Length: " + FinalAList.length));
+        Bukkit.broadcast(Component.text("equation-Length: " + equationValues.length));
         AnimationValueManager.addParticleAnimation(Name, new AnimationValues(StyleValues, equationValues, FinalAList));
     }
 
     private double[][][] generateEquationValueList() {
         //No animations present
+        if(this.FinalAList == null) {this.FinalAList = new double[][][][]{};}
         if(this.AnimationList == null) {return new double[][][]{};}
         //Equation Value List
         List<double[][]> storedEValues = new ArrayList<>();
@@ -71,12 +77,15 @@ public class AnimationValueInitialize {
                 } else {
                     double[][] styleValues = animation.getStyleValues();
                     double[][][] currentAnimationValues = new double[temp.length][styleValues.length][3];
+                    Bukkit.broadcast(Component.text("temp-length: " + temp.length));
                     for(int l = 0; l < temp.length; l++) {
                         double magnitude = VectorUtils.magnitude(temp[l]);
-                        double xAngle = Math.acos(temp[l][0]/magnitude);
-                        double zAngle = Math.acos(temp[l][2]/magnitude);
+                        double xAngle = Math.toDegrees(Math.acos(temp[l][1]/magnitude));
+                        double zAngle = Math.toDegrees(Math.acos(temp[l][2]/magnitude));
+                        //Bukkit.broadcast(Component.text("xangle: " + xAngle));
+                        //Bukkit.broadcast(Component.text("zangle: " + zAngle));
                         for(int s = 0; s < styleValues.length; s++) {
-                            currentAnimationValues[l][s] = VectorUtils.rotateVector(styleValues[s], xAngle, zAngle);
+                            currentAnimationValues[l][s] = VectorUtils.rotateVector(styleValues[s], zAngle, xAngle);
                         }
                     }
                     storedAValues.add(currentAnimationValues);

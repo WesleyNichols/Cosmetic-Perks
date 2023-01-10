@@ -14,6 +14,7 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Console;
 import java.util.*;
 
 public class ConfigParser {
@@ -110,16 +111,16 @@ public class ConfigParser {
         if(!(config.contains(trailName + ".equations") || config.contains(trailName + ".styles"))) {return null;}
 
         if(config.contains(trailName + ".equations") && config.contains(trailName + ".styles")) {
-            new AnimationValueInitialize(trailName, styleCase(config.getStringList(trailName + ".styles")), getEquation(config.getStringList(trailName + ".equations")));
+            new AnimationValueInitialize(trailName, styleCase(config.getStringList(trailName + ".styles")), getEquation(config.getStringList(trailName + ".equations"), trailName, config));
         } else if (config.contains(trailName + ".equations")) {
-            new AnimationValueInitialize(trailName, getEquation(config.getStringList(trailName + ".equations")));
+            new AnimationValueInitialize(trailName, getEquation(config.getStringList(trailName + ".equations"), trailName, config));
         } else if (config.contains(trailName + ".styles")) {
             new AnimationValueInitialize(trailName, styleCase(config.getStringList(trailName + ".styles")));
         }
         return AnimationValueManager.getAnimationValues(trailName);
     }
 
-    private static Animations[] getEquation(List<String> args) {
+    private static Animations[] getEquation(List<String> args, String trailName, FileConfiguration config) {
         Animations[] animations = new Animations[args.size()];
         for(int i = 0; i < args.size(); i++) {
             String[] argList = args.get(i).replaceAll("\\s", "").split(",");
@@ -127,8 +128,10 @@ public class ConfigParser {
                 //For using a style in the animation
                 checkListError(argList, 7, "equation");
                 double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
+
                 animations[i] =  new Animations(argList[0].substring(1, argList[0].length()-1).split(";"), Integer.parseInt(argList[1]),
-                        Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]), Boolean.parseBoolean(argList[5]), styleCase(Collections.singletonList(argList[6])));
+                        Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]), Boolean.parseBoolean(argList[5]),
+                        styleCase(config.getStringList(trailName + ".equationStyles")));
             } else {
                 //Regular animation
                 checkListError(argList, 5, "equation");
