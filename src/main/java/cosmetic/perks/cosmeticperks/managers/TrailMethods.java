@@ -90,21 +90,27 @@ public abstract class TrailMethods {
      */
     public static void removeOrAttachAnimation(Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();
+        for(String trail: new String[]{"player", "projectile", "elytra"}) {
+            if (!hasActiveTrail(player, trail) ||
+                    TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), trail + "-trail"), PersistentDataType.STRING)) == null ||
+                    !player.hasPermission("group.donator")) { removeActiveTrail(player, trail); }
+            else { AnimationManager.callAttachParticleAnimation(player, trail); }
+        }
 
-        if (!hasActiveTrail(player, "player") ||
-                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player" + "-trail"), PersistentDataType.STRING)) == null ||
-                !player.hasPermission("group.donator")) { removeActiveTrail(player, "player"); }
-        else { AnimationManager.callAttachParticleAnimation(player, "player"); }
-
-        if (!hasActiveTrail(player, "projectile") ||
-                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile" + "-trail"), PersistentDataType.STRING)) == null ||
-                !player.hasPermission("group.donator")) { removeActiveTrail(player, "projectile"); }
-        else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
-
-        if (!hasActiveTrail(player, "elytra") ||
-                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra" + "-trail"), PersistentDataType.STRING)) == null ||
-                !player.hasPermission("group.donator")) { removeActiveTrail(player, "elytra"); }
-        else { AnimationManager.callAttachParticleAnimation(player, "elytra"); }
+//        if (!hasActiveTrail(player, "player") ||
+//                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player" + "-trail"), PersistentDataType.STRING)) == null ||
+//                !player.hasPermission("group.donator")) { removeActiveTrail(player, "player"); }
+//        else { AnimationManager.callAttachParticleAnimation(player, "player"); }
+//
+//        if (!hasActiveTrail(player, "projectile") ||
+//                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile" + "-trail"), PersistentDataType.STRING)) == null ||
+//                !player.hasPermission("group.donator")) { removeActiveTrail(player, "projectile"); }
+//        else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
+//
+//        if (!hasActiveTrail(player, "elytra") ||
+//                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra" + "-trail"), PersistentDataType.STRING)) == null ||
+//                !player.hasPermission("group.donator")) { removeActiveTrail(player, "elytra"); }
+//        else { AnimationManager.callAttachParticleAnimation(player, "elytra"); }
 
     }
 }

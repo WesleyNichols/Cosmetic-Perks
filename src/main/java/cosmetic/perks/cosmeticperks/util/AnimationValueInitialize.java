@@ -51,20 +51,19 @@ public class AnimationValueInitialize {
             String[] equationList = animation.getEquationList();
             double[] offset = animation.getOffset();
             int length = animation.getTickToComplete() * (animation.isReversingAnimation() ? 2 : 1);
-            int exprNumber;
             for (int i=0; i<equationList.length/3; i++) {
                 //Equating the equation
                 double[][] temp = new double[length][3];
+                int exprNumber = (i) * 3;
                 for(int j=0; j<length; j++) {
-                    exprNumber = (i) * 3;
                     animation.addToCurrentDistance();
                     for (int k = 0; k<3; k++) {
                         temp[j][k] = BigDecimal.valueOf(new ExpressionBuilder(equationList[exprNumber+k]).variable("x").build().setVariable("x", animation.getCurrentDistance()).evaluate() + offset[k]).setScale(5, RoundingMode.UP).doubleValue();
                     }
                 }
                 storedEValues.add(temp);
-                }
             }
+        }
 
         double[][][] finalList = new double[storedEValues.size()][][];
         for(int c = 0; c < storedEValues.size(); c++) {
