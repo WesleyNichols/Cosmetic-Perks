@@ -57,7 +57,8 @@ public class ConfigParser {
             amount = Integer.parseInt(config.getString(trailName + ".particle_amount"));
         } catch (Exception e) {
             e.printStackTrace();
-            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            Bukkit.getLogger().warning(
+                    ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the particle amount for the trail named " + trailName);
             return 0;
         }
         return amount;
@@ -70,7 +71,8 @@ public class ConfigParser {
             speed = Double.parseDouble(config.getString(trailName + ".particle_speed"));
         } catch (Exception e) {
             e.printStackTrace();
-            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            Bukkit.getLogger().warning(
+                    ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the particle speed for the trail named " + trailName);
             return 0.0;
         }
         return speed;
@@ -89,7 +91,8 @@ public class ConfigParser {
             material = Material.getMaterial(config.getString(trailName + ".display_material"));
         } catch (Exception e) {
             e.printStackTrace();
-            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            Bukkit.getLogger().warning(
+                    ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the material for the trail named " + trailName);
             return null;
         }
         return material;
@@ -102,7 +105,8 @@ public class ConfigParser {
             particle = Particle.valueOf(config.getString(trailName + ".particle"));
         } catch (Exception e) {
             e.printStackTrace();
-            Bukkit.getLogger().warning(ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the configs.");
+            Bukkit.getLogger().warning(
+                    ChatColor.RED + "[CosmeticPerks] An error occurred when trying to parse the particle enum for the trail named " + trailName);
             return null;
         }
         return particle;

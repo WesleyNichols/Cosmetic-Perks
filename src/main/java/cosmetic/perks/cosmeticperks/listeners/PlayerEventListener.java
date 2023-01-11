@@ -60,6 +60,7 @@ public class PlayerEventListener implements Listener {
     public void onPlayerTrailMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (!player.hasPermission("group.donator") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
+        if(event.getTo().distanceSquared(event.getFrom()) == 0) return;
 
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (player.isGliding() && !Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
