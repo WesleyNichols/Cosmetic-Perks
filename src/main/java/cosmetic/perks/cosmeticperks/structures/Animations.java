@@ -6,9 +6,9 @@ public class Animations {
     private final double AmountToAdd;
     private final double MaxDistance;
     private final boolean ReversingAnimation;
-    private double CurrentDistance;
-    private int CurrentStep;
-    private boolean Reversed;
+    private double CurrentDistance = 0.0;
+    private int CurrentStep = 0;
+    private boolean Reversed = false;
     private final int TickToComplete;
     private final double[] Offset;
 
@@ -18,10 +18,7 @@ public class Animations {
         this.TickToComplete = ticksToComplete;
         this.ReversingAnimation = reversingAnimation;
         this.AmountToAdd = MaxDistance/TickToComplete;
-        this.CurrentDistance = 0.0;
-        this.CurrentStep = 0;
         this.Offset = offset;
-        this.Reversed = false;
     }
 
     public void addToCurrentDistance() {

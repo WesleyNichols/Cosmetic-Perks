@@ -6,14 +6,13 @@ public class AnimationValues {
     private final int EquationValuesLength;
     private final double[][] StyleValues;
     private final int StyleValuesLength;
-    private int CurrentStep;
+    private int CurrentStep = 0;
 
     public AnimationValues(double[][] styleValues, double[][][] equationValues) {
         this.EquationValues = equationValues;
         this.EquationValuesLength = equationValues.length;
         this.StyleValues = styleValues;
         this.StyleValuesLength = styleValues.length;
-        this.CurrentStep = 0;
     }
 
     public double[][][] getEquationValues() {
