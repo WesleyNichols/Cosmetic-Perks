@@ -41,6 +41,7 @@ public class CosmeticsMenu extends TrailMethods {
     public void displayCosmeticsMenu(Player player){
         ChestGui gui = new ChestGui(4, "Cosmetics Menu");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
+        gui.setOnGlobalDrag(event -> event.setCancelled(true));
 
         OutlinePane background = new OutlinePane(0, 3, 9, 1, Pane.Priority.LOWEST);
         background.addItem(new GuiItem(filler));
@@ -264,6 +265,7 @@ public class CosmeticsMenu extends TrailMethods {
 
         ChestGui gui = new ChestGui(6, ChatColor.GOLD + type.substring(0, 1).toUpperCase() + type.substring(1) + " Trails");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
+        gui.setOnGlobalDrag(event -> event.setCancelled(true));
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
         List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
