@@ -30,9 +30,11 @@ public abstract class TrailMethods {
      * @param player The player to remove the trail for
      * @param key    The group of the trail
      */
-    public static void removeActiveTrail(Player player, String key) {
+    public static void removeActiveTrail(Player player, String key, boolean sound) {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, "NONE");
-        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1F, 1.25F);
+        if (sound) {
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1F, 1.25F);
+        }
     }
 
     public void removeActiveTrails(Player player) {
@@ -93,7 +95,7 @@ public abstract class TrailMethods {
         for(String trail: new String[]{"player", "projectile", "elytra"}) {
             if (!hasActiveTrail(player, trail) ||
                     TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), trail + "-trail"), PersistentDataType.STRING)) == null ||
-                    !player.hasPermission("group.donator")) { removeActiveTrail(player, trail); }
+                    !player.hasPermission("group.donator")) { removeActiveTrail(player, trail, false); }
             else { AnimationManager.callAttachParticleAnimation(player, trail); }
         }
     }

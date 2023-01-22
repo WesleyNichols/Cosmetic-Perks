@@ -242,7 +242,7 @@ public class CosmeticsMenu extends TrailMethods {
                         .build()
         );
         item.setAction(event -> {
-            removeActiveTrail(player, key);
+            removeActiveTrail(player, key, true);
             if(AnimationManager.hasActiveAnimation(player)){
                 AnimationManager.removeParticleAnimation(player.getUniqueId());
             }
