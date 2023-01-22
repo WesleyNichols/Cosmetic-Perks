@@ -2,8 +2,8 @@ package cosmetic.perks.cosmeticperks.managers;
 
 import cosmetic.perks.cosmeticperks.CosmeticPerks;
 import cosmetic.perks.cosmeticperks.structures.CustomTrail;
-import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public abstract class TrailMethods {
      */
     public void setActiveTrail(String e, Player player, String key) {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, e);
-        player.sendMessage(Component.text("Enabled the " + e + " " + key + " trail!"));
+        player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_DISPENSE, 1F, 1.25F);
     }
 
     /**
@@ -32,7 +32,7 @@ public abstract class TrailMethods {
      */
     public static void removeActiveTrail(Player player, String key) {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, "NONE");
-        player.sendMessage(Component.text("Disabled your " + key + " trail!"));
+        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1F, 1.25F);
     }
 
     public void removeActiveTrails(Player player) {
@@ -42,7 +42,7 @@ public abstract class TrailMethods {
         if(AnimationManager.hasActiveAnimation(player)){
             AnimationManager.removeParticleAnimation(player.getUniqueId());
         }
-        player.sendMessage(Component.text("Disabled your trails!"));
+        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1F, 0.75F);
     }
 
     /**
@@ -96,21 +96,5 @@ public abstract class TrailMethods {
                     !player.hasPermission("group.donator")) { removeActiveTrail(player, trail); }
             else { AnimationManager.callAttachParticleAnimation(player, trail); }
         }
-
-//        if (!hasActiveTrail(player, "player") ||
-//                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player" + "-trail"), PersistentDataType.STRING)) == null ||
-//                !player.hasPermission("group.donator")) { removeActiveTrail(player, "player"); }
-//        else { AnimationManager.callAttachParticleAnimation(player, "player"); }
-//
-//        if (!hasActiveTrail(player, "projectile") ||
-//                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile" + "-trail"), PersistentDataType.STRING)) == null ||
-//                !player.hasPermission("group.donator")) { removeActiveTrail(player, "projectile"); }
-//        else { AnimationManager.callAttachParticleAnimation(player, "projectile"); }
-//
-//        if (!hasActiveTrail(player, "elytra") ||
-//                TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra" + "-trail"), PersistentDataType.STRING)) == null ||
-//                !player.hasPermission("group.donator")) { removeActiveTrail(player, "elytra"); }
-//        else { AnimationManager.callAttachParticleAnimation(player, "elytra"); }
-
     }
 }
