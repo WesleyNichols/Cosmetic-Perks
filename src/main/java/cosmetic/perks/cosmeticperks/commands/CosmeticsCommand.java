@@ -32,7 +32,7 @@ public class CosmeticsCommand implements CommandExecutor {
                 player.sendMessage(Component.text(returnValue));
                 return true;
             }
-        } else if(args[0].equalsIgnoreCase("reload")) {
+        } else if(args[0].equalsIgnoreCase("reload") && sender.hasPermission("cosmetics.reload")) {
             String returnValue = runReloadCommand();
             Bukkit.getServer().getConsoleSender().sendMessage(returnValue);
             return true;

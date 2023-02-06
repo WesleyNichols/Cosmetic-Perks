@@ -5,10 +5,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class CustomTrail {
+public class CustomTrail implements Comparable<CustomTrail>{
 
     private final String TrailType;
     private final Material DisplayMaterial;
@@ -69,6 +70,11 @@ public class CustomTrail {
 
     public boolean isLimitedItem() {
         return LimitedItem;
+    }
+
+    @Override
+    public int compareTo(@NotNull CustomTrail o) {
+        return this.getTrailName().compareTo(o.getTrailName());
     }
 
     public static class CustomTrailBuilder {

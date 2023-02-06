@@ -129,10 +129,11 @@ public class ConfigParser {
         Animations[] animations = new Animations[args.size()];
         for(int i = 0; i < args.size(); i++) {
             String[] argList = args.get(i).replaceAll("\\s", "").split(",");
-            checkListError(argList, 5, "equation");
+            checkListError(argList, 6, "equation");
             double[] offset = argList[3].equals("null") ? new double[]{0,0,0} : stringArrToDouble(argList[3].substring(1, argList[3].length()-1).split(";"));
+            double[] angleOffset = argList[4].equals("null") ? new double[]{0,0} : stringArrToDouble(argList[4].substring(1, argList[4].length() - 1).split(";"));
             animations[i] =  new Animations(argList[0].substring(1, argList[0].length()-1).split(";"), Integer.parseInt(argList[1]),
-                    Double.parseDouble(argList[2]), offset, Boolean.parseBoolean(argList[4]));
+                    Double.parseDouble(argList[2]), offset, angleOffset, Boolean.parseBoolean(argList[5]));
         }
         return animations;
     }

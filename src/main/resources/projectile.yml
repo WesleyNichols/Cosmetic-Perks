@@ -10,4 +10,62 @@
 #   offset: [x;y;z]
 #   particle_speed: speed(double)
 #   particle_amount: amount(int)
-#   limited_item: true/false
+
+Firework Spark:
+  particle: FIREWORKS_SPARK
+  display_material: FIREWORK_ROCKET
+  offset:
+    - 0.1;0.1;0.1
+  particle_speed: 0.025
+  particle_amount: 2
+
+Sorcery:
+  particle: SPELL_WITCH
+  display_material: CAULDRON
+  offset:
+    - 0.1;0.1;0.1
+  particle_amount: 3
+
+Poof:
+  particle: SPIT
+  display_material: FEATHER
+  offset:
+    - 0.1;0.1;0.1
+  particle_amount: 0
+
+Slimey:
+  particle: SLIME
+  display_material: SLIME_BALL
+  offset:
+    - 0.1;0.1;0.1
+  particle_amount: 2
+
+Lovestruck:
+  particle: HEART
+  display_material: TIPPED_ARROW
+  offset:
+    - 0.2;0.1;0.2
+  particle_amount: 1
+
+Snow Fall:
+  particle: SNOWBALL
+  display_material: POWDER_SNOW_BUCKET
+  offset:
+    - 0.1;0.1;0.1
+  particle_amount: 2
+
+Honey Crystals:
+  particle: WAX_ON
+  display_material: HONEY_BOTTLE
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 0.05
+  particle_amount: 2
+
+Glimmer:
+  particle: ELECTRIC_SPARK
+  display_material: AMETHYST_SHARD
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 0.01
+  particle_amount: 2

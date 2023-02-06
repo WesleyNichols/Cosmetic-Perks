@@ -40,6 +40,8 @@ public class CustomItem {
         ItemStack itemStack = new ItemStack(material, amount);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.displayName(name);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ITEM_SPECIFICS);
 
         if (lore != null) {
             itemMeta.lore(lore);

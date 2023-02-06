@@ -11,14 +11,16 @@ public class Animations {
     private boolean Reversed = false;
     private final int TickToComplete;
     private final double[] Offset;
+    private final double[] AngleOffset;
 
-    public Animations(String[] equationList, int ticksToComplete, double maxDistance, double[] offset, boolean reversingAnimation) {
+    public Animations(String[] equationList, int ticksToComplete, double maxDistance, double[] offset, double[] angleOffset, boolean reversingAnimation) {
         this.EquationList = equationList;
         this.MaxDistance = maxDistance * Math.PI;
         this.TickToComplete = ticksToComplete;
         this.ReversingAnimation = reversingAnimation;
         this.AmountToAdd = MaxDistance/TickToComplete;
         this.Offset = offset;
+        this.AngleOffset = angleOffset;
     }
 
     public void addToCurrentDistance() {
@@ -56,6 +58,9 @@ public class Animations {
 
     public double[] getOffset() {
         return Offset;
+    }
+    public double[] getAngleOffset() {
+        return AngleOffset;
     }
 
     public boolean isReversingAnimation() {

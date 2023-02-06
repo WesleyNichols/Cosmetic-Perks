@@ -26,8 +26,8 @@ public class VectorUtils {
         // Z_Axis rotation (Pitch)
         initialX = v[0];
         initialY = v[1];
-        x = initialX * cosPitch - initialY * sinPitch;
-        y = initialX * sinPitch + initialY * cosPitch;
+        x = initialX * cosPitch;
+        y = initialX * sinPitch + initialY;
 
         // Y_Axis rotation (Yaw)
         initialZ = v[2];

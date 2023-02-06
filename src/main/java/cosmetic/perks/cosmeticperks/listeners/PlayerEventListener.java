@@ -63,11 +63,12 @@ public class PlayerEventListener implements Listener {
         if(event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
 
         PersistentDataContainer data = player.getPersistentDataContainer();
-        if (player.isGliding() && !Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
-            CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING));
+        if (player.isGliding()) {
+            if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
+                CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING));
 
-            TrailMethods.spawnParticle(player, trail);
-
+                TrailMethods.spawnParticle(player, trail);
+            }
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
             CustomTrail trailProperties = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING));
             if(trailProperties == null) {throw new NullPointerException("Trail Properties is null!");}

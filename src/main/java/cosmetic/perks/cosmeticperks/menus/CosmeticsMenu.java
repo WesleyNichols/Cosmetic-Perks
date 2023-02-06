@@ -262,6 +262,7 @@ public class CosmeticsMenu extends TrailMethods {
      */
     public ChestGui getTrailSelectionMenu(Player player, String type) {
         List<CustomTrail> trails = TrailManager.getTrailType(type);
+        Collections.sort(trails);
 
         ChestGui gui = new ChestGui(6, ChatColor.GOLD + type.substring(0, 1).toUpperCase() + type.substring(1) + " Trails");
         gui.setOnGlobalClick(event -> event.setCancelled(true));

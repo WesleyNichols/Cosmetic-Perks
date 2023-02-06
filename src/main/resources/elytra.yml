@@ -10,4 +10,64 @@
 #   offset: [x;y;z]
 #   particle_speed: speed(double)
 #   particle_amount: amount(int)
-#   limited_item: true/false
+
+Sorcery:
+  particle: SPELL_WITCH
+  display_material: CAULDRON
+  offset:
+    - 0.4;0.4;0.4
+  particle_amount: 3
+
+Glow:
+  particle: GLOW
+  display_material: GLOW_INK_SAC
+  offset:
+    - 0.3;0.3;0.3
+  particle_amount: 2
+
+Lovestruck:
+  particle: HEART
+  display_material: TIPPED_ARROW
+  offset:
+    - 0.2;0.1;0.2
+  particle_amount: 1
+
+Magic:
+  particle: CRIT_MAGIC
+  display_material: ENCHANTING_TABLE
+  offset:
+    - 0.3;0.3;0.3
+  particle_speed: 0.01
+  particle_amount: 3
+
+Sparkle:
+  particle: END_ROD
+  display_material: END_ROD
+  offset:
+    - 0.3;0.3;0.3
+  particle_speed: 0.04
+  particle_amount: 2
+
+Honey Crystals:
+  particle: WAX_ON
+  display_material: HONEY_BLOCK
+  offset:
+    - 0.3;0.3;0.3
+  particle_speed: 0.05
+  particle_amount: 2
+
+Vibrant:
+  particle: TOTEM
+  display_material: TOTEM_OF_UNDYING
+  offset:
+    - 0.3;0.3;0.3
+  particle_speed: 0.01
+  particle_amount: 2
+
+Smoke Signal:
+  particle: CAMPFIRE_COSY_SMOKE
+  display_material: CAMPFIRE
+  offset:
+    - 0.3;0.3;0.3
+  particle_speed: 0.01
+  particle_amount: 2

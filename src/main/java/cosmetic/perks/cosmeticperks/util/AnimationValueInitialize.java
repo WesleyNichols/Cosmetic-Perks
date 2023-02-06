@@ -3,9 +3,7 @@ package cosmetic.perks.cosmeticperks.util;
 import cosmetic.perks.cosmeticperks.managers.AnimationValueManager;
 import cosmetic.perks.cosmeticperks.structures.AnimationValues;
 import cosmetic.perks.cosmeticperks.structures.Animations;
-import net.kyori.adventure.text.Component;
 import net.objecthunter.exp4j.ExpressionBuilder;
-import org.bukkit.Bukkit;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -50,6 +48,7 @@ public class AnimationValueInitialize {
         for(Animations animation: Animation) {
             String[] equationList = animation.getEquationList();
             double[] offset = animation.getOffset();
+            double[] angleOffset = animation.getAngleOffset();
             int length = animation.getTickToComplete() * (animation.isReversingAnimation() ? 2 : 1);
             for (int i=0; i<equationList.length/3; i++) {
                 //Equating the equation
@@ -60,6 +59,7 @@ public class AnimationValueInitialize {
                     for (int k = 0; k<3; k++) {
                         temp[j][k] = BigDecimal.valueOf(new ExpressionBuilder(equationList[exprNumber+k]).variable("x").build().setVariable("x", animation.getCurrentDistance()).evaluate() + offset[k]).setScale(5, RoundingMode.UP).doubleValue();
                     }
+                    temp[j] = VectorUtils.rotateVector(temp[j], angleOffset[0], angleOffset[1]);
                 }
                 storedEValues.add(temp);
             }

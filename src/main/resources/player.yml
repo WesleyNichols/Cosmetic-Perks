@@ -12,7 +12,129 @@
 #   particle_amount: amount(int)
 #   limited_item: true/false
 #   equations:
-#     - '[cos(x);0;sin(x)...], tickstocomplete(int), maxdistance(double), [x;y;z], reversing(true/false)'
+#     - '[cos(x);0;sin(x)...], tickstocomplete(int), maxdistance(double), [x;y;z], [yaw;pitch], reversing(true/false)'
 #   styles:
 #     - 'circle, [x;y;z], [yaw;pitch], radius, points'
 #     - 'square, [x;y;z], [yaw;pitch], size, points_per_side'
+
+Firework Spark:
+  particle: FIREWORKS_SPARK
+  display_material: FIREWORK_ROCKET
+  offset:
+    - 0.1;0.1;0.1
+  particle_speed: 0.05
+  particle_amount: 2
+
+Sorcery:
+  particle: SPELL_WITCH
+  display_material: CAULDRON
+  offset:
+    - 0.2;0.1;0.2
+  particle_amount: 3
+
+Emerald:
+  particle: VILLAGER_HAPPY
+  display_material: EMERALD
+  offset:
+    - 0.2;0;0.2
+  particle_amount: 2
+
+Melody:
+  particle: NOTE
+  display_material: MUSIC_DISC_STAL
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 1
+  particle_amount: 1
+
+Slime:
+  particle: SLIME
+  display_material: SLIME_BALL
+  offset:
+    - 0.2;0.1;0.2
+  particle_amount: 3
+
+Lovestruck:
+  particle: HEART
+  display_material: TIPPED_ARROW
+  offset:
+    - 0.2;0.1;0.2
+  particle_amount: 1
+
+Dragon Breath:
+  particle: DRAGON_BREATH
+  display_material: DRAGON_BREATH
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 0.01
+  particle_amount: 3
+
+Sparkle:
+  particle: END_ROD
+  display_material: DIAMOND
+  offset:
+    - 0.1;0.1;0.1
+  particle_speed: 0.025
+  particle_amount: 2
+
+Honey Crystals:
+  particle: WAX_ON
+  display_material: HONEY_BOTTLE
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 0.05
+  particle_amount: 2
+
+Spirit:
+  particle: SCULK_SOUL
+  display_material: BONE
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 0.01
+  particle_amount: 2
+
+Bubbles:
+  particle: SCULK_CHARGE_POP
+  display_material: HEART_OF_THE_SEA
+  offset:
+    - 0.2;0.2;0.2
+  particle_speed: 0.01
+  particle_amount: 2
+
+Ring of Fire:
+  particle: FLAME
+  display_material: BLAZE_POWDER
+  equations:
+    - '[cos(x)/1.5;x/24;sin(x)/1.5], 100, 8, null, null, false'
+
+Dazed:
+  particle: ELECTRIC_SPARK
+  display_material: QUARTZ
+  equations:
+    - '[cos(x)/2;2.1;sin(x)/2], 40, 2, null, null, false'
+    - '[cos(x + 2.093)/2;2.1;sin(x + 2.093)/2], 40, 2, null, null, false'
+    - '[cos(x + 4.186)/2;2.1;sin(x + 4.186)/2], 40, 2, null, null, false'
+
+Surrounded:
+  particle: ELECTRIC_SPARK
+  display_material: BLAZE_POWDER
+  equations:
+    - '[cos(x)/1.5;0.1;sin(x)/1.5], 20, 2, null, null, false'
+    - '[cos(x)/1.5;2.25;sin(x)/1.5], 20, 2, null, null, false'
+    - '[-cos(x)/1.5;0.2;-sin(x)/1.5], 20, 2, null, null, false'
+    - '[-cos(x)/1.5;2.1;-sin(x)/1.5], 20, 2, null, null, false'
+
+Rings of Soul:
+  particle: SOUL_FIRE_FLAME
+  display_material: BLAZE_POWDER
+  equations:
+    - '[cos(x);1;sin(x)], 20, 2, null, [0;45], false'
+    - '[cos(-x+3.14);1;sin(-x+3.14)], 20, 2, null, [0;-45], false'
+
+Rain Cloud:
+  particle: DRIP_WATER
+  display_material: BLAZE_POWDER
+  equations:
+    - '[(sin(2x)+3*sin(x))/5;2.5;sin(3x)/1.5], 17, 4, null, null, false'
+    - '[sin(33x)*cos(9x);2.5;sin(40x)*sin(7x)], 17, 2, null, null, false'
+    - '[sin(33x)*cos(9x);2.5;sin(14x)*sin(4x)], 17, 2, null, null, false'

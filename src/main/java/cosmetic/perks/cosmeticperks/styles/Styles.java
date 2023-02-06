@@ -34,7 +34,7 @@ public class Styles {
 
     public static double[] checkAngleOffset(@Nullable double[] angleOffset) {
         if (angleOffset == null) {angleOffset = new double[]{0, 0};}
-        else if (angleOffset.length != 2) {throw new IllegalArgumentException("AngleOffset has more values than expected!");}
+        else if (angleOffset.length != 2) {throw new IllegalArgumentException("Style AngleOffset has more values than expected!");}
         return angleOffset;
     }
 
