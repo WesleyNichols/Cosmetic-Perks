@@ -4,13 +4,17 @@ depend: [AdvancedVanish]
 main: cosmetic.perks.cosmeticperks.CosmeticPerks
 api-version: 1.19
 authors: [ WesleyNichols, TheSheepGoesBa ]
-description: Perks for donors
+description: Cosmetic additions for server donors
 commands:
   cosmetic:
     description: Access the cosmetic menu
     usage: /cosmetic
-    aliases: [cosmetics, flare, style, custom, customize, accessory, trail, trails]
+    aliases: [trail]
+  reload:
+    description: Reload plugin configs
+    usage: /cosmeticperks:reload
+    permission: cosmeticperks.reload
   shop:
-    description: Prompt user to visit Shop page
+    description: Redirects to the online store
     usage: /shop
-    aliases: [shops, store, stores, buy, donate, donation, donations, donator, donators, donor, donors, purchase]
+    aliases: [store, buy, donate]
