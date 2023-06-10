@@ -1,7 +1,7 @@
 name: CosmeticPerks
 version: '${project.version}'
 depend: [AdvancedVanish]
-main: cosmetic.perks.cosmeticperks.CosmeticPerks
+main: me.wesleynichols.cosmeticperks.CosmeticPerks
 api-version: 1.19
 authors: [ WesleyNichols, TheSheepGoesBa ]
 description: Cosmetic additions for server donors

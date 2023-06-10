@@ -22,9 +22,9 @@ public class AnimationTask extends BukkitRunnable {
         HashMap<UUID, CustomTrail> particleAnimationList = AnimationManager.getParticleAnimationList();
         for (UUID uuid : particleAnimationList.keySet()) {
             Entity target = Bukkit.getEntity(uuid);
-            assert target != null;
+            //assert target != null;
 
-            if (target instanceof Player && target.isDead()) { return; }
+            if ((target instanceof Player && target.isDead()) || target == null) { return; }
 
             CustomTrail particleProperties = particleAnimationList.get(uuid);
             AnimationValues particleAnimationValues = particleProperties.getAnimation();
