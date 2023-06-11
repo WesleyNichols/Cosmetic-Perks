@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShopCommand implements CommandExecutor {
 
-    private static final String shop = "https://media.tenor.com/LIhLGbs7jSIAAAAC/rat-jam.gif";
+    private static final String shop = "store.beeboxmc.com";
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
@@ -29,7 +29,7 @@ public class ShopCommand implements CommandExecutor {
                     .decoration(TextDecoration.BOLD, true)
                     .append(Component.text(" ✧  ✦  ✧  ✪  ✧  ✦  ✧\n\n", NamedTextColor.DARK_PURPLE)
                             .decoration(TextDecoration.BOLD, false)
-                            .append(Component.text("All purchases directly support the server and keep it running!\n\n", NamedTextColor.BLACK)
+                            .append(Component.text("All purchases directly support the server!\n\n", NamedTextColor.BLACK)
                                     .decoration(TextDecoration.BOLD, false)
                                     .append(Component.text("  [Click to Shop]", NamedTextColor.DARK_AQUA)
                                             .decoration(TextDecoration.BOLD, true)
