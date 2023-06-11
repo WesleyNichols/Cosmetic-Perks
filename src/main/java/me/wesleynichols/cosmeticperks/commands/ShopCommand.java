@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShopCommand implements CommandExecutor {
 
-    private static final String shop = "store.beeboxmc.com";
+    private static final String shop = "https://store.beeboxmc.com";
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player) {
