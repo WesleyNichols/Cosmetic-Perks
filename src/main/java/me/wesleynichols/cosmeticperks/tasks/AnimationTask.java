@@ -6,6 +6,7 @@ import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.wesleynichols.cosmeticperks.structures.AnimationValues;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class AnimationTask extends BukkitRunnable {
                     .filter(player -> player.getWorld().getUID().equals(world.getUID()))
                     .filter(player -> player.getLocation().distance(target.getLocation()) <= 40)
                     .forEach(player -> {
-                                if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
+                                if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) || player.getGameMode() == GameMode.SPECTATOR) { return; }
                                 if(particleAnimationValues.getEquationValuesLength() != 0) {
                                     for(double[][] loc: particleAnimationValues.getEquationValues()) {
                                         player.spawnParticle(particleProperties.getTrailEffect(), target.getLocation().add(loc[step][0], loc[step][1], loc[step][2]), particleProperties.getParticleAmount(),

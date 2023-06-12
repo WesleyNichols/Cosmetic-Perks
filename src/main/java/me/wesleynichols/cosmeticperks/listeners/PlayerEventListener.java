@@ -7,6 +7,7 @@ import me.wesleynichols.cosmeticperks.managers.TrailManager;
 import me.wesleynichols.cosmeticperks.managers.TrailMethods;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
@@ -55,7 +56,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerTrailMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPermission("group.donator") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
+        if (!player.hasPermission("group.donator") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) || player.getGameMode() == GameMode.SPECTATOR) { return; }
         if(event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
 
         PersistentDataContainer data = player.getPersistentDataContainer();
