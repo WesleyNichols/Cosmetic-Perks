@@ -62,7 +62,7 @@ public class CosmeticsMenu extends TrailMethods {
                                 Component.text(ChatColor.DARK_GREEN + (playerTrail.substring(0, 1).toUpperCase() + playerTrail.substring(1).toLowerCase()))))
                         .build(),
                 event -> {
-                    if (!player.hasPermission("group.donator")) { player.performCommand("shop cosmetic"); }
+                    if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
                     else { displayPlayerMenu(player); }
                 })
         );
@@ -79,7 +79,7 @@ public class CosmeticsMenu extends TrailMethods {
                                 Component.text(ChatColor.DARK_GREEN + (projTrail.substring(0, 1).toUpperCase() + projTrail.substring(1).toLowerCase()))))
                         .build(),
                 event -> {
-                    if (!player.hasPermission("group.donator")) { player.performCommand("shop cosmetic"); }
+                    if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
                     else { displayProjectileMenu(player); }
                 })
         );
@@ -98,7 +98,7 @@ public class CosmeticsMenu extends TrailMethods {
                                 Component.text(ChatColor.DARK_GREEN + (elytraTrail.substring(0, 1).toUpperCase() + elytraTrail.substring(1).toLowerCase()))))
                         .build(),
                 event -> {
-                    if (!player.hasPermission("group.donator")) { player.performCommand("shop cosmetic"); }
+                    if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
                     else { displayElytraMenu(player); }
                 })
         );

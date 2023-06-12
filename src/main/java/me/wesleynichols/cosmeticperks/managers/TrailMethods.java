@@ -95,7 +95,7 @@ public abstract class TrailMethods {
         for(String trail: new String[]{"player", "projectile", "elytra"}) {
             if (!hasActiveTrail(player, trail) ||
                     TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), trail + "-trail"), PersistentDataType.STRING)) == null ||
-                    !player.hasPermission("group.donator")) { removeActiveTrail(player, trail, false); }
+                    !player.hasPermission("cosmeticperks.access")) { removeActiveTrail(player, trail, false); }
             else { AnimationManager.callAttachParticleAnimation(player, trail); }
         }
     }

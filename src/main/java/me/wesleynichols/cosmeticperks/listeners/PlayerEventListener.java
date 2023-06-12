@@ -56,7 +56,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerTrailMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPermission("group.donator") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) || player.getGameMode() == GameMode.SPECTATOR) { return; }
+        if (!player.hasPermission("cosmeticperks.access") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) || player.getGameMode() == GameMode.SPECTATOR) { return; }
         if(event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
 
         PersistentDataContainer data = player.getPersistentDataContainer();
