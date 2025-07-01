@@ -1,7 +1,9 @@
 package me.wesleynichols.cosmeticperks.structures;
 
+import me.wesleynichols.cosmeticperks.menus.CosmeticsMenu;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
@@ -35,12 +37,14 @@ public class CustomTrail implements Comparable<CustomTrail>{
 
     public ItemStack getItem() {
         return new CustomItem.ItemBuilder(DisplayMaterial)
-                .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + EffectName))
+                .name(Component.text(EffectName).color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
                 .lore(Arrays.asList(
-                        Component.text(ChatColor.ITALIC + (getAnimation() != null ? ChatColor.GOLD + "Animated ": ChatColor.YELLOW + "")
-                                + (TrailType.substring(0, 1).toUpperCase() + TrailType.substring(1)) + " Trail"),
-                        Component.text(""),
-                        Component.text(ChatColor.RED + "Click to Select")))
+                        Component.empty()
+                                .append(Component.text(getAnimation() != null ? "Animated " : "", NamedTextColor.GOLD))
+                                .append(Component.text(CosmeticsMenu.capitalize(TrailType) + " Trail", NamedTextColor.YELLOW))
+                                .decorate(TextDecoration.ITALIC),
+                        Component.empty(),
+                        Component.text("Click to Select", NamedTextColor.RED)))
                 .build();
     }
 
@@ -129,7 +133,7 @@ public class CustomTrail implements Comparable<CustomTrail>{
         }
 
         public CustomTrail build() {
-            if(this.trailEffect == null) {this.trailEffect = Particle.SMOKE_NORMAL;}
+            if(this.trailEffect == null) {this.trailEffect = Particle.SMOKE;}
             if(this.displayMaterial == null) {this.displayMaterial = Material.WHITE_WOOL;}
             if(this.offset == null) {this.offset = new double[]{0,0,0};}
             return new CustomTrail(this);

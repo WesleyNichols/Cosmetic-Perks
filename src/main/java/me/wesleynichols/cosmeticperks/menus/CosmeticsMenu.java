@@ -1,5 +1,6 @@
 package me.wesleynichols.cosmeticperks.menus;
 
+import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
 import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -14,7 +15,9 @@ import me.wesleynichols.cosmeticperks.structures.CustomItem;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.wesleynichols.cosmeticperks.managers.TrailMethods;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -54,12 +57,13 @@ public class CosmeticsMenu extends TrailMethods {
         String playerTrail = getActiveTrail(player, "player");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
-                        .name(Component.text(ChatColor.GREEN + "" + ChatColor.BOLD + "Player Trails"))
+                        .name(Component.text("Player Trails", NamedTextColor.GREEN)
+                                .decorate(TextDecoration.BOLD))
                         .armorColor(Color.GREEN)
                         .lore(Arrays.asList(
-                                Component.text(""),
-                                Component.text(ChatColor.YELLOW + "Current:"),
-                                Component.text(ChatColor.DARK_GREEN + (playerTrail.substring(0, 1).toUpperCase() + playerTrail.substring(1).toLowerCase()))))
+                                Component.empty(),
+                                Component.text("Current:", NamedTextColor.YELLOW),
+                                Component.text(capitalize(playerTrail), NamedTextColor.DARK_GREEN)))
                         .build(),
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
@@ -72,11 +76,11 @@ public class CosmeticsMenu extends TrailMethods {
         String projTrail = getActiveTrail(player, "projectile");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
-                        .name(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "Projectile Trails"))
+                        .name(Component.text("Projectile Trails").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD))
                         .lore(Arrays.asList(
-                                Component.text(""),
-                                Component.text(ChatColor.YELLOW + "Current:"),
-                                Component.text(ChatColor.DARK_GREEN + (projTrail.substring(0, 1).toUpperCase() + projTrail.substring(1).toLowerCase()))))
+                                Component.empty(),
+                                Component.text("Current:", NamedTextColor.YELLOW),
+                                Component.text(capitalize(projTrail), NamedTextColor.DARK_GREEN)))
                         .build(),
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
@@ -89,13 +93,13 @@ public class CosmeticsMenu extends TrailMethods {
         String elytraTrail = getActiveTrail(player, "elytra");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ELYTRA)
-                        .name(Component.text(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Elytra Trails"))
-                        .enchantments(CustomItem.enchantArray(Enchantment.DURABILITY), CustomItem.levelArray(1))
+                        .name(Component.text("Elytra Trails").color(NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.BOLD))
+                        .enchantments(CustomItem.enchantArray(Enchantment.UNBREAKING), CustomItem.levelArray(1))
                         .hideEnchants(true)
                         .lore(Arrays.asList(
-                                Component.text(""),
-                                Component.text(ChatColor.YELLOW + "Current:"),
-                                Component.text(ChatColor.DARK_GREEN + (elytraTrail.substring(0, 1).toUpperCase() + elytraTrail.substring(1).toLowerCase()))))
+                                Component.empty(),
+                                Component.text("Current:", NamedTextColor.YELLOW),
+                                Component.text(capitalize(elytraTrail), NamedTextColor.DARK_GREEN)))
                         .build(),
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
@@ -109,10 +113,10 @@ public class CosmeticsMenu extends TrailMethods {
         //  region Shop
         selectionPane.addItem(new GuiItem(
                         new CustomItem.ItemBuilder(Material.CHEST)
-                                .name(Component.text(ChatColor.WHITE + "Buy Cosmetics"))
+                                .name(Component.text("Buy Cosmetics"))
                                 .lore(Arrays.asList(
-                                        Component.text(""),
-                                        Component.text(ChatColor.RED + "Click to visit the Store")))
+                                        Component.empty(),
+                                        Component.text("Click to visit the Store", NamedTextColor.RED)))
                                 .build(),
                         event -> player.performCommand("shop cosmetic"))
                 , 1, 0);
@@ -121,10 +125,10 @@ public class CosmeticsMenu extends TrailMethods {
         //  region Deselect Trails
         selectionPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
-                        .name(Component.text(ChatColor.WHITE + "Deselect All"))
+                        .name(Component.text("Deselect All"))
                         .lore(Arrays.asList(
-                                Component.text(""),
-                                Component.text(ChatColor.RED + "Disables all active trails")))
+                                Component.empty(),
+                                Component.text("Disables all active trails", NamedTextColor.RED)))
                         .build(),
                 event -> {
                     removeActiveTrails(player);
@@ -192,7 +196,7 @@ public class CosmeticsMenu extends TrailMethods {
         //  region Main Menu
         navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ARROW)
-                        .name(Component.text(ChatColor.WHITE + "Main Menu"))
+                        .name(Component.text("Main Menu"))
                         .build(),
                 event -> displayCosmeticsMenu(player)), 0, 0
         );
@@ -235,10 +239,10 @@ public class CosmeticsMenu extends TrailMethods {
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
         GuiItem item = new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
-                        .name(Component.text(ChatColor.WHITE + "" + ChatColor.BOLD + "None"))
+                        .name(Component.text("None").decorate(TextDecoration.BOLD))
                         .lore(Arrays.asList(
-                                Component.text(""),
-                                Component.text(ChatColor.RED + "Click to Select")))
+                                Component.empty(),
+                                Component.text("Click to Select", NamedTextColor.RED)))
                         .build()
         );
         item.setAction(event -> {
@@ -264,7 +268,10 @@ public class CosmeticsMenu extends TrailMethods {
         List<CustomTrail> trails = TrailManager.getTrailType(type);
         Collections.sort(trails);
 
-        ChestGui gui = new ChestGui(6, ChatColor.GOLD + type.substring(0, 1).toUpperCase() + type.substring(1) + " Trails");
+        String capitalizedType = type.substring(0, 1).toUpperCase() + type.substring(1);
+        Component titleComponent = Component.text(capitalizedType + " Trails", NamedTextColor.GOLD);
+
+        ChestGui gui = new ChestGui(6, LegacyComponentSerializer.legacySection().serialize(titleComponent));
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.setOnGlobalDrag(event -> event.setCancelled(true));
         PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
@@ -304,13 +311,13 @@ public class CosmeticsMenu extends TrailMethods {
      */
     public void enableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
-        itemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        itemMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         List<Component> itemLore = itemMeta.lore();
         if (itemLore != null) {
             itemLore.remove(itemLore.size()-1);
-            itemLore.add(Component.text(ChatColor.GREEN + "Selected"));
+            itemLore.add(Component.text("Selected", NamedTextColor.GREEN));
             itemMeta.lore(itemLore);
         }
 
@@ -324,16 +331,25 @@ public class CosmeticsMenu extends TrailMethods {
      */
     public void disableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
-        itemMeta.removeEnchant(Enchantment.DURABILITY);
+        itemMeta.removeEnchant(Enchantment.UNBREAKING);
 
         List<Component> itemLore = itemMeta.lore();
         if (itemLore != null) {
             itemLore.remove(itemLore.size()-1);
-            itemLore.add(Component.text(ChatColor.RED + "Click to Select"));
+            itemLore.add(Component.text("Click to Select", NamedTextColor.RED));
             itemMeta.lore(itemLore);
         }
 
         item.getItem().setItemMeta(itemMeta);
     }
 
+    /**
+        Capitalize the first letter in a provided word
+     */
+    public static String capitalize(String word) {
+        if (word == null || word.isEmpty()) {
+            return word; // handle null or empty strings safely
+        }
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
 }

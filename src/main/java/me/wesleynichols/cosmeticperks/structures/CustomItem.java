@@ -41,7 +41,7 @@ public class CustomItem {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.displayName(name);
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ITEM_SPECIFICS);
+        //itemMeta.addItemFlags(ItemFlag.HIDE_ITEM_SPECIFICS); Unsure if this line is needed
 
         if (lore != null) {
             itemMeta.lore(lore);

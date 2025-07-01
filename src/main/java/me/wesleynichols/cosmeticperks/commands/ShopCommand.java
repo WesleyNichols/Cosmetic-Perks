@@ -25,26 +25,25 @@ public class ShopCommand implements CommandExecutor {
             bookmeta.setAuthor("");
             bookmeta.setTitle("");
 
-            TextComponent textComponent = Component.text("\n        Shop\n\n", NamedTextColor.BLACK)
-                    .decoration(TextDecoration.BOLD, true)
+            TextComponent bookText = Component.empty()
+                    .append(Component.text("\n        Shop\n\n", NamedTextColor.BLACK)
+                            .decorate(TextDecoration.BOLD))
                     .append(Component.text(" ✧  ✦  ✧  ✪  ✧  ✦  ✧\n\n", NamedTextColor.DARK_PURPLE)
-                            .decoration(TextDecoration.BOLD, false)
-                            .append(Component.text("All purchases directly support the server!\n\n", NamedTextColor.BLACK)
-                                    .decoration(TextDecoration.BOLD, false)
-                                    .append(Component.text("  [Click to Shop]", NamedTextColor.DARK_AQUA)
-                                            .decoration(TextDecoration.BOLD, true)
-                                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, shop))
-                                    )));
+                            .decoration(TextDecoration.BOLD, false))
+                    .append(Component.text("All purchases directly support the server!\n\n", NamedTextColor.BLACK)
+                    .append(Component.text("  [Click to Shop]", NamedTextColor.DARK_AQUA)
+                            .decorate(TextDecoration.BOLD)
+                            .clickEvent(ClickEvent.openUrl(shop))));
 
             if (args.length != 0) {
                 if (args[0].equals("cosmetic")) {
-                    textComponent = textComponent.append(Component.text("\n\n  [Back to Menu]", NamedTextColor.DARK_BLUE)
+                    bookText = bookText.append(Component.text("\n\n  [Back to Menu]", NamedTextColor.DARK_BLUE)
                             .decoration(TextDecoration.BOLD, true)
-                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/cosmetic")));
+                            .clickEvent(ClickEvent.runCommand("/cosmetic")));
                 }
             }
 
-            bookmeta.addPages(textComponent);
+            bookmeta.addPages(bookText);
             book.setItemMeta(bookmeta);
 
             player.openBook(book);

@@ -23,8 +23,8 @@ public class ReloadCommand implements CommandExecutor {
             sender.sendMessage(Component.text("[CosmeticPerks] Config reloaded!", NamedTextColor.GREEN));
             return true;
         } catch (Exception e) {
+            sender.sendMessage(Component.text("[CosmeticPerks] An error occurred while reloading configs!", NamedTextColor.RED));
             e.printStackTrace();
-            sender.sendMessage(Component.text("[CosmeticPerks] An error occurred when trying to reload the configs.", NamedTextColor.RED));
             return false;
         }
     }
