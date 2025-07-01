@@ -20,6 +20,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -42,20 +43,21 @@ public class CosmeticsMenu extends TrailMethods {
      * Method to display the cosmetic menu to a player.
      */
     public void displayCosmeticsMenu(Player player){
-        ChestGui gui = new ChestGui(4, "Cosmetics Menu");
+        ChestGui gui = new ChestGui(3, "Cosmetics Menu");
+
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.setOnGlobalDrag(event -> event.setCancelled(true));
 
-        OutlinePane background = new OutlinePane(0, 3, 9, 1, Pane.Priority.LOWEST);
+        OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
         background.addItem(new GuiItem(filler));
         background.setRepeat(true);
         gui.addPane(background);
 
-        OutlinePane navigationPane = new OutlinePane(3, 1, 3, 1);
+        StaticPane navigation = new StaticPane(1, 1, 7, 1);
 
         // region Player Trails
         String playerTrail = getActiveTrail(player, "player");
-        navigationPane.addItem(new GuiItem(
+        navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
                         .armorColor(Color.GREEN)
                         .name(buildItemName("Player Trails", NamedTextColor.GREEN, true))
@@ -64,13 +66,12 @@ public class CosmeticsMenu extends TrailMethods {
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
                     else displayMenu(player, "player");
-                })
-        );
-// endregion
+                }), 2, 0);
+        // endregion
 
-// region Projectile Trails
+        // region Projectile Trails
         String projTrail = getActiveTrail(player, "projectile");
-        navigationPane.addItem(new GuiItem(
+        navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
                         .name(buildItemName("Projectile Trails", NamedTextColor.GOLD, true))
                         .lore(buildTrailLore(projTrail))
@@ -78,13 +79,12 @@ public class CosmeticsMenu extends TrailMethods {
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
                     else displayMenu(player, "projectile");
-                })
-        );
-// endregion
+                }), 3, 0);
+        // endregion
 
-// region Elytra Trails
+        // region Elytra Trails
         String elytraTrail = getActiveTrail(player, "elytra");
-        navigationPane.addItem(new GuiItem(
+        navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ELYTRA)
                         .name(buildItemName("Elytra Trails", NamedTextColor.LIGHT_PURPLE, true))
                         .lore(buildTrailLore(elytraTrail))
@@ -92,14 +92,11 @@ public class CosmeticsMenu extends TrailMethods {
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
                     else displayMenu(player, "elytra");
-                })
-        );
-// endregion
-
-        StaticPane selectionPane = new StaticPane(0, 3, 9, 1);
+                }), 4, 0);
+        // endregion
 
         //  region Shop
-        selectionPane.addItem(new GuiItem(
+        navigation.addItem(new GuiItem(
                         new CustomItem.ItemBuilder(Material.CHEST)
                                 .name(buildItemName("Buy Cosmetics", NamedTextColor.WHITE, true))
                                 .lore(Arrays.asList(
@@ -108,11 +105,11 @@ public class CosmeticsMenu extends TrailMethods {
                                                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
                                 .build(),
                         event -> player.performCommand("shop cosmetic"))
-                , 2, 0);
+                , 0, 0);
         //  endregion
 
         //  region Deselect Trails
-        selectionPane.addItem(new GuiItem(
+        navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
                         .name(buildItemName("Deselect All", NamedTextColor.WHITE, true))
                         .lore(Arrays.asList(
@@ -127,8 +124,7 @@ public class CosmeticsMenu extends TrailMethods {
         , 6, 0);
         // endregion
 
-        gui.addPane(navigationPane);
-        gui.addPane(selectionPane);
+        gui.addPane(navigation);
         gui.update();
         gui.show(player);
     }
@@ -143,7 +139,7 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     /**
-     * Create a basic navigation menu with main menu, previous page, and next page buttons
+     * Create a navigation menu with main menu, previous page, and next page buttons
      */
     public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
         StaticPane navigation = new StaticPane(0, gui.getRows()-1, 9, 1);
@@ -222,11 +218,7 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     /**
-     * Creates a ChestGui to offer selections in a given menu type
-     *
-     * @param player The player to read from
-     * @param type The type name of the trails (must match a config name)
-     * @return The ChestGui with collection of GuiItems from a CustomTrail type
+     * Create a ChestGui to offer selections in a given menu type
      */
     public ChestGui getTrailSelectionMenu(Player player, String type) {
         List<CustomTrail> trails = TrailManager.getTrailType(type);
@@ -270,8 +262,6 @@ public class CosmeticsMenu extends TrailMethods {
 
     /**
      * "Enables" a GuiItem (enchanted)
-     *
-     * @param item The GuiItem to enchant
      */
     public void enableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
@@ -289,9 +279,7 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     /**
-     * "Disables" a GuiItem (disenchanted)
-     *
-     * @param item The GuiItem to disenchant
+     * "Disables" a GuiItem (unenchanted)
      */
     public void disableItem(GuiItem item) {
         ItemMeta itemMeta = item.getItem().getItemMeta();
@@ -305,15 +293,5 @@ public class CosmeticsMenu extends TrailMethods {
         }
 
         item.getItem().setItemMeta(itemMeta);
-    }
-
-    /**
-     * Capitalize the first letter in a provided word
-     */
-    public static String capitalize(String word) {
-        if (word == null || word.isEmpty()) {
-            return word; // handle null or empty strings safely
-        }
-        return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 }

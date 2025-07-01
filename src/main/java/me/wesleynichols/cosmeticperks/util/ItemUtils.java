@@ -3,22 +3,21 @@ package me.wesleynichols.cosmeticperks.util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static me.wesleynichols.cosmeticperks.menus.CosmeticsMenu.capitalize;
-
 public class ItemUtils {
     /**
-     * Basic Lore for Main Menu items
+     * Basic Lore for trail menu items
      */
     public static List<Component> buildTrailLore(String trailName) {
         return Arrays.asList(
                 Component.empty(),
                 Component.text("Current:", NamedTextColor.YELLOW)
                         .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE),
-                Component.text(capitalize(trailName), NamedTextColor.DARK_GREEN)
+                Component.text(StringUtils.capitalise(trailName), NamedTextColor.DARK_GREEN)
                         .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)
         );
     }

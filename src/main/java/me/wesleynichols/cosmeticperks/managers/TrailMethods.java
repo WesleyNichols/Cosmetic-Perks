@@ -13,11 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 public abstract class TrailMethods {
 
     /**
-     * Sets and stores the player's active trail
-     *
-     * @param e      Enum for the trail
-     * @param player The player to set the trail for
-     * @param key    The group of the trail
+     * Set and store the player's active trail
      */
     public void setActiveTrail(String e, Player player, String key) {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, e);
@@ -25,10 +21,7 @@ public abstract class TrailMethods {
     }
 
     /**
-     * Removes the player's active trail
-     *
-     * @param player The player to remove the trail for
-     * @param key    The group of the trail
+     * Remove the player's active trail
      */
     public static void removeActiveTrail(Player player, String key, boolean sound) {
         player.getPersistentDataContainer().set(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING, "NONE");
@@ -48,30 +41,21 @@ public abstract class TrailMethods {
     }
 
     /**
-     * Gets the player's active trail
-     *
-     * @param player The player to get the active trail for
-     * @param key    The group of the trail
+     * Get the player's active trail
      */
     public String getActiveTrail(Player player, String key) {
         return player.getPersistentDataContainer().get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 
     /**
-     * Checks if a player has a trail or not
-     *
-     * @param player The player to get the active trail for
-     * @param key    The group of the trail
+     * Check if a player has a trail or not
      */
     public static boolean hasActiveTrail(Player player, String key) {
         return player.getPersistentDataContainer().has(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING);
     }
 
     /**
-     * Displays particles at an Entity, given the TrailProperties to show
-     *
-     * @param entity The entity to display from
-     * @param trailProperties The trail to display
+     * Display particles at an Entity, given the TrailProperties to show
      */
     public static void spawnParticle(Entity entity, CustomTrail trailProperties) {
         World world = entity.getWorld();
@@ -85,10 +69,8 @@ public abstract class TrailMethods {
     }
 
     /**
-     * Sets a player's PersistentStorage value to "NONE" if they do not have an active trail
-     * If they have an active animation, it attaches that animation to them
-     *
-     * @param player The player to remove or attach a trail for
+     * Sets a player's PersistentStorage value to "NONE" if they don't have an active trail
+     * If they have an active animation, it attaches to them
      */
     public static void removeOrAttachAnimation(Player player) {
         PersistentDataContainer data = player.getPersistentDataContainer();

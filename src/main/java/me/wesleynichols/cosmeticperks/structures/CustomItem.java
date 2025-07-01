@@ -77,18 +77,14 @@ public class CustomItem {
     }
 
     /**
-     * Returns an array of enchantments
-     *
-     * @param enchants Enchants
+     * Return an array of enchantments
      */
     public static Enchantment[] enchantArray(Enchantment... enchants) {
         return enchants;
     }
 
     /**
-     * Returns an array of integers for enchantment levels
-     *
-     * @param i Integers
+     * Return an array of integers for enchantment levels
      */
     public static int[] levelArray(int... i) {
         return i;

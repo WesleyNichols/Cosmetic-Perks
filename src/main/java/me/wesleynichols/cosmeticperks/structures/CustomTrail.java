@@ -1,12 +1,12 @@
 package me.wesleynichols.cosmeticperks.structures;
 
-import me.wesleynichols.cosmeticperks.menus.CosmeticsMenu;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
+import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class CustomTrail implements Comparable<CustomTrail>{
                 .lore(Arrays.asList(
                         Component.empty()
                                 .append(Component.text(getAnimation() != null ? "Animated " : "", NamedTextColor.GOLD))
-                                .append(Component.text(CosmeticsMenu.capitalize(TrailType) + " Trail", NamedTextColor.YELLOW))
+                                .append(Component.text(StringUtils.capitalise(TrailType) + " Trail", NamedTextColor.YELLOW))
                                 .decorate(TextDecoration.ITALIC),
                         Component.empty(),
                         Component.text("Click to Select", NamedTextColor.RED)))
