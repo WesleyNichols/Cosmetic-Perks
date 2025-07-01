@@ -1,6 +1,5 @@
 package me.wesleynichols.cosmeticperks.menus;
 
-import com.github.stefvanschie.inventoryframework.adventuresupport.TextHolder;
 import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
@@ -31,15 +30,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildItemName;
+import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildTrailLore;
+
 
 public class CosmeticsMenu extends TrailMethods {
 
-    public final ItemStack filler = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(Component.text("")).build();
+    public final ItemStack filler = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(Component.empty()).build();
 
     /**
      * Method to display the cosmetic menu to a player.
-     *
-     * @param player The player to show the menu to
      */
     public void displayCosmeticsMenu(Player player){
         ChestGui gui = new ChestGui(4, "Cosmetics Menu");
@@ -53,88 +53,78 @@ public class CosmeticsMenu extends TrailMethods {
 
         OutlinePane navigationPane = new OutlinePane(3, 1, 3, 1);
 
-        //  region Player Trails
+        // region Player Trails
         String playerTrail = getActiveTrail(player, "player");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
-                        .name(Component.text("Player Trails", NamedTextColor.GREEN)
-                                .decorate(TextDecoration.BOLD))
                         .armorColor(Color.GREEN)
-                        .lore(Arrays.asList(
-                                Component.empty(),
-                                Component.text("Current:", NamedTextColor.YELLOW),
-                                Component.text(capitalize(playerTrail), NamedTextColor.DARK_GREEN)))
+                        .name(buildItemName("Player Trails", NamedTextColor.GREEN, true))
+                        .lore(buildTrailLore(playerTrail))
                         .build(),
                 event -> {
-                    if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
-                    else { displayPlayerMenu(player); }
+                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
+                    else displayMenu(player, "player");
                 })
         );
-       //   endregion
+// endregion
 
-       //   region Projectile Trails
+// region Projectile Trails
         String projTrail = getActiveTrail(player, "projectile");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
-                        .name(Component.text("Projectile Trails").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD))
-                        .lore(Arrays.asList(
-                                Component.empty(),
-                                Component.text("Current:", NamedTextColor.YELLOW),
-                                Component.text(capitalize(projTrail), NamedTextColor.DARK_GREEN)))
+                        .name(buildItemName("Projectile Trails", NamedTextColor.GOLD, true))
+                        .lore(buildTrailLore(projTrail))
                         .build(),
                 event -> {
-                    if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
-                    else { displayProjectileMenu(player); }
+                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
+                    else displayMenu(player, "projectile");
                 })
         );
-        //  endregion
+// endregion
 
-        //  region Elytra Trails
+// region Elytra Trails
         String elytraTrail = getActiveTrail(player, "elytra");
         navigationPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ELYTRA)
-                        .name(Component.text("Elytra Trails").color(NamedTextColor.LIGHT_PURPLE).decorate(TextDecoration.BOLD))
-                        .enchantments(CustomItem.enchantArray(Enchantment.UNBREAKING), CustomItem.levelArray(1))
-                        .hideEnchants(true)
-                        .lore(Arrays.asList(
-                                Component.empty(),
-                                Component.text("Current:", NamedTextColor.YELLOW),
-                                Component.text(capitalize(elytraTrail), NamedTextColor.DARK_GREEN)))
+                        .name(buildItemName("Elytra Trails", NamedTextColor.LIGHT_PURPLE, true))
+                        .lore(buildTrailLore(elytraTrail))
                         .build(),
                 event -> {
-                    if (!player.hasPermission("cosmeticperks.access")) { player.performCommand("shop cosmetic"); }
-                    else { displayElytraMenu(player); }
+                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
+                    else displayMenu(player, "elytra");
                 })
         );
-        //  endregion
+// endregion
 
         StaticPane selectionPane = new StaticPane(0, 3, 9, 1);
 
         //  region Shop
         selectionPane.addItem(new GuiItem(
                         new CustomItem.ItemBuilder(Material.CHEST)
-                                .name(Component.text("Buy Cosmetics"))
+                                .name(buildItemName("Buy Cosmetics", NamedTextColor.WHITE, true))
                                 .lore(Arrays.asList(
                                         Component.empty(),
-                                        Component.text("Click to visit the Store", NamedTextColor.RED)))
+                                        Component.text("Click to visit the store", NamedTextColor.AQUA)
+                                                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
                                 .build(),
                         event -> player.performCommand("shop cosmetic"))
-                , 1, 0);
+                , 2, 0);
         //  endregion
 
         //  region Deselect Trails
         selectionPane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
-                        .name(Component.text("Deselect All"))
+                        .name(buildItemName("Deselect All", NamedTextColor.WHITE, true))
                         .lore(Arrays.asList(
                                 Component.empty(),
-                                Component.text("Disables all active trails", NamedTextColor.RED)))
+                                Component.text("Disable active trails", NamedTextColor.RED)
+                                        .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
                         .build(),
                 event -> {
                     removeActiveTrails(player);
                     displayCosmeticsMenu(player);
                 })
-        , 7, 0);
+        , 6, 0);
         // endregion
 
         gui.addPane(navigationPane);
@@ -144,42 +134,16 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     /**
-     * Method to display the player trail menu to a player.
-     *
-     * @param player The player to show the menu to
+     * Method to display a given player trail menu to a player.
      */
-    public void displayPlayerMenu(Player player) {
-        ChestGui gui = getTrailSelectionMenu(player, "player");
+    public void displayMenu(Player player, String type) {
+        ChestGui gui = getTrailSelectionMenu(player, type);
         gui.update();
         gui.show(player);
     }
 
     /**
-     * Method to display the projectile trail menu to a player.
-     *
-     * @param player The player to show the menu to
-     */
-    public void displayProjectileMenu(Player player) {
-        ChestGui gui = getTrailSelectionMenu(player, "projectile");
-        gui.update();
-        gui.show(player);
-    }
-
-    /**
-     * Method to display the elytra trail menu to a player.
-     *
-     * @param player The player to show the menu to
-     */
-    public void displayElytraMenu(Player player) {
-        ChestGui gui = getTrailSelectionMenu(player, "elytra");
-        gui.update();
-        gui.show(player);
-    }
-
-    /**
-     * Creates a basic navigation menu with main menu, previous page, and next page buttons
-     *
-     * @return The StaticPane containing basic navigation options
+     * Create a basic navigation menu with main menu, previous page, and next page buttons
      */
     public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
         StaticPane navigation = new StaticPane(0, gui.getRows()-1, 9, 1);
@@ -234,7 +198,7 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     /**
-     * The GuiItem to disable your selection in a menu
+     * A GuiItem to disable your selection in a menu
      */
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
         GuiItem item = new GuiItem(
@@ -344,7 +308,7 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     /**
-        Capitalize the first letter in a provided word
+     * Capitalize the first letter in a provided word
      */
     public static String capitalize(String word) {
         if (word == null || word.isEmpty()) {
