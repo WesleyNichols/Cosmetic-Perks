@@ -3,10 +3,7 @@ package me.wesleynichols.cosmeticperks.menus;
 import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.github.stefvanschie.inventoryframework.pane.Pane;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import com.github.stefvanschie.inventoryframework.pane.*;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
 import me.wesleynichols.cosmeticperks.managers.AnimationManager;
 import me.wesleynichols.cosmeticperks.managers.TrailManager;
@@ -20,99 +17,51 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildItemName;
 import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildTrailLore;
 
-
 public class CosmeticsMenu extends TrailMethods {
 
-    public final ItemStack filler = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(Component.empty()).build();
+    private static final ItemStack FILLER = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
+            .name(Component.empty()).build();
 
-    /**
-     * Method to display the cosmetic menu to a player.
-     */
-    public void displayCosmeticsMenu(Player player){
-        ChestGui gui = new ChestGui(3, "Cosmetics Menu");
-
+    public void displayCosmeticsMenu(Player player) {
+        ChestGui gui = new ChestGui(3, "Cosmetics");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.setOnGlobalDrag(event -> event.setCancelled(true));
 
         OutlinePane background = new OutlinePane(0, 0, 9, 3, Pane.Priority.LOWEST);
-        background.addItem(new GuiItem(filler));
+        background.addItem(new GuiItem(FILLER));
         background.setRepeat(true);
         gui.addPane(background);
 
         StaticPane navigation = new StaticPane(1, 1, 7, 1);
 
-        // region Player Trails
-        String playerTrail = getActiveTrail(player, "player");
+        addTrailButton(navigation, player, "player", Material.LEATHER_BOOTS, NamedTextColor.GREEN, 2);
+        addTrailButton(navigation, player, "projectile", Material.SPECTRAL_ARROW, NamedTextColor.GOLD, 3);
+        addTrailButton(navigation, player, "elytra", Material.ELYTRA, NamedTextColor.LIGHT_PURPLE, 4);
+
         navigation.addItem(new GuiItem(
-                new CustomItem.ItemBuilder(Material.LEATHER_BOOTS)
-                        .armorColor(Color.GREEN)
-                        .name(buildItemName("Player Trails", NamedTextColor.GREEN, true))
-                        .lore(buildTrailLore(playerTrail))
+                new CustomItem.ItemBuilder(Material.CHEST)
+                        .name(buildItemName("Buy Cosmetics", NamedTextColor.WHITE, true))
+                        .lore(List.of(
+                                Component.empty(),
+                                Component.text("Click to visit the store", NamedTextColor.AQUA)
+                                        .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
                         .build(),
-                event -> {
-                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
-                    else displayMenu(player, "player");
-                }), 2, 0);
-        // endregion
+                event -> player.performCommand("shop cosmetic")), 0, 0);
 
-        // region Projectile Trails
-        String projTrail = getActiveTrail(player, "projectile");
-        navigation.addItem(new GuiItem(
-                new CustomItem.ItemBuilder(Material.SPECTRAL_ARROW)
-                        .name(buildItemName("Projectile Trails", NamedTextColor.GOLD, true))
-                        .lore(buildTrailLore(projTrail))
-                        .build(),
-                event -> {
-                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
-                    else displayMenu(player, "projectile");
-                }), 3, 0);
-        // endregion
-
-        // region Elytra Trails
-        String elytraTrail = getActiveTrail(player, "elytra");
-        navigation.addItem(new GuiItem(
-                new CustomItem.ItemBuilder(Material.ELYTRA)
-                        .name(buildItemName("Elytra Trails", NamedTextColor.LIGHT_PURPLE, true))
-                        .lore(buildTrailLore(elytraTrail))
-                        .build(),
-                event -> {
-                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
-                    else displayMenu(player, "elytra");
-                }), 4, 0);
-        // endregion
-
-        //  region Shop
-        navigation.addItem(new GuiItem(
-                        new CustomItem.ItemBuilder(Material.CHEST)
-                                .name(buildItemName("Buy Cosmetics", NamedTextColor.WHITE, true))
-                                .lore(Arrays.asList(
-                                        Component.empty(),
-                                        Component.text("Click to visit the store", NamedTextColor.AQUA)
-                                                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
-                                .build(),
-                        event -> player.performCommand("shop cosmetic"))
-                , 0, 0);
-        //  endregion
-
-        //  region Deselect Trails
         navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
                         .name(buildItemName("Deselect All", NamedTextColor.WHITE, true))
-                        .lore(Arrays.asList(
+                        .lore(List.of(
                                 Component.empty(),
                                 Component.text("Disable active trails", NamedTextColor.RED)
                                         .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
@@ -120,49 +69,49 @@ public class CosmeticsMenu extends TrailMethods {
                 event -> {
                     removeActiveTrails(player);
                     displayCosmeticsMenu(player);
-                })
-        , 6, 0);
-        // endregion
+                }), 6, 0);
 
         gui.addPane(navigation);
         gui.update();
         gui.show(player);
     }
 
-    /**
-     * Method to display a given player trail menu to a player.
-     */
+    private void addTrailButton(StaticPane pane, Player player, String type, Material icon, NamedTextColor color, int x) {
+        String trail = getActiveTrail(player, type);
+        pane.addItem(new GuiItem(
+                new CustomItem.ItemBuilder(icon)
+                        .armorColor(type.equals("player") ? Color.GREEN : null)
+                        .name(buildItemName(capitalize(type) + " Trails", color, true))
+                        .lore(buildTrailLore(trail))
+                        .build(),
+                event -> {
+                    if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
+                    else displayMenu(player, type);
+                }), x, 0);
+    }
+
     public void displayMenu(Player player, String type) {
         ChestGui gui = getTrailSelectionMenu(player, type);
         gui.update();
         gui.show(player);
     }
 
-    /**
-     * Create a navigation menu with main menu, previous page, and next page buttons
-     */
     public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
-        StaticPane navigation = new StaticPane(0, gui.getRows()-1, 9, 1);
-        Label prevPage = new Label(3, gui.getRows()-1, 1, 1, Font.OAK_PLANKS);
-        Label nextPage = new Label(5, gui.getRows()-1, 1, 1, Font.OAK_PLANKS);
+        StaticPane navigation = new StaticPane(0, gui.getRows() - 1, 9, 1);
+        Label prevPage = new Label(3, gui.getRows() - 1, 1, 1, Font.OAK_PLANKS);
+        Label nextPage = new Label(5, gui.getRows() - 1, 1, 1, Font.OAK_PLANKS);
 
-        //  region Background
-        OutlinePane background = new OutlinePane(0, gui.getRows()-1, 9, 1, Pane.Priority.LOWEST);
-        background.addItem(new GuiItem(filler));
+        OutlinePane background = new OutlinePane(0, gui.getRows() - 1, 9, 1, Pane.Priority.LOWEST);
+        background.addItem(new GuiItem(FILLER));
         background.setRepeat(true);
         gui.addPane(background);
-        //  endregion
 
-        //  region Main Menu
         navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.ARROW)
                         .name(Component.text("Main Menu"))
                         .build(),
-                event -> displayCosmeticsMenu(player)), 0, 0
-        );
-        //  endregion
+                event -> displayCosmeticsMenu(player)), 0, 0);
 
-        //  region Previous Page
         prevPage.setText("←");
         prevPage.setVisible(false);
         prevPage.setOnClick(event -> {
@@ -174,9 +123,7 @@ public class CosmeticsMenu extends TrailMethods {
             }
         });
         gui.addPane(prevPage);
-        //  endregion
 
-        //  region Next Page
         nextPage.setText("→");
         nextPage.setVisible(pages.getPages() > 1);
         nextPage.setOnClick(event -> {
@@ -188,26 +135,19 @@ public class CosmeticsMenu extends TrailMethods {
             }
         });
         gui.addPane(nextPage);
-        //  endregion
 
         return navigation;
     }
 
-    /**
-     * A GuiItem to disable your selection in a menu
-     */
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
         GuiItem item = new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
                         .name(Component.text("None").decorate(TextDecoration.BOLD))
-                        .lore(Arrays.asList(
-                                Component.empty(),
-                                Component.text("Click to Select", NamedTextColor.RED)))
-                        .build()
-        );
+                        .lore(List.of(Component.empty(), Component.text("Click to Select", NamedTextColor.RED)))
+                        .build());
         item.setAction(event -> {
             removeActiveTrail(player, key, true);
-            if(AnimationManager.hasActiveAnimation(player)){
+            if (AnimationManager.hasActiveAnimation(player)) {
                 AnimationManager.removeParticleAnimation(player.getUniqueId());
             }
             enableItem(item);
@@ -217,81 +157,68 @@ public class CosmeticsMenu extends TrailMethods {
         return item;
     }
 
-    /**
-     * Create a ChestGui to offer selections in a given menu type
-     */
     public ChestGui getTrailSelectionMenu(Player player, String type) {
         List<CustomTrail> trails = TrailManager.getTrailType(type);
-        Collections.sort(trails);
+        trails.sort(Comparator.naturalOrder());
 
-        String capitalizedType = type.substring(0, 1).toUpperCase() + type.substring(1);
-        Component titleComponent = Component.text(capitalizedType + " Trails", NamedTextColor.GOLD);
-
+        Component titleComponent = Component.text(capitalize(type) + " Trails", NamedTextColor.GOLD);
         ChestGui gui = new ChestGui(6, LegacyComponentSerializer.legacySection().serialize(titleComponent));
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.setOnGlobalDrag(event -> event.setCancelled(true));
-        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows()-1);
 
-        List<GuiItem> items = new ArrayList<>(Collections.singletonList(getDefaultGuiItem(player, pages, gui, type)));
+        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows() - 1);
+        List<GuiItem> items = new ArrayList<>(List.of(getDefaultGuiItem(player, pages, gui, type)));
+
         for (CustomTrail trailEnum : trails) {
             GuiItem item = new GuiItem(trailEnum.getItem());
             item.setAction(event -> {
-                if(AnimationManager.hasActiveAnimation(player)){
+                if (AnimationManager.hasActiveAnimation(player)) {
                     AnimationManager.removeParticleAnimation(player.getUniqueId());
                 }
                 setActiveTrail(trailEnum.getTrailName(), player, type);
-                if(trailEnum.getAnimation() != null){
+                if (trailEnum.getAnimation() != null) {
                     AnimationManager.attachParticleAnimation(player, player.getUniqueId(), type, trailEnum);
                 }
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
                 gui.update();
             });
-            if (trailEnum.getTrailName().equals(getActiveTrail(player, type))) { enableItem(item); }
+            if (trailEnum.getTrailName().equals(getActiveTrail(player, type))) enableItem(item);
             items.add(item);
         }
 
         pages.populateWithGuiItems(items);
-        gui.setRows(Math.min(6, ((items.size() / 9) + ((items.size() % 9) == 0 ? 0 : 1) + 1)));
+        gui.setRows(Math.min(6, (items.size() + 8) / 9 + 1));
         gui.addPane(pages);
-
         gui.addPane(navigationPane(gui, pages, player));
         gui.update();
         return gui;
     }
 
-    /**
-     * "Enables" a GuiItem (enchanted)
-     */
     public void enableItem(GuiItem item) {
-        ItemMeta itemMeta = item.getItem().getItemMeta();
-        itemMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-        List<Component> itemLore = itemMeta.lore();
-        if (itemLore != null) {
-            itemLore.remove(itemLore.size()-1);
-            itemLore.add(Component.text("Selected", NamedTextColor.GREEN));
-            itemMeta.lore(itemLore);
+        ItemMeta meta = item.getItem().getItemMeta();
+        meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        List<Component> lore = meta.lore();
+        if (lore != null && !lore.isEmpty()) {
+            lore.set(lore.size() - 1, Component.text("Selected", NamedTextColor.GREEN));
+            meta.lore(lore);
         }
-
-        item.getItem().setItemMeta(itemMeta);
+        item.getItem().setItemMeta(meta);
     }
 
-    /**
-     * "Disables" a GuiItem (unenchanted)
-     */
     public void disableItem(GuiItem item) {
-        ItemMeta itemMeta = item.getItem().getItemMeta();
-        itemMeta.removeEnchant(Enchantment.UNBREAKING);
-
-        List<Component> itemLore = itemMeta.lore();
-        if (itemLore != null) {
-            itemLore.remove(itemLore.size()-1);
-            itemLore.add(Component.text("Click to Select", NamedTextColor.RED));
-            itemMeta.lore(itemLore);
+        ItemMeta meta = item.getItem().getItemMeta();
+        meta.removeEnchant(Enchantment.UNBREAKING);
+        List<Component> lore = meta.lore();
+        if (lore != null && !lore.isEmpty()) {
+            lore.set(lore.size() - 1, Component.text("Click to Select", NamedTextColor.RED));
+            meta.lore(lore);
         }
+        item.getItem().setItemMeta(meta);
+    }
 
-        item.getItem().setItemMeta(itemMeta);
+    private String capitalize(String input) {
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 }
