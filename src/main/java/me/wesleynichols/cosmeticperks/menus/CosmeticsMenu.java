@@ -148,7 +148,7 @@ public class CosmeticsMenu extends TrailUtils {
         for (CustomTrail trailEnum : trails) {
             GuiItem item = new GuiItem(trailEnum.getItem());
             item.setAction(event -> {
-                if (trailEnum.getAnimation() != null && plugin.getAnimationManager().hasActiveAnimation(player)) {
+                if (trailEnum.getTrailType().equals("player") && plugin.getAnimationManager().hasActiveAnimation(player)) {
                     plugin.getAnimationManager().removeParticleAnimation(player.getUniqueId());
                 }
                 setActiveTrail(trailEnum.getTrailName(), player, type);
