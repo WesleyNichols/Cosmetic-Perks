@@ -2,6 +2,7 @@ package me.wesleynichols.cosmeticperks.structures;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -14,11 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-/**
- * Represents a customizable Minecraft item with properties such as material,
- * amount, display name, lore, enchantments, and leather armor color.
- * Uses the Builder pattern for flexible construction.
- */
 public class CustomItem {
 
     private static final Logger LOGGER = CosmeticPerks.getInstance().getLogger();
@@ -32,7 +28,6 @@ public class CustomItem {
     private final boolean hideEnchants;
     private final Color armorColor;
 
-    // Cache the built ItemStack for repeated calls (optional)
     private ItemStack cachedItemStack;
 
     private CustomItem(ItemBuilder builder) {
@@ -46,26 +41,33 @@ public class CustomItem {
         this.armorColor = builder.armorColor;
     }
 
-    /**
-     * Builds and returns an ItemStack with the configured properties.
-     * Caches the result for future calls.
-     *
-     * @return the constructed ItemStack
-     */
     public ItemStack itemStack() {
         if (cachedItemStack != null) {
             return cachedItemStack.clone();
         }
 
-        ItemStack itemStack = new ItemStack(material, amount);
+        ItemStack itemStack;
+
+        // Handle music discs specially to remove song lore (annoying)
+        if (material.name().startsWith("MUSIC_DISC")) {
+            try {
+                itemStack = Bukkit.getItemFactory().createItemStack("minecraft:" + material.name().toLowerCase() + "[!jukebox_playable]");
+                itemStack.setAmount(amount);
+            } catch (Exception e) {
+                LOGGER.warning("Failed to create music disc without tooltip for material: " + material +
+                        " - " + e.getMessage() + ". Falling back to default ItemStack.");
+                itemStack = new ItemStack(material, amount);
+            }
+        } else {
+            itemStack = new ItemStack(material, amount);
+        }
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         Objects.requireNonNull(itemMeta, "ItemMeta cannot be null");
 
         itemMeta.displayName(name);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
         if (lore != null) {
-            itemMeta.lore(null);
             itemMeta.lore(lore);
         }
 
@@ -74,7 +76,8 @@ public class CustomItem {
                 try {
                     itemMeta.addEnchant(enchantments[i], levels[i], true);
                 } catch (Exception e) {
-                    LOGGER.warning("Failed to add enchantment: " + enchantments[i] + " level: " + levels[i] + " - " + e.getMessage());
+                    LOGGER.warning("Failed to add enchantment: " + enchantments[i] +
+                            " level: " + levels[i] + " - " + e.getMessage());
                 }
             }
 
@@ -83,49 +86,49 @@ public class CustomItem {
             }
         }
 
-        if (isLeatherArmor(material)) {
+        if (isDyeable(material)) {
             try {
                 LeatherArmorMeta leatherMeta = (LeatherArmorMeta) itemMeta;
                 if (armorColor != null) {
                     leatherMeta.setColor(armorColor);
                 }
-                leatherMeta.addItemFlags(ItemFlag.HIDE_DYE);
             } catch (Exception e) {
                 LOGGER.warning("Failed to set leather armor color - " + e.getMessage());
             }
         }
 
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        itemStack.setItemMeta(itemMeta);
+        // Add all item flags (alphabetically ordered for consistency)
+        itemMeta.addItemFlags(
+                ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
+                ItemFlag.HIDE_ARMOR_TRIM,
+                ItemFlag.HIDE_ATTRIBUTES,
+                ItemFlag.HIDE_DESTROYS,
+                ItemFlag.HIDE_DYE,
+                ItemFlag.HIDE_PLACED_ON,
+                ItemFlag.HIDE_STORED_ENCHANTS,
+                ItemFlag.HIDE_UNBREAKABLE
+        );
 
-        cachedItemStack = itemStack.clone(); // Cache a clone to avoid side effects
+        itemStack.setItemMeta(itemMeta);
+        cachedItemStack = itemStack.clone();
         return itemStack;
     }
 
-    private boolean isLeatherArmor(Material material) {
-        return material == Material.LEATHER_BOOTS ||
-                material == Material.LEATHER_LEGGINGS ||
-                material == Material.LEATHER_CHESTPLATE ||
-                material == Material.LEATHER_HELMET;
+    private boolean isDyeable(Material material) {
+        return switch (material) {
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, LEATHER_HORSE_ARMOR -> true;
+            default -> false;
+        };
     }
 
-    /**
-     * Helper method to create an array of enchantments.
-     */
     public static Enchantment[] enchantArray(Enchantment... enchants) {
         return enchants;
     }
 
-    /**
-     * Helper method to create an array of enchantment levels.
-     */
     public static int[] levelArray(int... levels) {
         return levels;
     }
 
-    /**
-     * Builder class for creating CustomItem instances.
-     */
     public static class ItemBuilder {
         private final Material material;
         private int amount = 1;
@@ -136,11 +139,6 @@ public class CustomItem {
         private boolean hideEnchants = false;
         private Color armorColor;
 
-        /**
-         * Creates a builder with a required material.
-         *
-         * @param material the material type of the item
-         */
         public ItemBuilder(Material material) {
             this.material = material;
         }
@@ -176,11 +174,6 @@ public class CustomItem {
             return this;
         }
 
-        /**
-         * Builds the CustomItem and returns the constructed ItemStack.
-         *
-         * @return constructed ItemStack
-         */
         public ItemStack build() {
             CustomItem item = new CustomItem(this);
             return item.itemStack();
