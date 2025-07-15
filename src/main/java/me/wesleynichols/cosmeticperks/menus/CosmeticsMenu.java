@@ -163,21 +163,6 @@ public class CosmeticsMenu extends TrailUtils {
             items.add(item);
         }
 
-        // TODO: Remove this
-        // Arbitrary test items
-        for (int i = 1; i <= 10; i++) {
-            ItemStack itemStack = new ItemStack(Material.STONE);
-            ItemMeta meta = itemStack.getItemMeta();
-            meta.displayName(Component.text("Item " + i).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE));
-            itemStack.setItemMeta(meta);
-
-            GuiItem guiItem = new GuiItem(itemStack, event -> {
-                event.getWhoClicked().sendMessage("You clicked on an Item! Good job!");
-            });
-
-            items.add(guiItem);
-        }
-
         int itemRows = (int) Math.ceil(items.size() / 9.0);
         itemRows = Math.min(itemRows, 5);  // Limit max rows to 5, if needed
         int totalRows = itemRows + 1;      // +1 for the nav bar row
