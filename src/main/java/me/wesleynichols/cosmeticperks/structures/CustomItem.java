@@ -96,7 +96,7 @@ public class CustomItem {
                 LOGGER.warning("Failed to set leather armor color - " + e.getMessage());
             }
         }
-        
+
         itemMeta.addItemFlags(
                 ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
                 ItemFlag.HIDE_ARMOR_TRIM,
