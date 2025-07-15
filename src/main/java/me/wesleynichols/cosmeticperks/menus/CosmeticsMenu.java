@@ -3,13 +3,19 @@ package me.wesleynichols.cosmeticperks.menus;
 import com.github.stefvanschie.inventoryframework.font.util.Font;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.*;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
+import com.github.stefvanschie.inventoryframework.pane.Pane;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.component.Label;
+import com.github.stefvanschie.inventoryframework.pane.component.PagingButtons;
+import com.github.stefvanschie.inventoryframework.pane.util.Slot;
+import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.managers.AnimationManager;
 import me.wesleynichols.cosmeticperks.managers.TrailManager;
 import me.wesleynichols.cosmeticperks.structures.CustomItem;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.managers.TrailMethods;
+import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -22,13 +28,16 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildItemName;
 import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildTrailLore;
 
-public class CosmeticsMenu extends TrailMethods {
+public class CosmeticsMenu extends TrailUtils {
 
+    private final CosmeticPerks plugin = CosmeticPerks.getInstance();
     private static final ItemStack FILLER = new CustomItem.ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)
             .name(Component.empty()).build();
 
@@ -96,48 +105,48 @@ public class CosmeticsMenu extends TrailMethods {
         gui.show(player);
     }
 
-    public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
-        StaticPane navigation = new StaticPane(0, gui.getRows() - 1, 9, 1);
-        Label prevPage = new Label(3, gui.getRows() - 1, 1, 1, Font.OAK_PLANKS);
-        Label nextPage = new Label(5, gui.getRows() - 1, 1, 1, Font.OAK_PLANKS);
-
-        OutlinePane background = new OutlinePane(0, gui.getRows() - 1, 9, 1, Pane.Priority.LOWEST);
-        background.addItem(new GuiItem(FILLER));
-        background.setRepeat(true);
-        gui.addPane(background);
-
-        navigation.addItem(new GuiItem(
-                new CustomItem.ItemBuilder(Material.ARROW)
-                        .name(Component.text("Main Menu"))
-                        .build(),
-                event -> displayCosmeticsMenu(player)), 0, 0);
-
-        prevPage.setText("←");
-        prevPage.setVisible(false);
-        prevPage.setOnClick(event -> {
-            if (pages.getPage() > 0) {
-                pages.setPage(pages.getPage() - 1);
-                prevPage.setVisible(pages.getPage() > 0);
-                nextPage.setVisible(pages.getPage() < pages.getPages());
-                gui.update();
-            }
-        });
-        gui.addPane(prevPage);
-
-        nextPage.setText("→");
-        nextPage.setVisible(pages.getPages() > 1);
-        nextPage.setOnClick(event -> {
-            if (pages.getPage() < pages.getPages() - 1) {
-                pages.setPage(pages.getPage() + 1);
-                prevPage.setVisible(pages.getPage() > 0);
-                nextPage.setVisible(pages.getPage() < pages.getPages() - 1);
-                gui.update();
-            }
-        });
-        gui.addPane(nextPage);
-
-        return navigation;
-    }
+//    public StaticPane navigationPane(ChestGui gui, PaginatedPane pages, Player player) {
+//        StaticPane navigation = new StaticPane(0, gui.getRows() - 1, 9, 1);
+//        Label prevPage = new Label(3, gui.getRows() - 1, 1, 1, Font.OAK_PLANKS);
+//        Label nextPage = new Label(5, gui.getRows() - 1, 1, 1, Font.OAK_PLANKS);
+//
+//        OutlinePane background = new OutlinePane(0, gui.getRows() - 1, 9, 1, Pane.Priority.LOWEST);
+//        background.addItem(new GuiItem(FILLER));
+//        background.setRepeat(true);
+//        gui.addPane(background);
+//
+//        navigation.addItem(new GuiItem(
+//                new CustomItem.ItemBuilder(Material.ARROW)
+//                        .name(Component.text("Main Menu"))
+//                        .build(),
+//                event -> displayCosmeticsMenu(player)), 0, 0);
+//
+//        prevPage.setText("←");
+//        prevPage.setVisible(false);
+//        prevPage.setOnClick(event -> {
+//            if (pages.getPage() > 0) {
+//                pages.setPage(pages.getPage() - 1);
+//                prevPage.setVisible(pages.getPage() > 0);
+//                nextPage.setVisible(pages.getPage() < pages.getPages());
+//                gui.update();
+//            }
+//        });
+//        gui.addPane(prevPage);
+//
+//        nextPage.setText("→");
+//        nextPage.setVisible(pages.getPages() > 1);
+//        nextPage.setOnClick(event -> {
+//            if (pages.getPage() < pages.getPages() - 1) {
+//                pages.setPage(pages.getPage() + 1);
+//                prevPage.setVisible(pages.getPage() > 0);
+//                nextPage.setVisible(pages.getPage() < pages.getPages() - 1);
+//                gui.update();
+//            }
+//        });
+//        gui.addPane(nextPage);
+//
+//        return navigation;
+//    }
 
     public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
         GuiItem item = new GuiItem(
@@ -147,8 +156,8 @@ public class CosmeticsMenu extends TrailMethods {
                         .build());
         item.setAction(event -> {
             removeActiveTrail(player, key, true);
-            if (AnimationManager.hasActiveAnimation(player)) {
-                AnimationManager.removeParticleAnimation(player.getUniqueId());
+            if (plugin.getAnimationManager().hasActiveAnimation(player)) {
+                plugin.getAnimationManager().removeParticleAnimation(player.getUniqueId());
             }
             enableItem(item);
             pages.getItems().forEach(this::disableItem);
@@ -158,7 +167,7 @@ public class CosmeticsMenu extends TrailMethods {
     }
 
     public ChestGui getTrailSelectionMenu(Player player, String type) {
-        List<CustomTrail> trails = TrailManager.getTrailType(type);
+        List<CustomTrail> trails = plugin.getTrailManager().getTrailType(type);
         trails.sort(Comparator.naturalOrder());
 
         Component titleComponent = Component.text(capitalize(type) + " Trails", NamedTextColor.GOLD);
@@ -166,18 +175,20 @@ public class CosmeticsMenu extends TrailMethods {
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         gui.setOnGlobalDrag(event -> event.setCancelled(true));
 
-        PaginatedPane pages = new PaginatedPane(0, 0, 9, gui.getRows() - 1);
+        int usableRows = 5; // One row for paging buttons at bottom
+        PaginatedPane pages = new PaginatedPane(0, 0, 9, usableRows);
+
         List<GuiItem> items = new ArrayList<>(List.of(getDefaultGuiItem(player, pages, gui, type)));
 
         for (CustomTrail trailEnum : trails) {
             GuiItem item = new GuiItem(trailEnum.getItem());
             item.setAction(event -> {
-                if (AnimationManager.hasActiveAnimation(player)) {
-                    AnimationManager.removeParticleAnimation(player.getUniqueId());
+                if (plugin.getAnimationManager().hasActiveAnimation(player)) {
+                    plugin.getAnimationManager().removeParticleAnimation(player.getUniqueId());
                 }
                 setActiveTrail(trailEnum.getTrailName(), player, type);
                 if (trailEnum.getAnimation() != null) {
-                    AnimationManager.attachParticleAnimation(player, player.getUniqueId(), type, trailEnum);
+                    plugin.getAnimationManager().attachParticleAnimation(player, player.getUniqueId(), type, trailEnum);
                 }
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
@@ -188,12 +199,36 @@ public class CosmeticsMenu extends TrailMethods {
         }
 
         pages.populateWithGuiItems(items);
-        gui.setRows(Math.min(6, (items.size() + 8) / 9 + 1));
         gui.addPane(pages);
-        gui.addPane(navigationPane(gui, pages, player));
-        gui.update();
+
+        // PagingButtons
+        PagingButtons pagingButtons = new PagingButtons(Slot.fromXY(0,8), 9, pages);
+//        pagingButtons.setBackwardButton(new GuiItem(
+//                new CustomItem.ItemBuilder(Material.OAK_BUTTON)
+//                        .name(Component.text("Previous", NamedTextColor.YELLOW))
+//                        .build()
+//        ));
+//        pagingButtons.setForwardButton(new GuiItem(
+//                new CustomItem.ItemBuilder(Material.OAK_BUTTON)
+//                        .name(Component.text("Next", NamedTextColor.YELLOW))
+//                        .build()
+//        ));
+        pagingButtons.setY(usableRows); // Row 5 (last row)
+        gui.addPane(pagingButtons);
+
+        // Main menu
+        StaticPane footerButtons = new StaticPane(4, usableRows, 1, 1);
+        footerButtons.addItem(new GuiItem(
+                new CustomItem.ItemBuilder(Material.ARROW)
+                        .name(Component.text("Back"))
+                        .build(),
+                event -> displayCosmeticsMenu(player)
+        ), 0, 0);
+        gui.addPane(footerButtons);
+
         return gui;
     }
+
 
     public void enableItem(GuiItem item) {
         ItemMeta meta = item.getItem().getItemMeta();

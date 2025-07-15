@@ -1,5 +1,6 @@
 package me.wesleynichols.cosmeticperks.commands;
 
+import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.menus.CosmeticsMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

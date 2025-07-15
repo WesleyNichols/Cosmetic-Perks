@@ -9,7 +9,7 @@ commands:
   cosmetic:
     description: Access the cosmetic menu
     usage: /cosmetic
-    aliases: [trail]
+    aliases: [trail. trails]
   reload:
     description: Reload plugin configs
     usage: /cosmeticperks:reload

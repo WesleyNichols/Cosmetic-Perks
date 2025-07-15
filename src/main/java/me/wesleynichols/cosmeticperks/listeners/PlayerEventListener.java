@@ -1,12 +1,12 @@
 package me.wesleynichols.cosmeticperks.listeners;
 
+import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.managers.AnimationManager;
 import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
 import me.wesleynichols.cosmeticperks.managers.TrailManager;
-import me.wesleynichols.cosmeticperks.managers.TrailMethods;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.FishHook;
@@ -23,9 +23,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
-import static me.wesleynichols.cosmeticperks.managers.TrailMethods.removeOrAttachAnimation;
+import static me.wesleynichols.cosmeticperks.util.TrailUtils.removeOrAttachAnimation;
 
 public class PlayerEventListener implements Listener {
+
+    private final CosmeticPerks plugin = CosmeticPerks.getInstance();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -34,8 +36,8 @@ public class PlayerEventListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        if(AnimationManager.hasActiveAnimation(event.getPlayer())) {
-            AnimationManager.removeParticleAnimation(event.getPlayer().getUniqueId());
+        if(plugin.getAnimationManager().hasActiveAnimation(event.getPlayer())) {
+            plugin.getAnimationManager().removeParticleAnimation(event.getPlayer().getUniqueId());
         }
     }
 
@@ -47,8 +49,8 @@ public class PlayerEventListener implements Listener {
 
             PersistentDataContainer data = player.getPersistentDataContainer();
             if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING), "NONE")) {
-                CustomTrail projectileTrails = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING));
-                ProjectileTrailManager.addProjTrail(event.getEntity().getUniqueId(), projectileTrails);
+                CustomTrail projectileTrails = plugin.getTrailManager().getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "projectile-trail"), PersistentDataType.STRING));
+                plugin.getProjectileTrailManager().addProjTrail(event.getEntity().getUniqueId(), projectileTrails);
             }
         }
     }
@@ -62,16 +64,16 @@ public class PlayerEventListener implements Listener {
         PersistentDataContainer data = player.getPersistentDataContainer();
         if (player.isGliding()) {
             if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING), "NONE")) {
-                CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING));
+                CustomTrail trail = plugin.getTrailManager().getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "elytra-trail"), PersistentDataType.STRING));
 
-                TrailMethods.spawnParticle(player, trail);
+                TrailUtils.spawnParticle(player, trail);
             }
         } else if (!Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING), "NONE")) {
-            CustomTrail trailProperties = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING));
+            CustomTrail trailProperties = plugin.getTrailManager().getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), "player-trail"), PersistentDataType.STRING));
             if(trailProperties == null) {throw new NullPointerException("Trail Properties is null!");}
             if(trailProperties.getAnimation() != null) {return;}
 
-            TrailMethods.spawnParticle(player, trailProperties);
+            TrailUtils.spawnParticle(player, trailProperties);
         }
     }
 }

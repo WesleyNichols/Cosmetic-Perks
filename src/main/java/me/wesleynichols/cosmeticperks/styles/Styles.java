@@ -10,72 +10,91 @@ import java.util.List;
 public class Styles {
 
     public static double[][] styleValues(double[][]... styles) {
-        int step = 0;
         int length = 0;
-        for (double[][] list: styles) {
-            length+=list.length;
+        for (double[][] list : styles) {
+            length += list.length;
         }
+
         double[][] values = new double[length][3];
-        for (double[][] list: styles) {
-            for(double[] loc: list) {
-                values[step] = loc;
-                step++;
+        int index = 0;
+        for (double[][] list : styles) {
+            for (double[] loc : list) {
+                values[index++] = loc;
             }
         }
         return values;
     }
 
     public static double[] checkOffset(@Nullable double[] offset) {
-        if (offset == null) {return new double[]{0, 0, 0};}
-        else if (offset.length != 3) {throw new IllegalArgumentException("Offset has more values than expected!");}
+        if (offset == null) return new double[]{0, 0, 0};
+        if (offset.length != 3) throw new IllegalArgumentException("Offset must have exactly 3 values");
         return offset;
     }
 
     public static double[] checkAngleOffset(@Nullable double[] angleOffset) {
-        if (angleOffset == null) {angleOffset = new double[]{0, 0};}
-        else if (angleOffset.length != 2) {throw new IllegalArgumentException("Style AngleOffset has more values than expected!");}
+        if (angleOffset == null) return new double[]{0, 0};
+        if (angleOffset.length != 2) throw new IllegalArgumentException("AngleOffset must have exactly 2 values");
         return angleOffset;
     }
 
     public static double[][] circle(@Nullable double[] offset, @Nullable double[] angleOffset, double radius, int points) {
-        angleOffset = checkAngleOffset(angleOffset);
         offset = checkOffset(offset);
+        angleOffset = checkAngleOffset(angleOffset);
+
         double[][] styleValues = new double[points][3];
-        double amountToAdd = 2*Math.PI/points;
-        for(int i = 0; i < points; i++){
-            double currentValue = amountToAdd * i;
-            styleValues[i] = VectorUtils.rotateVector(new double[]{radius * Math.cos(currentValue) + offset[0],
+        double step = 2 * Math.PI / points;
+
+        for (int i = 0; i < points; i++) {
+            double angle = step * i;
+            double[] point = new double[]{
+                    radius * Math.cos(angle) + offset[0],
                     offset[1],
-                    radius * Math.sin(currentValue) + offset[2]}, angleOffset[0], angleOffset[1]);
+                    radius * Math.sin(angle) + offset[2]
+            };
+            styleValues[i] = VectorUtils.rotateVector(point, angleOffset[0], angleOffset[1]);
         }
+
         return styleValues;
     }
 
     public static double[][] square(@Nullable double[] offset, @Nullable double[] angleOffset, double size, int pointsPerSide) {
-        angleOffset = checkAngleOffset(angleOffset);
         offset = checkOffset(offset);
-        List<List<Double>> styleValuesTemp = new ArrayList<>();
-        double amountToAdd = size/(pointsPerSide+1);
-        double min = -size/2;
-        double max = size/2;
-        styleValuesTemp.add(Arrays.asList(min, 0.0, min));
-        styleValuesTemp.add(Arrays.asList(min, 0.0, max));
-        styleValuesTemp.add(Arrays.asList(max, 0.0, min));
-        styleValuesTemp.add(Arrays.asList(max, 0.0, max));
-        for (double x = min+amountToAdd; x <= max; x+=amountToAdd) {
-            styleValuesTemp.add(Arrays.asList(x, 0.0, min));
-            styleValuesTemp.add(Arrays.asList(x, 0.0, max));
+        angleOffset = checkAngleOffset(angleOffset);
+
+        List<List<Double>> tempPoints = new ArrayList<>();
+
+        double halfSize = size / 2.0;
+        double step = size / (pointsPerSide + 1);
+        double min = -halfSize;
+        double max = halfSize;
+
+        // Corners
+        tempPoints.add(Arrays.asList(min, 0.0, min));
+        tempPoints.add(Arrays.asList(min, 0.0, max));
+        tempPoints.add(Arrays.asList(max, 0.0, min));
+        tempPoints.add(Arrays.asList(max, 0.0, max));
+
+        // Points along edges (excluding corners)
+        for (double x = min + step; x < max; x += step) {
+            tempPoints.add(Arrays.asList(x, 0.0, min));
+            tempPoints.add(Arrays.asList(x, 0.0, max));
         }
-        for (double z = min+amountToAdd; z <= max; z+=amountToAdd) {
-            styleValuesTemp.add(Arrays.asList(min, 0.0, z));
-            styleValuesTemp.add(Arrays.asList(max, 0.0, z));
+        for (double z = min + step; z < max; z += step) {
+            tempPoints.add(Arrays.asList(min, 0.0, z));
+            tempPoints.add(Arrays.asList(max, 0.0, z));
         }
-        double[][] styleValues = new double[styleValuesTemp.size()][3];
-        for(int i = 0; i < styleValuesTemp.size(); i++){
-            List<Double> doubleList = styleValuesTemp.get(i);
-            double[] rotatedVector = VectorUtils.rotateVector(new double[]{doubleList.get(0), doubleList.get(1), doubleList.get(2)}, angleOffset[0], angleOffset[1]);
-            styleValues[i] = new double[]{rotatedVector[0] + offset[0], rotatedVector[1] + offset[1], rotatedVector[2] + offset[2]};
+
+        double[][] styleValues = new double[tempPoints.size()][3];
+        for (int i = 0; i < tempPoints.size(); i++) {
+            List<Double> p = tempPoints.get(i);
+            double[] rotated = VectorUtils.rotateVector(new double[]{p.get(0), p.get(1), p.get(2)}, angleOffset[0], angleOffset[1]);
+            styleValues[i] = new double[]{
+                    rotated[0] + offset[0],
+                    rotated[1] + offset[1],
+                    rotated[2] + offset[2]
+            };
         }
+
         return styleValues;
     }
 }

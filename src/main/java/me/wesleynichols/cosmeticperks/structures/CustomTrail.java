@@ -6,42 +6,52 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
-import org.codehaus.plexus.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.Objects;
 
-public class CustomTrail implements Comparable<CustomTrail>{
+/**
+ * Represents a custom particle trail effect that can be applied to players or projectiles.
+ * Supports static or animated particle effects.
+ */
+public class CustomTrail implements Comparable<CustomTrail> {
 
-    private final String TrailType;
-    private final Material DisplayMaterial;
-    private final String EffectName;
-    private final Particle TrailEffect;
-    private final double[] Offset;
-    private final double ParticleSpeed;
-    private final int ParticleAmount;
-    private final boolean LimitedItem;
-    private final AnimationValues Animation;
+    private final String trailType;
+    private final Material displayMaterial;
+    private final String effectName;
+    private final Particle trailEffect;
+    private final double[] offset;
+    private final double particleSpeed;
+    private final int particleAmount;
+    private final boolean limitedItem;
+    private final AnimationValues animation;
 
     public CustomTrail(CustomTrailBuilder builder) {
-        this.TrailType = builder.trailType;
-        this.DisplayMaterial = builder.displayMaterial;
-        this.EffectName = builder.effectName;
-        this.TrailEffect = builder.trailEffect;
-        this.Offset = builder.offset;
-        this.ParticleSpeed = builder.particleSpeed;
-        this.ParticleAmount = builder.particleAmount;
-        this.LimitedItem = builder.limitedItem;
-        this.Animation = builder.animation;
+        this.trailType = Objects.requireNonNull(builder.trailType, "trailType cannot be null");
+        this.displayMaterial = builder.displayMaterial != null ? builder.displayMaterial : Material.WHITE_WOOL;
+        this.effectName = Objects.requireNonNull(builder.effectName, "effectName cannot be null");
+        this.trailEffect = builder.trailEffect != null ? builder.trailEffect : Particle.SMOKE;
+        this.offset = builder.offset != null ? builder.offset.clone() : new double[]{0.0, 0.0, 0.0};
+        this.particleSpeed = builder.particleSpeed;
+        this.particleAmount = builder.particleAmount;
+        this.limitedItem = builder.limitedItem;
+        this.animation = builder.animation;
     }
 
+    /**
+     * Creates an ItemStack representing this trail with formatted name and lore.
+     *
+     * @return an ItemStack for this trail.
+     */
     public ItemStack getItem() {
-        return new CustomItem.ItemBuilder(DisplayMaterial)
-                .name(Component.text(EffectName).color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
+        return new CustomItem.ItemBuilder(displayMaterial)
+                .name(Component.text(effectName).color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
                 .lore(Arrays.asList(
                         Component.empty()
-                                .append(Component.text(getAnimation() != null ? "Animated " : "", NamedTextColor.GOLD))
-                                .append(Component.text(StringUtils.capitalise(TrailType) + " Trail", NamedTextColor.YELLOW))
+                                .append(Component.text(animation != null ? "Animated " : "", NamedTextColor.GOLD))
+                                .append(Component.text(capitalize(trailType) + " Trail", NamedTextColor.YELLOW))
                                 .decorate(TextDecoration.ITALIC),
                         Component.empty(),
                         Component.text("Click to Select", NamedTextColor.RED)))
@@ -49,49 +59,63 @@ public class CustomTrail implements Comparable<CustomTrail>{
     }
 
     public String getTrailName() {
-        return EffectName;
+        return effectName;
     }
 
     public Particle getTrailEffect() {
-        return TrailEffect;
+        return trailEffect;
     }
 
     public double[] getOffset() {
-        return Offset;
+        return offset.clone();
     }
 
     public double getParticleSpeed() {
-        return ParticleSpeed;
+        return particleSpeed;
     }
 
     public int getParticleAmount() {
-        return ParticleAmount;
+        return particleAmount;
     }
 
     public AnimationValues getAnimation() {
-        return Animation;
+        return animation;
     }
 
     public boolean isLimitedItem() {
-        return LimitedItem;
+        return limitedItem;
     }
 
     @Override
-    public int compareTo(@NotNull CustomTrail o) {
-        return this.getTrailName().compareTo(o.getTrailName());
+    public int compareTo(@NotNull CustomTrail other) {
+        return this.getTrailName().compareTo(other.getTrailName());
     }
 
+    private static String capitalize(String input) {
+        if (input == null || input.isEmpty()) return input;
+        return input.substring(0, 1).toUpperCase(Locale.ENGLISH) + input.substring(1).toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Builder class for constructing CustomTrail instances.
+     */
     public static class CustomTrailBuilder {
         private final String trailType;
         private Material displayMaterial;
         private final String effectName;
         private Particle trailEffect;
         private double[] offset;
-        private double particleSpeed;
-        private int particleAmount;
-        private boolean limitedItem;
+        private double particleSpeed = 0.0;
+        private int particleAmount = 1;
+        private boolean limitedItem = false;
         private AnimationValues animation;
 
+        /**
+         * Creates a builder with required trailType and effectName.
+         *
+         * @param trailType the category or type of the trail (e.g. "player", "projectile")
+         * @param effectName the display name of the trail
+         */
         public CustomTrailBuilder(String trailType, String effectName) {
             this.trailType = trailType;
             this.effectName = effectName;
@@ -108,7 +132,7 @@ public class CustomTrail implements Comparable<CustomTrail>{
         }
 
         public CustomTrailBuilder offset(double[] offset) {
-            this.offset = offset;
+            this.offset = offset != null ? offset.clone() : null;
             return this;
         }
 
@@ -122,22 +146,24 @@ public class CustomTrail implements Comparable<CustomTrail>{
             return this;
         }
 
-        public CustomTrailBuilder limitedItem(boolean value) {
-            this.limitedItem = value;
+        public CustomTrailBuilder limitedItem(boolean limited) {
+            this.limitedItem = limited;
             return this;
         }
 
-        public CustomTrailBuilder animation(AnimationValues values) {
-            this.animation = values;
+        public CustomTrailBuilder animation(AnimationValues animation) {
+            this.animation = animation;
             return this;
         }
 
+        /**
+         * Builds and returns the CustomTrail instance.
+         * If optional values are not set, reasonable defaults are applied.
+         *
+         * @return a new CustomTrail instance
+         */
         public CustomTrail build() {
-            if(this.trailEffect == null) {this.trailEffect = Particle.SMOKE;}
-            if(this.displayMaterial == null) {this.displayMaterial = Material.WHITE_WOOL;}
-            if(this.offset == null) {this.offset = new double[]{0,0,0};}
             return new CustomTrail(this);
         }
     }
 }
-

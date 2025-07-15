@@ -2,27 +2,33 @@ package me.wesleynichols.cosmeticperks.managers;
 
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProjectileTrailManager {
 
-    private static final HashMap<UUID, CustomTrail> projTrailList = new HashMap<>();
+    // Use ConcurrentHashMap for thread-safe concurrent access (e.g., from async tasks)
+    private final Map<UUID, CustomTrail> projTrailMap = new ConcurrentHashMap<>();
 
-    public static void clearProjTrailList() {
-        projTrailList.clear();
+    public void clearProjTrailList() {
+        projTrailMap.clear();
     }
 
-    public static HashMap<UUID, CustomTrail> getProjTrailList() {
-        return new HashMap<>(projTrailList);
+    /**
+     * Returns an unmodifiable view of the current projectile trails
+     * to prevent external modification of internal state.
+     */
+    public Map<UUID, CustomTrail> getProjTrailList() {
+        return Collections.unmodifiableMap(projTrailMap);
     }
 
-    public static void addProjTrail(UUID proj, CustomTrail trailMap) {
-        projTrailList.put(proj, trailMap);
+    public void addProjTrail(UUID projId, CustomTrail trail) {
+        projTrailMap.put(projId, trail);
     }
 
-    public static void removeProjTrail(UUID proj) {
-        projTrailList.remove(proj);
+    public void removeProjTrail(UUID projId) {
+        projTrailMap.remove(projId);
     }
-
 }

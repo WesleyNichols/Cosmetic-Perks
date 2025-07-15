@@ -6,9 +6,13 @@ import me.wesleynichols.cosmeticperks.commands.ShopCommand;
 import me.wesleynichols.cosmeticperks.config.ConfigParser;
 import me.wesleynichols.cosmeticperks.config.CustomConfig;
 import me.wesleynichols.cosmeticperks.listeners.PlayerEventListener;
-import me.wesleynichols.cosmeticperks.managers.TrailMethods;
+import me.wesleynichols.cosmeticperks.managers.AnimationManager;
+import me.wesleynichols.cosmeticperks.managers.AnimationValueManager;
+import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
+import me.wesleynichols.cosmeticperks.managers.TrailManager;
 import me.wesleynichols.cosmeticperks.tasks.AnimationTask;
 import me.wesleynichols.cosmeticperks.tasks.ProjectileTrailTask;
+import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
@@ -19,17 +23,28 @@ import java.util.Objects;
 
 public final class CosmeticPerks extends JavaPlugin {
 
-    private static CosmeticPerks plugin;
+    private static CosmeticPerks instance;
 
     public static CosmeticPerks getInstance() {
-        return plugin;
+        return instance;
     }
+
+    private AnimationManager animationManager;
+    private AnimationValueManager animationValueManager;
+    private ProjectileTrailManager projectileTrailManager;
+    private TrailManager trailManager;
 
     @Override
     public void onEnable() {
-        plugin = this;
+        instance = this;
 
-        saveConfig();
+        // Initialize managers
+        animationManager = new AnimationManager(this);
+        animationValueManager = new AnimationValueManager();
+        projectileTrailManager = new ProjectileTrailManager();
+        trailManager = new TrailManager();
+
+        saveDefaultConfig();
         reloadConfigs();
 
         registerEvent(new PlayerEventListener());
@@ -38,8 +53,25 @@ public final class CosmeticPerks extends JavaPlugin {
         registerCommand("reload", new ReloadCommand());
         registerCommand("shop", new ShopCommand());
 
-        new ProjectileTrailTask().runTaskTimer(this, 1L, 1L);
-        new AnimationTask().runTaskTimer(this, 1L, 1L);
+        new ProjectileTrailTask(this).runTaskTimer(this, 1L, 1L);
+        new AnimationTask(this).runTaskTimer(this, 1L, 1L);
+    }
+
+    // Getters for managers
+    public AnimationManager getAnimationManager() {
+        return animationManager;
+    }
+
+    public AnimationValueManager getAnimationValueManager() {
+        return animationValueManager;
+    }
+
+    public ProjectileTrailManager getProjectileTrailManager() {
+        return projectileTrailManager;
+    }
+
+    public TrailManager getTrailManager() {
+        return trailManager;
     }
 
     public void registerEvent(Listener event) {
@@ -47,21 +79,28 @@ public final class CosmeticPerks extends JavaPlugin {
     }
 
     public void registerCommand(String command, CommandExecutor executor) {
-        Objects.requireNonNull(plugin.getCommand(command)).setExecutor(executor);
+        Objects.requireNonNull(getCommand(command)).setExecutor(executor);
     }
 
     public void reloadConfigs() {
-        CustomConfig.load("player.yml");
-        CustomConfig.save();
-        ConfigParser.parseConfig(CustomConfig.get(), "player");
-        CustomConfig.load("elytra.yml");
-        CustomConfig.save();
-        ConfigParser.parseConfig(CustomConfig.get(), "elytra");
-        CustomConfig.load("projectile.yml");
-        CustomConfig.save();
-        ConfigParser.parseConfig(CustomConfig.get(), "projectile");
-        for(Player player: Bukkit.getOnlinePlayers()) {
-            TrailMethods.removeOrAttachAnimation(player);
+        CustomConfig playerConfig = new CustomConfig(this, "player.yml");
+        playerConfig.load();
+        playerConfig.save();
+
+        CustomConfig elytraConfig = new CustomConfig(this, "elytra.yml");
+        elytraConfig.load();
+        elytraConfig.save();
+
+        CustomConfig projectileConfig = new CustomConfig(this, "projectile.yml");
+        projectileConfig.load();
+        projectileConfig.save();
+
+        ConfigParser.parseConfig(playerConfig.getConfig(), "player");
+        ConfigParser.parseConfig(elytraConfig.getConfig(), "elytra");
+        ConfigParser.parseConfig(projectileConfig.getConfig(), "projectile");
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            TrailUtils.removeOrAttachAnimation(player);
         }
     }
 }

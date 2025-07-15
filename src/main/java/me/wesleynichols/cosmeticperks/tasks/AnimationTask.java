@@ -1,10 +1,10 @@
 package me.wesleynichols.cosmeticperks.tasks;
 
+import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.managers.AnimationManager;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.wesleynichols.cosmeticperks.structures.AnimationValues;
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
+import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -12,48 +12,81 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class AnimationTask extends BukkitRunnable {
 
+    private final CosmeticPerks plugin;
+    private static final double MAX_RENDER_DISTANCE = 40.0;
+
+    public AnimationTask(CosmeticPerks plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
     public void run() {
-        if (!CosmeticPerks.getInstance().isEnabled()) { this.cancel(); }
+        CosmeticPerks plugin = CosmeticPerks.getInstance();
+        if (!plugin.isEnabled()) {
+            this.cancel();
+            return;
+        }
 
-        HashMap<UUID, CustomTrail> particleAnimationList = AnimationManager.getParticleAnimationList();
-        for (UUID uuid : particleAnimationList.keySet()) {
+        Map<UUID, CustomTrail> animations = plugin.getAnimationManager().getParticleAnimationList();
+
+        for (Map.Entry<UUID, CustomTrail> entry : animations.entrySet()) {
+            UUID uuid = entry.getKey();
+            CustomTrail trail = entry.getValue();
+
+            // Skip invalid or dead entities
             Entity target = Bukkit.getEntity(uuid);
-            //assert target != null;
+            if (target == null || target.isDead() || (target instanceof Player && target.isDead())) { continue; }
 
-            if ((target instanceof Player && target.isDead()) || target == null) { return; }
+            // No animation values to process
+            AnimationValues animationValues = trail.getAnimation();
+            if (animationValues == null) { continue; }
 
-            CustomTrail particleProperties = particleAnimationList.get(uuid);
-            AnimationValues particleAnimationValues = particleProperties.getAnimation();
-            int step = particleAnimationValues.getCurrentStep();
-            double[] offset = particleProperties.getOffset();
-
+            int currentStep = animationValues.getCurrentStep();
+            double[] offset = trail.getOffset();
             World world = target.getWorld();
+
+            // Filter players in the same world within render distance
             world.getPlayers().stream()
-                    .filter(player -> player.getWorld().getUID().equals(world.getUID()))
-                    .filter(player -> player.getLocation().distance(target.getLocation()) <= 40)
+                    .filter(player -> !AdvancedVanishAPI.INSTANCE.isPlayerVanished(player))
+                    .filter(player -> player.getGameMode() != GameMode.SPECTATOR)
+                    .filter(player -> player.getLocation().distanceSquared(target.getLocation()) <= MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE)
                     .forEach(player -> {
-                                if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) || player.getGameMode() == GameMode.SPECTATOR) { return; }
-                                if(particleAnimationValues.getEquationValuesLength() != 0) {
-                                    for(double[][] loc: particleAnimationValues.getEquationValues()) {
-                                        player.spawnParticle(particleProperties.getTrailEffect(), target.getLocation().add(loc[step][0], loc[step][1], loc[step][2]), particleProperties.getParticleAmount(),
-                                                offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
-                                    }
-                                }
-                                if(particleAnimationValues.getStyleValuesLength() != 0) {
-                                    for(double[] loc: particleAnimationValues.getStyleValues()) {
-                                        player.spawnParticle(particleProperties.getTrailEffect(), target.getLocation().add(loc[0], loc[1], loc[2]), particleProperties.getParticleAmount(),
-                                                offset[0], offset[1], offset[2], particleProperties.getParticleSpeed());
-                                    }
-                                }
+                        // Spawn particles from equation values if available
+                        if (animationValues.getEquationValuesLength() > 0) {
+                            for (double[][] locArray : animationValues.getEquationValues()) {
+                                double[] loc = locArray[currentStep];
+                                player.spawnParticle(
+                                        trail.getTrailEffect(),
+                                        target.getLocation().add(loc[0], loc[1], loc[2]),
+                                        trail.getParticleAmount(),
+                                        offset[0], offset[1], offset[2],
+                                        trail.getParticleSpeed()
+                                );
                             }
-                    );
-            if(particleAnimationValues.getEquationValuesLength() != 0) {
-                particleAnimationValues.addStep();
+                        }
+
+                        // Spawn particles from style values if available
+                        if (animationValues.getStyleValuesLength() > 0) {
+                            for (double[] loc : animationValues.getStyleValues()) {
+                                player.spawnParticle(
+                                        trail.getTrailEffect(),
+                                        target.getLocation().add(loc[0], loc[1], loc[2]),
+                                        trail.getParticleAmount(),
+                                        offset[0], offset[1], offset[2],
+                                        trail.getParticleSpeed()
+                                );
+                            }
+                        }
+                    });
+
+            // Advance animation step if equation values are used
+            if (animationValues.getEquationValuesLength() > 0) {
+                animationValues.addStep();
             }
         }
     }

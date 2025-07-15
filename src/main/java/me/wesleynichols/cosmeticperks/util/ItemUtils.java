@@ -5,15 +5,15 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ItemUtils {
+
     /**
-     * Basic Lore for trail menu items
+     * Builds the basic lore for trail menu items.
      */
     public static List<Component> buildTrailLore(String trailName) {
-        return Arrays.asList(
+        return List.of(
                 Component.empty(),
                 Component.text("Current:", NamedTextColor.YELLOW)
                         .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE),
@@ -23,24 +23,20 @@ public class ItemUtils {
     }
 
     /**
-     * Basic Name for Main Menu items (defaults to not bold)
+     * Builds an item name with color, not bold by default.
      */
     public static Component buildItemName(String name, NamedTextColor color) {
-        return buildItemName(name, color, false); // Default: not bold
+        return buildItemName(name, color, false);
     }
 
     /**
-     * Flexible Name builder that allows specifying bold
+     * Builds an item name with color and optional bold style.
      */
     public static Component buildItemName(String name, NamedTextColor color, boolean bold) {
         Component component = Component.text(name)
                 .color(color)
-                .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE); // Always disable italics
+                .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
 
-        if (bold) {
-            component = component.decorate(TextDecoration.BOLD);
-        }
-
-        return component;
+        return bold ? component.decorate(TextDecoration.BOLD) : component;
     }
 }

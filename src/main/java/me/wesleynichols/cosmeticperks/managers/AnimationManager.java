@@ -7,46 +7,66 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AnimationManager {
 
-    private static final HashMap<UUID, CustomTrail> particleAnimationList = new HashMap<>();
+    private final CosmeticPerks plugin;
+    private final Map<UUID, CustomTrail> particleAnimationMap = new ConcurrentHashMap<>();
 
-    public static HashMap<UUID, CustomTrail> getParticleAnimationList() {
-        return new HashMap<>(particleAnimationList);
+    public AnimationManager(CosmeticPerks plugin) {
+        this.plugin = plugin;
     }
 
-    public static void clearParticleAnimationList() {
-        particleAnimationList.clear();
+    public Map<UUID, CustomTrail> getParticleAnimationList() {
+        return Collections.unmodifiableMap(particleAnimationMap);
     }
 
-    public static void addParticleAnimation(UUID entity, CustomTrail e) {
-        particleAnimationList.put(entity, e);
+    public void clearParticleAnimationList() {
+        particleAnimationMap.clear();
     }
 
-    public static void removeParticleAnimation(UUID entity) {
-        particleAnimationList.remove(entity);
+    public void addParticleAnimation(UUID entity, CustomTrail trail) {
+        particleAnimationMap.put(entity, trail);
     }
 
-    public static boolean hasActiveAnimation(Player player) {
-        return particleAnimationList.containsKey(player.getUniqueId());
+    public void removeParticleAnimation(UUID entity) {
+        particleAnimationMap.remove(entity);
     }
 
-    public static void attachParticleAnimation(Player player, UUID id, String key, CustomTrail trail) {
+    public boolean hasActiveAnimation(Player player) {
+        return particleAnimationMap.containsKey(player.getUniqueId());
+    }
+
+    public void attachParticleAnimation(Player player, UUID id, String key, CustomTrail trail) {
         PersistentDataContainer data = player.getPersistentDataContainer();
-        if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
-        if (AnimationManager.hasActiveAnimation(player)) {
-            AnimationManager.removeParticleAnimation(id);
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, key + "-trail");
+
+        if (Objects.equals(data.get(namespacedKey, PersistentDataType.STRING), "NONE")) {
+            return;
         }
-        AnimationManager.addParticleAnimation(id, trail);
+        if (hasActiveAnimation(player)) {
+            removeParticleAnimation(id);
+        }
+        addParticleAnimation(id, trail);
     }
 
-    public static void callAttachParticleAnimation(Player player, String key) {
+    public void callAttachParticleAnimation(Player player, String key) {
         PersistentDataContainer data = player.getPersistentDataContainer();
-        if (Objects.equals(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING), "NONE")) {return;}
-        CustomTrail trail = TrailManager.getTrail(data.get(new NamespacedKey(CosmeticPerks.getInstance(), key + "-trail"), PersistentDataType.STRING));
-        if(trail != null && trail.getAnimation() == null) {return;}
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, key + "-trail");
+
+        String trailName = data.get(namespacedKey, PersistentDataType.STRING);
+        if (Objects.equals(trailName, "NONE")) {
+            return;
+        }
+        CustomTrail trail = plugin.getTrailManager().getTrail(trailName);
+        if (trail == null || trail.getAnimation() == null) {
+            return;
+        }
         attachParticleAnimation(player, player.getUniqueId(), key, trail);
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>cosmetic.perks</groupId>
     <artifactId>CosmeticPerks</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>CosmeticPerks</name>
@@ -39,6 +39,8 @@
                             <shadedPattern>cosmeticperks.inventoryframework</shadedPattern>
                         </relocation>
                     </relocations>
+                    <!-- Override the shaded JAR final name to avoid "-shaded" suffix -->
+                    <finalName>${project.artifactId}-${project.version}</finalName>
                 </configuration>
                 <executions>
                     <execution>
@@ -90,7 +92,7 @@
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.11.1</version>
+            <version>0.11.2</version>
         </dependency>
         <dependency>
             <groupId>net.objecthunter</groupId>
