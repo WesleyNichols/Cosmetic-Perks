@@ -10,6 +10,10 @@ commands:
     description: Access the cosmetic menu
     usage: /cosmetic
     aliases: [trail. trails]
+  limitedtrail:
+    description: Grant or revoke limited trails
+    usage: /limitedtrail <grant|revoke> <player> <elytra|player|projectile> <trail name>
+    permission: cosmeticperks.limitedtrail
   reload:
     description: Reload plugin configs
     usage: /cosmeticperks:reload

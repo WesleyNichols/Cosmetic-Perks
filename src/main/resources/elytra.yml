@@ -10,6 +10,7 @@
 #   offset: [x;y;z]
 #   particle_speed: speed(double)
 #   particle_amount: amount(int)
+#   limited_item: true/false(default false)
 
 Sorcery:
   particle: SPELL_WITCH

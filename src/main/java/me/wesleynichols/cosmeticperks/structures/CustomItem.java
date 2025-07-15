@@ -65,6 +65,7 @@ public class CustomItem {
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 
         if (lore != null) {
+            itemMeta.lore(null);
             itemMeta.lore(lore);
         }
 

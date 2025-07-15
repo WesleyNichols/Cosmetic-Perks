@@ -8,7 +8,8 @@ import org.bukkit.Particle;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -42,21 +43,39 @@ public class CustomTrail implements Comparable<CustomTrail> {
 
     /**
      * Creates an ItemStack representing this trail with formatted name and lore.
-     *
-     * @return an ItemStack for this trail.
      */
     public ItemStack getItem() {
+        boolean isAnimated = animation != null;
+
+        // Determine name color
+        NamedTextColor nameColor = limitedItem ? NamedTextColor.DARK_PURPLE : NamedTextColor.WHITE;
+
+        // Build lore line
+        StringBuilder loreText = new StringBuilder();
+        if (limitedItem) loreText.append("Limited ");
+        if (isAnimated) loreText.append("Animated ");
+        loreText.append(capitalize(trailType)).append(" Trail");
+
+        NamedTextColor loreColor = isAnimated ? NamedTextColor.GOLD : NamedTextColor.YELLOW;
+
+        Component loreLine = Component.text(loreText.toString(), loreColor)
+                .decoration(TextDecoration.ITALIC, false)
+                .decoration(TextDecoration.UNDERLINED, limitedItem);
+
+        List<Component> loreList = new ArrayList<>();
+        loreList.add(Component.empty().append(loreLine));
+        loreList.add(Component.empty());
+        loreList.add(Component.text("Click to Select", NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
+
         return new CustomItem.ItemBuilder(displayMaterial)
-                .name(Component.text(effectName).color(NamedTextColor.WHITE).decorate(TextDecoration.BOLD))
-                .lore(Arrays.asList(
-                        Component.empty()
-                                .append(Component.text(animation != null ? "Animated " : "", NamedTextColor.GOLD))
-                                .append(Component.text(capitalize(trailType) + " Trail", NamedTextColor.YELLOW))
-                                .decorate(TextDecoration.ITALIC),
-                        Component.empty(),
-                        Component.text("Click to Select", NamedTextColor.RED)))
+                .name(Component.text(effectName)
+                        .color(nameColor)
+                        .decorate(TextDecoration.BOLD)
+                        .decoration(TextDecoration.ITALIC, false))
+                .lore(loreList)
                 .build();
     }
+
 
     public String getTrailName() {
         return effectName;
@@ -64,6 +83,10 @@ public class CustomTrail implements Comparable<CustomTrail> {
 
     public Particle getTrailEffect() {
         return trailEffect;
+    }
+
+    public String getTrailType() {
+        return trailType;
     }
 
     public double[] getOffset() {

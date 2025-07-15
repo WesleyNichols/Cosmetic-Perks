@@ -42,7 +42,7 @@ public class ConfigParser {
     }
 
     private static boolean checkForLimited(String trailName, FileConfiguration config) {
-        return config.getBoolean(trailName + ".limited", false);
+        return config.getBoolean(trailName + ".limited_item", false);
     }
 
     private static int checkForAmount(String trailName, FileConfiguration config) {

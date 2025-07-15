@@ -11,6 +11,8 @@ public class TrailManager {
 
     private final Map<String, CustomTrail> trailList = new HashMap<>();
     private final Map<String, List<CustomTrail>> trailTypeList = new HashMap<>();
+    private final Map<String, List<CustomTrail>> trailMap = new HashMap<>();
+
 
     public void clearTrailLists() {
         trailList.clear();
@@ -25,15 +27,21 @@ public class TrailManager {
         return trailTypeList.get(type);
     }
 
+    public List<CustomTrail> getTrailsByType(String type) {
+        return trailMap.getOrDefault(type.toLowerCase(), Collections.emptyList());
+    }
+
     public void addTrailType(String type, List<CustomTrail> trails) {
-        trailTypeList.put(type, trails);
+        String key = type.toLowerCase();
+        trailTypeList.put(key, trails);
+        trailMap.put(key, trails);
     }
 
     public void addTrail(String name, CustomTrail trail) {
         trailList.put(name, trail);
     }
 
-    public void removeTrail(String name) {
-        trailList.remove(name);
+    public boolean doesTrailExist(String name) {
+        return trailList.containsKey(name);
     }
 }

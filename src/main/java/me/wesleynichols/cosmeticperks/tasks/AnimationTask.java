@@ -2,7 +2,6 @@ package me.wesleynichols.cosmeticperks.tasks;
 
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.managers.AnimationManager;
 import me.wesleynichols.cosmeticperks.structures.AnimationValues;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import org.bukkit.Bukkit;
@@ -54,6 +53,7 @@ public class AnimationTask extends BukkitRunnable {
             world.getPlayers().stream()
                     .filter(player -> !AdvancedVanishAPI.INSTANCE.isPlayerVanished(player))
                     .filter(player -> player.getGameMode() != GameMode.SPECTATOR)
+                    .filter(player -> !player.isGliding())
                     .filter(player -> player.getLocation().distanceSquared(target.getLocation()) <= MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE)
                     .forEach(player -> {
                         // Spawn particles from equation values if available

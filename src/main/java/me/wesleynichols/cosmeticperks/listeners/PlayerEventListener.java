@@ -2,9 +2,6 @@ package me.wesleynichols.cosmeticperks.listeners;
 
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.managers.AnimationManager;
-import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
-import me.wesleynichols.cosmeticperks.managers.TrailManager;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import org.bukkit.GameMode;

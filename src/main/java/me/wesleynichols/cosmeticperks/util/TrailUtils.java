@@ -1,8 +1,6 @@
 package me.wesleynichols.cosmeticperks.util;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.managers.AnimationManager;
-import me.wesleynichols.cosmeticperks.managers.TrailManager;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;

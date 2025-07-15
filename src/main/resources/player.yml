@@ -10,7 +10,7 @@
 #   offset: [x;y;z]
 #   particle_speed: speed(double)
 #   particle_amount: amount(int)
-#   limited_item: true/false
+#   limited_item: true/false(default false)
 #   equations:
 #     - '[cos(x);0;sin(x)...], tickstocomplete(int), maxdistance(double), [x;y;z], [yaw;pitch], reversing(true/false)'
 #   styles:

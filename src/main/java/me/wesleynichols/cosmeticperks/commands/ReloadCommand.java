@@ -1,10 +1,6 @@
 package me.wesleynichols.cosmeticperks.commands;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.managers.AnimationManager;
-import me.wesleynichols.cosmeticperks.managers.AnimationValueManager;
-import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
-import me.wesleynichols.cosmeticperks.managers.TrailManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -17,7 +13,7 @@ import java.util.logging.Level;
 public class ReloadCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         CosmeticPerks plugin = CosmeticPerks.getInstance();
 
         try {

@@ -1,10 +1,13 @@
 package me.wesleynichols.cosmeticperks;
 
 import me.wesleynichols.cosmeticperks.commands.CosmeticCommand;
+import me.wesleynichols.cosmeticperks.commands.LimitedTrailCommand;
 import me.wesleynichols.cosmeticperks.commands.ReloadCommand;
 import me.wesleynichols.cosmeticperks.commands.ShopCommand;
+import me.wesleynichols.cosmeticperks.commands.tabcomplete.LimitedTrailTabCompleter;
 import me.wesleynichols.cosmeticperks.config.ConfigParser;
 import me.wesleynichols.cosmeticperks.config.CustomConfig;
+import me.wesleynichols.cosmeticperks.config.LimitedTrailStorage;
 import me.wesleynichols.cosmeticperks.listeners.PlayerEventListener;
 import me.wesleynichols.cosmeticperks.managers.AnimationManager;
 import me.wesleynichols.cosmeticperks.managers.AnimationValueManager;
@@ -15,6 +18,7 @@ import me.wesleynichols.cosmeticperks.tasks.ProjectileTrailTask;
 import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +37,8 @@ public final class CosmeticPerks extends JavaPlugin {
     private AnimationValueManager animationValueManager;
     private ProjectileTrailManager projectileTrailManager;
     private TrailManager trailManager;
+    private LimitedTrailStorage limitedTrailStorage;
+
 
     @Override
     public void onEnable() {
@@ -43,6 +49,7 @@ public final class CosmeticPerks extends JavaPlugin {
         animationValueManager = new AnimationValueManager();
         projectileTrailManager = new ProjectileTrailManager();
         trailManager = new TrailManager();
+        limitedTrailStorage = new LimitedTrailStorage(this);
 
         saveDefaultConfig();
         reloadConfigs();
@@ -50,8 +57,11 @@ public final class CosmeticPerks extends JavaPlugin {
         registerEvent(new PlayerEventListener());
 
         registerCommand("cosmetic", new CosmeticCommand());
+        registerCommand("limitedtrail", new LimitedTrailCommand());
         registerCommand("reload", new ReloadCommand());
         registerCommand("shop", new ShopCommand());
+
+        registerTabComplete("limitedtrail", new LimitedTrailTabCompleter());
 
         new ProjectileTrailTask(this).runTaskTimer(this, 1L, 1L);
         new AnimationTask(this).runTaskTimer(this, 1L, 1L);
@@ -74,12 +84,20 @@ public final class CosmeticPerks extends JavaPlugin {
         return trailManager;
     }
 
+    public LimitedTrailStorage getLimitedTrailStorage() {
+        return limitedTrailStorage;
+    }
+
     public void registerEvent(Listener event) {
         getServer().getPluginManager().registerEvents(event, this);
     }
 
     public void registerCommand(String command, CommandExecutor executor) {
         Objects.requireNonNull(getCommand(command)).setExecutor(executor);
+    }
+
+    public void registerTabComplete(String command, TabCompleter executor) {
+        Objects.requireNonNull(getCommand(command)).setTabCompleter(executor);
     }
 
     public void reloadConfigs() {
@@ -102,5 +120,7 @@ public final class CosmeticPerks extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             TrailUtils.removeOrAttachAnimation(player);
         }
+
+        instance.getLimitedTrailStorage().cleanupLimitedTrails(instance.getTrailManager());
     }
 }

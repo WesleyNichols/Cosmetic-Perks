@@ -1,7 +1,6 @@
 package me.wesleynichols.cosmeticperks.util;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.managers.AnimationValueManager;
 import me.wesleynichols.cosmeticperks.structures.AnimationValues;
 import me.wesleynichols.cosmeticperks.structures.Animations;
 import net.objecthunter.exp4j.ExpressionBuilder;

@@ -74,6 +74,10 @@
             <name>quantiom</name>
             <url>https://repo.repsy.io/mvn/quantiom/minecraft</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -98,6 +102,11 @@
             <groupId>net.objecthunter</groupId>
             <artifactId>exp4j</artifactId>
             <version>0.4.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.SparklingComet</groupId>
+            <artifactId>java-mojang-api</artifactId>
+            <version>-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

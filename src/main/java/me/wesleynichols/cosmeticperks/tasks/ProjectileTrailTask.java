@@ -1,7 +1,6 @@
 package me.wesleynichols.cosmeticperks.tasks;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import org.bukkit.Bukkit;
