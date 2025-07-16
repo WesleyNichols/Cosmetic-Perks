@@ -1,6 +1,5 @@
 package me.wesleynichols.cosmeticperks.tasks;
 
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.structures.AnimationValues;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
@@ -39,7 +38,12 @@ public class AnimationTask extends BukkitRunnable {
 
             // Skip invalid or dead entities
             Entity target = Bukkit.getEntity(uuid);
-            if (target == null || target.isDead() || (target instanceof Player && target.isDead())) { continue; }
+            if (!(target instanceof Player player) || player.isDead()) continue;
+
+            // Don't render for vanished, gliding, or spectator players
+            if (player.hasMetadata("vanished")) continue;
+            if (player.getGameMode() == GameMode.SPECTATOR) continue;
+            if (player.isGliding()) continue;
 
             // No animation values to process
             AnimationValues animationValues = trail.getAnimation();
@@ -51,16 +55,13 @@ public class AnimationTask extends BukkitRunnable {
 
             // Filter players in the same world within render distance
             world.getPlayers().stream()
-                    .filter(player -> !AdvancedVanishAPI.INSTANCE.isPlayerVanished(player))
-                    .filter(player -> player.getGameMode() != GameMode.SPECTATOR)
-                    .filter(player -> !player.isGliding())
-                    .filter(player -> player.getLocation().distanceSquared(target.getLocation()) <= MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE)
-                    .forEach(player -> {
+                    .filter(p -> p.getLocation().distanceSquared(target.getLocation()) <= MAX_RENDER_DISTANCE * MAX_RENDER_DISTANCE)
+                    .forEach(p -> {
                         // Spawn particles from equation values if available
                         if (animationValues.getEquationValuesLength() > 0) {
                             for (double[][] locArray : animationValues.getEquationValues()) {
                                 double[] loc = locArray[currentStep];
-                                player.spawnParticle(
+                                p.spawnParticle(
                                         trail.getTrailEffect(),
                                         target.getLocation().add(loc[0], loc[1], loc[2]),
                                         trail.getParticleAmount(),
@@ -73,7 +74,7 @@ public class AnimationTask extends BukkitRunnable {
                         // Spawn particles from style values if available
                         if (animationValues.getStyleValuesLength() > 0) {
                             for (double[] loc : animationValues.getStyleValues()) {
-                                player.spawnParticle(
+                                p.spawnParticle(
                                         trail.getTrailEffect(),
                                         target.getLocation().add(loc[0], loc[1], loc[2]),
                                         trail.getParticleAmount(),

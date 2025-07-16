@@ -1,6 +1,5 @@
 package me.wesleynichols.cosmeticperks.listeners;
 
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
 import me.wesleynichols.cosmeticperks.util.TrailUtils;
@@ -41,7 +40,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onProjectileShoot(ProjectileLaunchEvent event) {
         if (event.getEntity().getShooter() instanceof Player player) {
-            if (AdvancedVanishAPI.INSTANCE.isPlayerVanished(player)) { return; }
+            if (player.hasMetadata("vanished")) { return; }
             if (event.getEntity() instanceof FishHook || event.getEntity() instanceof Trident) { return; }
 
             PersistentDataContainer data = player.getPersistentDataContainer();
@@ -55,7 +54,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerTrailMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPermission("cosmeticperks.access") || AdvancedVanishAPI.INSTANCE.isPlayerVanished(player) || player.getGameMode() == GameMode.SPECTATOR) { return; }
+        if (!player.hasPermission("cosmeticperks.access") || player.hasMetadata("vanished") || player.getGameMode() == GameMode.SPECTATOR) { return; }
         if(event.getFrom().getBlock().equals(event.getTo().getBlock())) return;
 
         PersistentDataContainer data = player.getPersistentDataContainer();

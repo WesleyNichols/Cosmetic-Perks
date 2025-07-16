@@ -63,8 +63,8 @@ public final class CosmeticPerks extends JavaPlugin {
 
         registerTabComplete("limitedtrail", new LimitedTrailTabCompleter());
 
-        new ProjectileTrailTask(this).runTaskTimer(this, 1L, 1L);
         new AnimationTask(this).runTaskTimer(this, 1L, 1L);
+        new ProjectileTrailTask(this).runTaskTimer(this, 1L, 1L);
     }
 
     // Getters for managers
