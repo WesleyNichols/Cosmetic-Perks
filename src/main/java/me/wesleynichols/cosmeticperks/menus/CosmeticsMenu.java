@@ -9,6 +9,7 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.structures.CustomItem;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
+import me.wesleynichols.cosmeticperks.structures.TrailType;
 import me.wesleynichols.cosmeticperks.util.TrailUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,9 +50,9 @@ public class CosmeticsMenu extends TrailUtils {
 
         StaticPane navigation = new StaticPane(1, 1, 7, 1);
 
-        addTrailButton(navigation, player, "player", Material.LEATHER_BOOTS, NamedTextColor.GREEN, 2);
-        addTrailButton(navigation, player, "projectile", Material.SPECTRAL_ARROW, NamedTextColor.GOLD, 3);
-        addTrailButton(navigation, player, "elytra", Material.ELYTRA, NamedTextColor.LIGHT_PURPLE, 4);
+        addTrailButton(navigation, player, TrailType.PLAYER, Material.LEATHER_BOOTS, NamedTextColor.GREEN, 2);
+        addTrailButton(navigation, player, TrailType.PROJECTILE, Material.SPECTRAL_ARROW, NamedTextColor.GOLD, 3);
+        addTrailButton(navigation, player, TrailType.ELYTRA, Material.ELYTRA, NamedTextColor.LIGHT_PURPLE, 4);
 
         navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.CHEST)
@@ -72,7 +73,7 @@ public class CosmeticsMenu extends TrailUtils {
                                         .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)))
                         .build(),
                 event -> {
-                    removeActiveTrails(player);
+                    TrailUtils.removeActiveTrails(player);  // static call
                     displayCosmeticsMenu(player);
                 }), 6, 0);
 
@@ -81,34 +82,34 @@ public class CosmeticsMenu extends TrailUtils {
         gui.show(player);
     }
 
-    private void addTrailButton(StaticPane pane, Player player, String type, Material icon, NamedTextColor color, int x) {
-        String trail = getActiveTrail(player, type);
+    private void addTrailButton(StaticPane pane, Player player, TrailType trailType, Material icon, NamedTextColor color, int x) {
+        String trail = TrailUtils.getActiveTrail(player, trailType);
         pane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(icon)
-                        .armorColor(type.equals("player") ? Color.GREEN : null)
-                        .name(buildItemName(capitalize(type) + " Trails", color, true))
+                        .armorColor(trailType == TrailType.PLAYER ? Color.GREEN : null)
+                        .name(buildItemName(capitalize(trailType.getName()) + " Trails", color, true))
                         .lore(buildTrailLore(trail))
                         .build(),
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");
-                    else displayMenu(player, type);
+                    else displayMenu(player, trailType);
                 }), x, 0);
     }
 
-    public void displayMenu(Player player, String type) {
-        ChestGui gui = getTrailSelectionMenu(player, type);
+    public void displayMenu(Player player, TrailType trailType) {
+        ChestGui gui = getTrailSelectionMenu(player, trailType);
         gui.update();
         gui.show(player);
     }
 
-    public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, String key) {
+    public GuiItem getDefaultGuiItem(Player player, PaginatedPane pages, ChestGui gui, TrailType trailType) {
         GuiItem item = new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
                         .name(Component.text("None").decorate(TextDecoration.BOLD))
                         .lore(List.of(Component.empty(), Component.text("Click to Select", NamedTextColor.RED)))
                         .build());
         item.setAction(event -> {
-            removeActiveTrail(player, key, true);
+            TrailUtils.removeActiveTrail(player, trailType, true);
             if (plugin.getAnimationManager().hasActiveAnimation(player)) {
                 plugin.getAnimationManager().removeParticleAnimation(player.getUniqueId());
             }
@@ -119,9 +120,9 @@ public class CosmeticsMenu extends TrailUtils {
         return item;
     }
 
-    public ChestGui getTrailSelectionMenu(Player player, String type) {
-        List<CustomTrail> allTrails = plugin.getTrailManager().getTrailType(type);
-        Set<String> ownedLimitedTrails = plugin.getLimitedTrailStorage().getPlayerTrails(player.getUniqueId(), type);
+    public ChestGui getTrailSelectionMenu(Player player, TrailType trailType) {
+        List<CustomTrail> allTrails = plugin.getTrailManager().getTrailType(trailType);
+        Set<String> ownedLimitedTrails = plugin.getLimitedTrailStorage().getPlayerTrails(player.getUniqueId(), trailType.getName());
 
         List<CustomTrail> trails = allTrails.stream()
                 .filter(trail -> !trail.isLimitedItem() || ownedLimitedTrails.contains(trail.getTrailName()))
@@ -129,7 +130,7 @@ public class CosmeticsMenu extends TrailUtils {
                 .toList();
 
         Function<Integer, String> getTitle = page -> {
-            Component base = Component.text(capitalize(type) + " Trails");
+            Component base = Component.text(capitalize(trailType.getName()) + " Trails");
             if (page > 0) {
                 base = base.append(Component.text(" (Page " + (page + 1) + ")"));
             }
@@ -143,25 +144,34 @@ public class CosmeticsMenu extends TrailUtils {
         PaginatedPane pages = new PaginatedPane(0, 0, 9, 1);
         List<GuiItem> items = new ArrayList<>();
 
-        items.add(getDefaultGuiItem(player, pages, gui, type));
+        items.add(getDefaultGuiItem(player, pages, gui, trailType));
 
         for (CustomTrail trailEnum : trails) {
             GuiItem item = new GuiItem(trailEnum.getItem());
             item.setAction(event -> {
-                if (trailEnum.getTrailType().equals("player") && plugin.getAnimationManager().hasActiveAnimation(player)) {
+                TrailType trailTypeEnum = trailEnum.getTrailType();
+
+                if (trailTypeEnum == TrailType.PLAYER && plugin.getAnimationManager().hasActiveAnimation(player)) {
                     plugin.getAnimationManager().removeParticleAnimation(player.getUniqueId());
                 }
-                setActiveTrail(trailEnum.getTrailName(), player, type);
+
+                TrailUtils.setActiveTrail(trailEnum.getTrailName(), player, trailTypeEnum);
+
                 if (trailEnum.getAnimation() != null) {
-                    plugin.getAnimationManager().attachParticleAnimation(player, player.getUniqueId(), type, trailEnum);
+                    plugin.getAnimationManager().attachParticleAnimation(player, player.getUniqueId(), trailTypeEnum.getName(), trailEnum);
+
                 }
+
                 pages.getItems().forEach(this::disableItem);
                 enableItem(item);
                 gui.update();
             });
-            if (trailEnum.getTrailName().equals(getActiveTrail(player, type))) enableItem(item);
+
+            if (trailEnum.getTrailName().equals(TrailUtils.getActiveTrail(player, trailType))) enableItem(item);
             items.add(item);
         }
+
+
 
         int itemRows = (int) Math.ceil(items.size() / 9.0);
         itemRows = Math.min(itemRows, 5);  // Limit max rows to 5, if needed

@@ -4,6 +4,7 @@ import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.structures.AnimationValues;
 import me.wesleynichols.cosmeticperks.structures.Animations;
 import me.wesleynichols.cosmeticperks.structures.CustomTrail;
+import me.wesleynichols.cosmeticperks.structures.TrailType;
 import me.wesleynichols.cosmeticperks.styles.Styles;
 import me.wesleynichols.cosmeticperks.util.AnimationValueInitialize;
 import org.bukkit.Material;
@@ -20,7 +21,10 @@ public class ConfigParser {
     private static final CosmeticPerks plugin = CosmeticPerks.getInstance();
     private static final Logger LOGGER = plugin.getLogger();
 
-    public static void parseConfig(FileConfiguration config, String trailType) {
+    /**
+     * Parses trail configuration for a given TrailType from a provided config.
+     */
+    public static void parseConfig(FileConfiguration config, TrailType trailType) {
         List<CustomTrail> trailList = new ArrayList<>();
 
         for (String trailName : config.getKeys(false)) {

@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class CustomTrail implements Comparable<CustomTrail> {
 
-    private final String trailType;
+    private final TrailType trailType;
     private final Material displayMaterial;
     private final String effectName;
     private final Particle trailEffect;
@@ -50,11 +50,11 @@ public class CustomTrail implements Comparable<CustomTrail> {
         // Determine name color
         NamedTextColor nameColor = limitedItem ? NamedTextColor.DARK_PURPLE : NamedTextColor.WHITE;
 
-        // Build lore line
+        // Build lore line using the enum's name (capitalized)
         StringBuilder loreText = new StringBuilder();
         if (limitedItem) loreText.append("Limited ");
         if (isAnimated) loreText.append("Animated ");
-        loreText.append(capitalize(trailType)).append(" Trail");
+        loreText.append(capitalize(trailType.getName())).append(" Trail");
 
         NamedTextColor loreColor = isAnimated ? NamedTextColor.GOLD : NamedTextColor.YELLOW;
 
@@ -76,7 +76,6 @@ public class CustomTrail implements Comparable<CustomTrail> {
                 .build();
     }
 
-
     public String getTrailName() {
         return effectName;
     }
@@ -85,7 +84,7 @@ public class CustomTrail implements Comparable<CustomTrail> {
         return trailEffect;
     }
 
-    public String getTrailType() {
+    public TrailType getTrailType() {
         return trailType;
     }
 
@@ -123,7 +122,7 @@ public class CustomTrail implements Comparable<CustomTrail> {
      * Builder class for constructing CustomTrail instances.
      */
     public static class CustomTrailBuilder {
-        private final String trailType;
+        private final TrailType trailType;
         private Material displayMaterial;
         private final String effectName;
         private Particle trailEffect;
@@ -134,14 +133,14 @@ public class CustomTrail implements Comparable<CustomTrail> {
         private AnimationValues animation;
 
         /**
-         * Creates a builder with required trailType and effectName.
+         * Creates a builder with required TrailType enum and effectName.
          *
-         * @param trailType the category or type of the trail (e.g. "player", "projectile")
+         * @param trailType the category or type of the trail (enum)
          * @param effectName the display name of the trail
          */
-        public CustomTrailBuilder(String trailType, String effectName) {
-            this.trailType = trailType;
-            this.effectName = effectName;
+        public CustomTrailBuilder(TrailType trailType, String effectName) {
+            this.trailType = Objects.requireNonNull(trailType, "trailType cannot be null");
+            this.effectName = Objects.requireNonNull(effectName, "effectName cannot be null");
         }
 
         public CustomTrailBuilder displayMaterial(Material material) {
@@ -181,9 +180,6 @@ public class CustomTrail implements Comparable<CustomTrail> {
 
         /**
          * Builds and returns the CustomTrail instance.
-         * If optional values are not set, reasonable defaults are applied.
-         *
-         * @return a new CustomTrail instance
          */
         public CustomTrail build() {
             return new CustomTrail(this);

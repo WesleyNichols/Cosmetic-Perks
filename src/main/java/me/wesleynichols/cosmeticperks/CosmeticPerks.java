@@ -13,6 +13,7 @@ import me.wesleynichols.cosmeticperks.managers.AnimationManager;
 import me.wesleynichols.cosmeticperks.managers.AnimationValueManager;
 import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
 import me.wesleynichols.cosmeticperks.managers.TrailManager;
+import me.wesleynichols.cosmeticperks.structures.TrailType;
 import me.wesleynichols.cosmeticperks.tasks.AnimationTask;
 import me.wesleynichols.cosmeticperks.tasks.ProjectileTrailTask;
 import me.wesleynichols.cosmeticperks.util.TrailUtils;
@@ -113,9 +114,9 @@ public final class CosmeticPerks extends JavaPlugin {
         projectileConfig.load();
         projectileConfig.save();
 
-        ConfigParser.parseConfig(playerConfig.getConfig(), "player");
-        ConfigParser.parseConfig(elytraConfig.getConfig(), "elytra");
-        ConfigParser.parseConfig(projectileConfig.getConfig(), "projectile");
+        ConfigParser.parseConfig(playerConfig.getConfig(), TrailType.PLAYER);
+        ConfigParser.parseConfig(elytraConfig.getConfig(), TrailType.ELYTRA);
+        ConfigParser.parseConfig(projectileConfig.getConfig(), TrailType.PROJECTILE);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             TrailUtils.removeOrAttachAnimation(player);
