@@ -1,6 +1,4 @@
-package me.wesleynichols.cosmeticperks.managers;
-
-import me.wesleynichols.cosmeticperks.structures.AnimationValues;
+package me.wesleynichols.cosmeticperks.animation;
 
 import java.util.Collections;
 import java.util.HashMap;

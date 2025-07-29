@@ -1,8 +1,8 @@
 package me.wesleynichols.cosmeticperks.tasks;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.AnimationValues;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
+import me.wesleynichols.cosmeticperks.animation.AnimationValues;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;

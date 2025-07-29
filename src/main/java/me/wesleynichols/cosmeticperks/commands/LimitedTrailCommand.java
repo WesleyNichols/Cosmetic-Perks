@@ -2,9 +2,9 @@ package me.wesleynichols.cosmeticperks.commands;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
 import me.wesleynichols.cosmeticperks.config.LimitedTrailStorage;
-import me.wesleynichols.cosmeticperks.managers.TrailManager;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.structures.TrailType;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.TrailManager;
+import me.wesleynichols.cosmeticperks.trails.TrailType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;

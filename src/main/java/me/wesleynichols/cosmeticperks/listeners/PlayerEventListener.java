@@ -1,8 +1,8 @@
 package me.wesleynichols.cosmeticperks.listeners;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.util.TrailUtils;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.TrailUtils;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.FishHook;
@@ -19,7 +19,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
-import static me.wesleynichols.cosmeticperks.util.TrailUtils.removeOrAttachAnimation;
+import static me.wesleynichols.cosmeticperks.trails.TrailUtils.removeOrAttachAnimation;
 
 public class PlayerEventListener implements Listener {
 

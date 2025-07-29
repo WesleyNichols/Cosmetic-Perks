@@ -1,13 +1,11 @@
-package me.wesleynichols.cosmeticperks.styles;
-
-import me.wesleynichols.cosmeticperks.util.VectorUtils;
+package me.wesleynichols.cosmeticperks.animation;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Styles {
+public class AnimationStyles {
 
     public static double[][] styleValues(double[][]... styles) {
         int length = 0;
@@ -51,7 +49,7 @@ public class Styles {
                     offset[1],
                     radius * Math.sin(angle) + offset[2]
             };
-            styleValues[i] = VectorUtils.rotateVector(point, angleOffset[0], angleOffset[1]);
+            styleValues[i] = AnimationVectors.rotateVector(point, angleOffset[0], angleOffset[1]);
         }
 
         return styleValues;
@@ -87,7 +85,7 @@ public class Styles {
         double[][] styleValues = new double[tempPoints.size()][3];
         for (int i = 0; i < tempPoints.size(); i++) {
             List<Double> p = tempPoints.get(i);
-            double[] rotated = VectorUtils.rotateVector(new double[]{p.get(0), p.get(1), p.get(2)}, angleOffset[0], angleOffset[1]);
+            double[] rotated = AnimationVectors.rotateVector(new double[]{p.get(0), p.get(1), p.get(2)}, angleOffset[0], angleOffset[1]);
             styleValues[i] = new double[]{
                     rotated[0] + offset[0],
                     rotated[1] + offset[1],

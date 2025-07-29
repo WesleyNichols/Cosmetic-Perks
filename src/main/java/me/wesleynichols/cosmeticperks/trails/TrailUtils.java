@@ -1,8 +1,6 @@
-package me.wesleynichols.cosmeticperks.util;
+package me.wesleynichols.cosmeticperks.trails;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.structures.TrailType;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.World;

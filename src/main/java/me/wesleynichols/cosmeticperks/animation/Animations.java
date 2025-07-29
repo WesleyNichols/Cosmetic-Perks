@@ -1,4 +1,4 @@
-package me.wesleynichols.cosmeticperks.structures;
+package me.wesleynichols.cosmeticperks.animation;
 
 /**
  * Represents an animation sequence with formulas and offsets,

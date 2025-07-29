@@ -1,8 +1,8 @@
 package me.wesleynichols.cosmeticperks.tasks;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.util.TrailUtils;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.TrailUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,11 +10,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Map;
 import java.util.UUID;
 
-public class ProjectileTrailTask extends BukkitRunnable {
+public class ProjectileTask extends BukkitRunnable {
 
     private final CosmeticPerks plugin;
 
-    public ProjectileTrailTask(CosmeticPerks plugin) {
+    public ProjectileTask(CosmeticPerks plugin) {
         this.plugin = plugin;
     }
 

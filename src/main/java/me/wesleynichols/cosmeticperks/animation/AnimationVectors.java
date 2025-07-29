@@ -1,6 +1,6 @@
-package me.wesleynichols.cosmeticperks.util;
+package me.wesleynichols.cosmeticperks.animation;
 
-public class VectorUtils {
+public class AnimationVectors {
 
     public static double[] rotateAroundAxisX(double[] v, double angle) {
         double cos = Math.cos(angle);

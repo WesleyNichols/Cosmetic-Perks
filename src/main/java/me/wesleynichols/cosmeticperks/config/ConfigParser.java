@@ -1,12 +1,12 @@
 package me.wesleynichols.cosmeticperks.config;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.AnimationValues;
-import me.wesleynichols.cosmeticperks.structures.Animations;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.structures.TrailType;
-import me.wesleynichols.cosmeticperks.styles.Styles;
-import me.wesleynichols.cosmeticperks.util.AnimationValueInitialize;
+import me.wesleynichols.cosmeticperks.animation.AnimationStyles;
+import me.wesleynichols.cosmeticperks.animation.AnimationValueInitialize;
+import me.wesleynichols.cosmeticperks.animation.AnimationValues;
+import me.wesleynichols.cosmeticperks.animation.Animations;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.TrailType;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -157,13 +157,13 @@ public class ConfigParser {
             int points = Integer.parseInt(parts[4]);
 
             values[i] = switch (type) {
-                case "circle" -> Styles.circle(offset, angleOffset, radius, points);
-                case "square" -> Styles.square(offset, angleOffset, radius, points);
+                case "circle" -> AnimationStyles.circle(offset, angleOffset, radius, points);
+                case "square" -> AnimationStyles.square(offset, angleOffset, radius, points);
                 default -> throw new IllegalArgumentException("Unknown style: " + type);
             };
         }
 
-        return Styles.styleValues(values);
+        return AnimationStyles.styleValues(values);
     }
 
     private static double[] stringArrToDouble(String[] s) {

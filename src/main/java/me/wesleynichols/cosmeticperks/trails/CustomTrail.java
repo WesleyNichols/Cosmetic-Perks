@@ -1,5 +1,7 @@
-package me.wesleynichols.cosmeticperks.structures;
+package me.wesleynichols.cosmeticperks.trails;
 
+import me.wesleynichols.cosmeticperks.animation.AnimationValues;
+import me.wesleynichols.cosmeticperks.data.CustomItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

@@ -1,7 +1,7 @@
 package me.wesleynichols.cosmeticperks.config;
 
-import me.wesleynichols.cosmeticperks.managers.TrailManager;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.TrailManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 

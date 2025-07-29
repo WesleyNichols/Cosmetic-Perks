@@ -1,7 +1,7 @@
-package me.wesleynichols.cosmeticperks.managers;
+package me.wesleynichols.cosmeticperks.animation;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;

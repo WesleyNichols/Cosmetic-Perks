@@ -1,4 +1,4 @@
-package me.wesleynichols.cosmeticperks.structures;
+package me.wesleynichols.cosmeticperks.trails;
 
 import java.util.Arrays;
 import java.util.Optional;

@@ -7,10 +7,10 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.CustomItem;
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
-import me.wesleynichols.cosmeticperks.structures.TrailType;
-import me.wesleynichols.cosmeticperks.util.TrailUtils;
+import me.wesleynichols.cosmeticperks.data.CustomItem;
+import me.wesleynichols.cosmeticperks.trails.CustomTrail;
+import me.wesleynichols.cosmeticperks.trails.TrailType;
+import me.wesleynichols.cosmeticperks.trails.TrailUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -28,9 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-
-import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildItemName;
-import static me.wesleynichols.cosmeticperks.util.ItemUtils.buildTrailLore;
 
 public class CosmeticsMenu extends TrailUtils {
 
@@ -56,7 +53,7 @@ public class CosmeticsMenu extends TrailUtils {
 
         navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.CHEST)
-                        .name(buildItemName("Buy Cosmetics", NamedTextColor.WHITE, true))
+                        .name(CustomItem.buildItemName("Buy Cosmetics", NamedTextColor.WHITE, true))
                         .lore(List.of(
                                 Component.empty(),
                                 Component.text("Click to visit the store", NamedTextColor.AQUA)
@@ -66,7 +63,7 @@ public class CosmeticsMenu extends TrailUtils {
 
         navigation.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(Material.BARRIER)
-                        .name(buildItemName("Deselect All", NamedTextColor.WHITE, true))
+                        .name(CustomItem.buildItemName("Deselect All", NamedTextColor.WHITE, true))
                         .lore(List.of(
                                 Component.empty(),
                                 Component.text("Disable active trails", NamedTextColor.RED)
@@ -87,8 +84,8 @@ public class CosmeticsMenu extends TrailUtils {
         pane.addItem(new GuiItem(
                 new CustomItem.ItemBuilder(icon)
                         .armorColor(trailType == TrailType.PLAYER ? Color.GREEN : null)
-                        .name(buildItemName(capitalize(trailType.getName()) + " Trails", color, true))
-                        .lore(buildTrailLore(trail))
+                        .name(CustomItem.buildItemName(capitalize(trailType.getName()) + " Trails", color, true))
+                        .lore(CustomItem.buildTrailLore(trail))
                         .build(),
                 event -> {
                     if (!player.hasPermission("cosmeticperks.access")) player.performCommand("shop cosmetic");

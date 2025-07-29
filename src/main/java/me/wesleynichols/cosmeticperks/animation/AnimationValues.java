@@ -1,4 +1,4 @@
-package me.wesleynichols.cosmeticperks.structures;
+package me.wesleynichols.cosmeticperks.animation;
 
 /**
  * Holds precomputed animation data including style and equation values,

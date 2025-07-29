@@ -1,5 +1,7 @@
 package me.wesleynichols.cosmeticperks;
 
+import me.wesleynichols.cosmeticperks.animation.AnimationManager;
+import me.wesleynichols.cosmeticperks.animation.AnimationValueManager;
 import me.wesleynichols.cosmeticperks.commands.CosmeticCommand;
 import me.wesleynichols.cosmeticperks.commands.LimitedTrailCommand;
 import me.wesleynichols.cosmeticperks.commands.ReloadCommand;
@@ -9,14 +11,12 @@ import me.wesleynichols.cosmeticperks.config.ConfigParser;
 import me.wesleynichols.cosmeticperks.config.CustomConfig;
 import me.wesleynichols.cosmeticperks.config.LimitedTrailStorage;
 import me.wesleynichols.cosmeticperks.listeners.PlayerEventListener;
-import me.wesleynichols.cosmeticperks.managers.AnimationManager;
-import me.wesleynichols.cosmeticperks.managers.AnimationValueManager;
-import me.wesleynichols.cosmeticperks.managers.ProjectileTrailManager;
-import me.wesleynichols.cosmeticperks.managers.TrailManager;
-import me.wesleynichols.cosmeticperks.structures.TrailType;
 import me.wesleynichols.cosmeticperks.tasks.AnimationTask;
-import me.wesleynichols.cosmeticperks.tasks.ProjectileTrailTask;
-import me.wesleynichols.cosmeticperks.util.TrailUtils;
+import me.wesleynichols.cosmeticperks.tasks.ProjectileTask;
+import me.wesleynichols.cosmeticperks.trails.ProjectileTrailManager;
+import me.wesleynichols.cosmeticperks.trails.TrailManager;
+import me.wesleynichols.cosmeticperks.trails.TrailType;
+import me.wesleynichols.cosmeticperks.trails.TrailUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -65,7 +65,7 @@ public final class CosmeticPerks extends JavaPlugin {
         registerTabComplete("limitedtrail", new LimitedTrailTabCompleter());
 
         new AnimationTask(this).runTaskTimer(this, 1L, 1L);
-        new ProjectileTrailTask(this).runTaskTimer(this, 1L, 1L);
+        new ProjectileTask(this).runTaskTimer(this, 1L, 1L);
     }
 
     // Getters for managers

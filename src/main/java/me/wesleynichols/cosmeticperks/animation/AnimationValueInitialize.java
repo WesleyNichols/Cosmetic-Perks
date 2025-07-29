@@ -1,8 +1,6 @@
-package me.wesleynichols.cosmeticperks.util;
+package me.wesleynichols.cosmeticperks.animation;
 
 import me.wesleynichols.cosmeticperks.CosmeticPerks;
-import me.wesleynichols.cosmeticperks.structures.AnimationValues;
-import me.wesleynichols.cosmeticperks.structures.Animations;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.math.BigDecimal;
@@ -62,7 +60,7 @@ public class AnimationValueInitialize {
                                 .setScale(5, RoundingMode.UP)
                                 .doubleValue();
                     }
-                    temp[j] = VectorUtils.rotateVector(temp[j], angleOffset[0], angleOffset[1]);
+                    temp[j] = AnimationVectors.rotateVector(temp[j], angleOffset[0], angleOffset[1]);
                 }
 
                 storedEValues.add(temp);

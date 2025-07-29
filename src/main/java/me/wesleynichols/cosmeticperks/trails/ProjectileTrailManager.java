@@ -1,6 +1,4 @@
-package me.wesleynichols.cosmeticperks.managers;
-
-import me.wesleynichols.cosmeticperks.structures.CustomTrail;
+package me.wesleynichols.cosmeticperks.trails;
 
 import java.util.Collections;
 import java.util.Map;
